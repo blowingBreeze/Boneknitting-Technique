@@ -10,17 +10,15 @@ public class FileReader
 
     }
 
-    //根据文件路径读取文件头
-    public MovieHeadData GetHeadFromFile(string strFilePath)
-    {
-        return new MovieHeadData();
-    }
-
     //获取某个时间点的数据 （也是每帧调用）
     public ModelCtrlData PraseDataByTime(float fTime)
     {
         return new ModelCtrlData();
     }
 
-
+    //根据文件路径读取文件头
+    public static MovieHeadData GetHeadFromFile(string strFilePath)
+    {
+        return new MovieHeadData();
+    }
 }

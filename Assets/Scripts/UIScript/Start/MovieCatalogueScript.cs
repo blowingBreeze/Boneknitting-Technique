@@ -46,7 +46,7 @@ public class MovieCatalogueScript : MonoBehaviour
 
     private void SetListItemByFileName(string astrFileName)
     {
-        var tempHeadData = m_FileReader.GetHeadFromFile(astrFileName);
+        var tempHeadData = FileReader.GetHeadFromFile(astrFileName);
         var tempListItem = Instantiate(m_MovieListItemPrefab, m_Content.transform);
         ///依据头部信息载入图片,设置按钮信息 TODO
         //tempListItem.GetComponent<Image>().overrideSprite;

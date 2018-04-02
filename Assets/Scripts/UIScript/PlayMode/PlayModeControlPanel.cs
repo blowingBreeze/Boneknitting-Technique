@@ -49,4 +49,7 @@ public class PlayModeControlPanel : MonoBehaviour
         Instantiate(m_StartCanvasPrefab);
         Destroy(gameObject);
     }
+
+
+
 }

@@ -4,42 +4,25 @@ using UnityEngine;
 
 public class PlayController
 {
-    private string strFileName;
-    private VideoRateCtrl m_VideoRateController;
-    //private ModelCtrl m_ModelController;
-    //private DataCtrl m_DataController ,即输入源控制
+    private ModelCtrl m_ModelController;
     private TrailCurveCtrl m_TrailController;
 
-    public PlayController()
+    public PlayController(GameObject model)
     {
-        Init();
+        Init(model);
     }
 
-    private bool Init()
+    private bool Init(GameObject model)
     {
-        m_VideoRateController = new VideoRateCtrl();
+        m_ModelController = new ModelCtrl(model);
         m_TrailController = new TrailCurveCtrl();
         return true;
     }
-    
-    public void SetFileName(string astrFileName)
+
+    public void Update(ModelCtrlData modelCtrlData)
     {
-        strFileName = astrFileName;
-    }
-
-    public void Update()
-    {
-
-    }
-
-    public void SetAccelerate(float fRatio)
-    {
-
-    }
-
-    public void SetCurrentTime(float fRatio)
-    {
-
+        m_ModelController.MoveModel(modelCtrlData);
+        m_TrailController.RecvTrailData(modelCtrlData);
     }
 
     public void SwitchTrail(TrailType trailType,bool IsOn)
