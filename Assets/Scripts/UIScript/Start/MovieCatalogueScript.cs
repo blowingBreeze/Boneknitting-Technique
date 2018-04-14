@@ -38,6 +38,11 @@ public class MovieCatalogueScript : MonoBehaviour
 
     private void ListMovieByFileNames(List<string> FileNameList)
     {
+        if(FileNameList==null)
+        {
+            return;
+        }
+
         for(int tIndex=0;tIndex<FileNameList.Count;++tIndex)
         {
             SetListItemByFileName(FileNameList[tIndex]);

@@ -34,11 +34,11 @@ public class VideoRateCtrl
         {
             if(value>m_fTotalTime)
             {
-                m_fIntervalTime = m_fTotalTime;
+                m_fCurrentTime = m_fTotalTime;
             }
             else
             {
-                m_fIntervalTime = value;
+                m_fCurrentTime = value;
             }
         }
         get
@@ -52,9 +52,13 @@ public class VideoRateCtrl
     {
         set
         {
-            if(value>0.04)
+            if(value /m_fDefaultIntervalTime>20.0f)
             {
-                m_fIntervalTime = 0.04f;
+                m_fIntervalTime = 20.0f*m_fDefaultIntervalTime;
+            }
+            else if(value / m_fDefaultIntervalTime < 0.05f)
+            {
+                m_fIntervalTime = 0.05f * m_fDefaultIntervalTime;
             }
             else
             {
@@ -67,6 +71,12 @@ public class VideoRateCtrl
         }
     }
 
+    private float m_fDefaultIntervalTime;
+    public float GetAccelerate()
+    {
+        return m_fIntervalTime / m_fDefaultIntervalTime;
+    }
+
     public VideoRateCtrl(float fTotalTime, float fIntervalTime, float fCurrentTime = 0f)
     {
         Init(fTotalTime, fIntervalTime, fCurrentTime);
@@ -77,6 +87,7 @@ public class VideoRateCtrl
         m_fTotalTime = fTotalTime;
         m_fCurrentTime = fCurrentTime;
         m_fIntervalTime = fIntervalTime;
+        m_fDefaultIntervalTime = fIntervalTime;
         return true;
     }
 }

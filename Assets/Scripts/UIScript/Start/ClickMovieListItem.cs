@@ -16,7 +16,8 @@ public class ClickMovieListItem : MonoBehaviour
     }
     public void OnClickMovieListItem()
     {
-        Instantiate(PlayModeCanvas);
+        GameObject tPlayModeCanvas= Instantiate(PlayModeCanvas);
+        tPlayModeCanvas.GetComponent<MoviePlayManager>().SetFileName(strFilePath);
         Destroy(StartModeCanvas);
     }
 

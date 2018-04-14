@@ -46,6 +46,11 @@ public class MoviePlayManager : MonoBehaviour
         bIsPlay = !bIsPlay;
     }
 
+    public bool IsStart()
+    {
+        return bIsPlay;
+    }
+
     public void Accelerate()
     {
         m_VIdeoRateController.fIntervalTime *= 2;
@@ -54,6 +59,11 @@ public class MoviePlayManager : MonoBehaviour
     public void Deaccelerate()
     {
         m_VIdeoRateController.fIntervalTime *= 0.5f;
+    }
+
+    public float GetAccelerate()
+    {
+        return m_VIdeoRateController.GetAccelerate();
     }
 
     public void SetCurrentTime(float fRate)
