@@ -40,6 +40,9 @@ public class SavePanel : MonoBehaviour
         {
             m_fRightSliderValue = value;
         }
+        float tempTimeCount = m_RecordManager.GetTimeCount();
+        ModelCtrlData tempModelCtrlData = m_RecordManager.GetRecordController().GetModelCtrlDataByTime(tempTimeCount * value);
+        m_RecordManager.GetRecordController().GetPlayController().Update(tempModelCtrlData);
     }
 
     public void Btn_Confirm()

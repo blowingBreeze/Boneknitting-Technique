@@ -5,14 +5,13 @@ using UnityEngine;
 public class RecordManager:MonoBehaviour
 {
     private RecordController m_RecordController;
-
     private bool bIsStartRecord;
     private float fTimeCount;
+    private GameObject HumenModel;
 
     private void Awake()
     {
-        m_RecordController = new RecordController();
-
+        m_RecordController = new RecordController(HumenModel);
         bIsStartRecord = false;
         fTimeCount = 0.0f;
     }
