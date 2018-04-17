@@ -14,8 +14,11 @@ public class MovieHeadData
     //头像路径，用来读取头像放在列表中
     public string strPortraitPath;
 
+    //录像裁剪后的时长
     public float fTotalTime;
+    //录像帧间隔时间
     public float fIntervalTime;
+    //录像当前已播放时间
     public float fCurrentTime;
 }
 

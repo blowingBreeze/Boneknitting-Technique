@@ -19,6 +19,11 @@ public class FileReader
     //根据文件路径读取文件头
     public static MovieHeadData GetHeadFromFile(string strFilePath)
     {
-        return new MovieHeadData();
+        var tempMovieHead = new MovieHeadData();
+        tempMovieHead.fCurrentTime = 1;
+        tempMovieHead.fIntervalTime = 1;
+        tempMovieHead.fTotalTime = 1000;
+        tempMovieHead.strDoctorName = "李医生";
+        return tempMovieHead;
     }
 }
