@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Hand
   - StartCanvas
+  - StudyCanvas
+  - CompairMovieList
   layers:
   - Default
   - TransparentFX

@@ -57,6 +57,7 @@ public class SavePanel : MonoBehaviour
         string title = "选择头像";
         string extension = "png";
         m_PortraitPath = ToolFunction.OpenFilePath(filter, title, extension);
+        //TODO-将图片替换
     }
 
     public void Btn_Save()

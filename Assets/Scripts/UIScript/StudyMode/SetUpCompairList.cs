@@ -2,12 +2,11 @@
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
-using UnityEngine.UI;
 
-public class MovieCatalogueScript : MonoBehaviour
+public class SetUpCompairList : MonoBehaviour
 {
     public RectTransform m_Content;
-    public GameObject m_MovieListItemPrefab;
+    public GameObject m_ListItemPrefab;
 
     private void Start()
     {
@@ -17,7 +16,7 @@ public class MovieCatalogueScript : MonoBehaviour
 
     private void ListMovieByDirectory(string strDirectoryPath)
     {
-        if(string.IsNullOrEmpty( strDirectoryPath))
+        if (string.IsNullOrEmpty(strDirectoryPath))
         {
             Debug.Log("null directory path");
             return;
@@ -35,12 +34,12 @@ public class MovieCatalogueScript : MonoBehaviour
 
     private void ListMovieByFileNames(List<string> FileNameList)
     {
-        if(FileNameList==null)
+        if (FileNameList == null)
         {
             return;
         }
 
-        for(int tIndex=0;tIndex<FileNameList.Count;++tIndex)
+        for (int tIndex = 0; tIndex < FileNameList.Count; ++tIndex)
         {
             SetListItemByFileName(FileNameList[tIndex]);
         }
@@ -49,7 +48,7 @@ public class MovieCatalogueScript : MonoBehaviour
     private void SetListItemByFileName(string astrFileName)
     {
         var tempHeadData = FileReader.GetHeadFromFile(astrFileName);
-        var tempListItem = Instantiate(m_MovieListItemPrefab, m_Content.transform);
+        var tempListItem = Instantiate(m_ListItemPrefab, m_Content.transform);
         ///依据头部信息载入图片,设置按钮信息 TODO
         //tempListItem.GetComponent<Image>().overrideSprite;
         tempListItem.GetComponent<ClickMovieListItem>().SetFilePath(astrFileName);
