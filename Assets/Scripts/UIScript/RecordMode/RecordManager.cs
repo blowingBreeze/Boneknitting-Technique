@@ -25,7 +25,7 @@ public class RecordManager:MonoBehaviour
         {
             fTimeCount += Time.deltaTime * 1000;
             m_RecordController.Update();
-            ModelCtrlData modelCtrlData = m_RecordController.GetCurrentFrameData();
+            ModelCtrlData modelCtrlData = m_RecordController.GetCurrentData();
             m_FileWriter.CacheData(modelCtrlData);
         }
     }

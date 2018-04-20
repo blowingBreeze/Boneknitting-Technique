@@ -43,7 +43,7 @@ public class RecordController
         return m_PlayController;
     }
 
-    public ModelCtrlData GetCurrentFrameData()
+    public ModelCtrlData GetCurrentData()
     {
         return CurrentFrameModelCtrlData;
     }

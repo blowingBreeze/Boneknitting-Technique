@@ -51,7 +51,7 @@ public class StudyModelUIPanel : MonoBehaviour
         m_CompairData.GetComponentInChildren<Text>().text = "将录制";
     }
 
-    public void BtnStart()
+    public void BtnPrepare()
     {
         bool bIsOK = true;
         if (!bIsRefFileSet )
@@ -69,8 +69,13 @@ public class StudyModelUIPanel : MonoBehaviour
         {
             m_StudyUIPanel.SetActive(false);
             m_StudyPanel.SetActive(true);
-            m_studyManager.StartOrStop();
+            m_studyManager.Prepare();
         }
+    }
+
+    public void BtnStartStudy()
+    {
+        m_studyManager.StartStudy();
     }
 
     public void BtnReturn()

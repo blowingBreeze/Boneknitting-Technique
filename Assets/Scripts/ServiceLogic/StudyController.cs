@@ -6,7 +6,7 @@ abstract public class StudyController
 {
     // Update is called once per frame
     abstract public bool Ready();
-    abstract public void Update(ModelCtrlData modelDataRef, ModelCtrlData modelData);
+    abstract public void Update(float fTimeRef, float fTime);
     abstract public float GetAppraiseResult();
 }
 
@@ -14,23 +14,30 @@ internal class StudyControllerFileFile : StudyController
 {
     private PlayController m_PlayControllerRef;
     private PlayController m_PlayController;
+    private FileReader m_ReaderRef;
+    private FileReader m_Reader;
     private TrailCurveAppraiseCtrl m_TrailCurveAppraise;
 
-    public StudyControllerFileFile(GameObject modelRef, GameObject model)
+
+    public StudyControllerFileFile(GameObject modelRef, GameObject model,string strFileNameRef,string strFileName)
     {
-        Init(modelRef, model);
+        Init(modelRef, model,strFileNameRef,strFileName);
     }
 
-    bool Init(GameObject modelRef, GameObject model)
+    bool Init(GameObject modelRef, GameObject model, string strFileNameRef, string strFileName)
     {
         m_PlayControllerRef = new PlayController(modelRef);
         m_PlayController = new PlayController(model);
+        m_ReaderRef = new FileReader(strFileNameRef);
+        m_Reader = new FileReader(strFileName);
         m_TrailCurveAppraise = new TrailCurveAppraiseCtrl();
         return true;
     }
 
-    public override void Update(ModelCtrlData modelDataRef, ModelCtrlData modelData)
+    public override void Update(float fTimeRef, float fTime)
     {
+        var modelDataRef = m_ReaderRef.PraseDataByTime(fTimeRef);
+        var modelData = m_Reader.PraseDataByTime(fTime);
         m_PlayControllerRef.Update(modelDataRef);
         m_PlayController.Update(modelData);
         m_TrailCurveAppraise.RecvCompairTrailData(modelDataRef, modelData);
@@ -43,7 +50,7 @@ internal class StudyControllerFileFile : StudyController
 
     public override bool Ready()
     {
-        ;
+        return true;
     }
 }
 
@@ -52,25 +59,27 @@ internal class StudyControllerFileRecord :StudyController
     private PlayController m_PlayControllerRef;
     private RecordController m_RecordController;
     private TrailCurveAppraiseCtrl m_TrailCurveAppraise;
-
-    public StudyControllerFileRecord(GameObject modelRef, GameObject model)
+    private FileReader m_ReaderRef;
+    public StudyControllerFileRecord(GameObject modelRef, GameObject model, string strFileNameRef)
     {
-        Init(modelRef, model);
+        Init(modelRef, model,strFileNameRef);
     }
 
-    bool Init(GameObject modelRef, GameObject model)
+    bool Init(GameObject modelRef, GameObject model, string strFileNameRef)
     {
         m_PlayControllerRef = new PlayController(modelRef);
         m_RecordController = new RecordController(model);
         m_TrailCurveAppraise = new TrailCurveAppraiseCtrl();
+        m_ReaderRef = new FileReader(strFileNameRef);
         return true;
     }
 
-    public override void Update(ModelCtrlData modelDataRef,ModelCtrlData)
+    public override void Update(float fTimeRef, float fTime)
     {
+        var modelDataRef = m_ReaderRef.PraseDataByTime(fTimeRef);
+        var modelData = m_RecordController.GetCurrentData();
         m_PlayControllerRef.Update(modelDataRef);
         m_RecordController.Update();
-        ModelCtrlData modelData = m_RecordController.GetCurrentFrameData();
         m_TrailCurveAppraise.RecvCompairTrailData(modelDataRef, modelData);
     }
 
@@ -82,5 +91,6 @@ internal class StudyControllerFileRecord :StudyController
     public override bool Ready()
     {
         m_RecordController.InitDevice();
+        return true;
     }
 }

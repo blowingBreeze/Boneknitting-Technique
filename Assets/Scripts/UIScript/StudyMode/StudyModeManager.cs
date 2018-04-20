@@ -9,6 +9,10 @@ public class StudyModeManager : MonoBehaviour
     private string m_strFileName; //需对比的文件路径
     private bool bIsRecord;
     private bool bIsStart;
+    private float fTimeCount;
+
+    private GameObject modelRef;
+    private GameObject model;
     private StudyController m_StudyController;
 
     // Use this for initialization
@@ -18,12 +22,16 @@ public class StudyModeManager : MonoBehaviour
         m_strFileName = null;
         bIsRecord = false;
         bIsStart = false;
+        fTimeCount = 0.0f;
     }
 
     // Update is called once per frame
     void Update()
     {
-
+        if(bIsStart)
+        {
+            m_StudyController.Update(fTimeCount, fTimeCount);
+        }
     }
 
     public void SetRefFileName(string strFileName)
@@ -49,8 +57,21 @@ public class StudyModeManager : MonoBehaviour
         bIsRecord = true;
     }
 
-    public void StartOrStop()
+    public void Prepare()
     {
+        if (bIsRecord)
+        {
+            m_StudyController = new StudyControllerFileRecord(modelRef, model, m_strRefFileName);
+        }
+        else
+        {
+            m_StudyController = new StudyControllerFileFile(modelRef, model, m_strRefFileName, m_strFileName);
+        }
+    }
+
+    public void StartStudy()
+    {
+        m_StudyController.Ready();
         bIsStart = !bIsStart;
     }
 }
