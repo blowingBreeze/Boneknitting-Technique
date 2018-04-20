@@ -10,7 +10,10 @@ public class StudyModelUIPanel : MonoBehaviour
     public GameObject m_ComPairMovieList;
     public GameObject m_StudyUIPanel;
     public GameObject m_StudyPanel;
+    public Button m_BtnRefData;
+    public GameObject m_CompairData;
     public Text m_WarnText;
+
 
     private StudyModeManager m_studyManager;
     private bool bIsRef;
@@ -44,6 +47,8 @@ public class StudyModelUIPanel : MonoBehaviour
         m_studyManager.SetRecordAsTrue();
         bIsRecordSet = true;
         ///改变图片
+         m_CompairData.SetActive(true);
+        m_CompairData.GetComponentInChildren<Text>().text = "将录制";
     }
 
     public void BtnStart()
@@ -81,11 +86,16 @@ public class StudyModelUIPanel : MonoBehaviour
             m_studyManager.SetRefFileName(strFileName);
             bIsRefFileSet = true;
             ///TODO--加载图片，替换信息
+            m_BtnRefData.GetComponentInChildren<Text>().text = "123 \n 2018.04.18";
+            m_BtnRefData.GetComponentInChildren<Text>().alignment = TextAnchor.LowerCenter;
         }
         else
         {
             m_studyManager.SetCompairFileName(strFileName);
             bIsCompairFileSet = true;
+            ///
+            m_CompairData.SetActive(true);
+            m_CompairData.GetComponentInChildren<Text>().text = "456 \n 2018.04.18";
         }
     }
 }

@@ -1632,6 +1632,8 @@ MonoBehaviour:
   m_ComPairMovieList: {fileID: 1655041551839258}
   m_StudyUIPanel: {fileID: 1045334962983310}
   m_StudyPanel: {fileID: 1284361007268900}
+  m_BtnRefData: {fileID: 114321834722099990}
+  m_CompairData: {fileID: 1873417373657472}
   m_WarnText: {fileID: 114668895785448092}
 --- !u!114 &114971116794494132
 MonoBehaviour:

@@ -41,7 +41,7 @@ public class SavePanel : MonoBehaviour
             m_fRightSliderValue = value;
         }
         float tempTimeCount = m_RecordManager.GetTimeCount();
-        ModelCtrlData tempModelCtrlData = m_RecordManager.GetRecordController().GetModelCtrlDataByTime(tempTimeCount * value);
+        ModelCtrlData tempModelCtrlData = m_RecordManager.GetModelCtrlDataByTime(tempTimeCount * value);
         m_RecordManager.GetRecordController().GetPlayController().Update(tempModelCtrlData);
     }
 
@@ -81,7 +81,7 @@ public class SavePanel : MonoBehaviour
             float tempStartTime = tempTimeCount * m_fLeftSliderValue;
             float tempEndTime = tempTimeCount * m_fRightSliderValue;
             tempData.fTotalTime = tempEndTime - tempStartTime;
-            m_RecordManager.GetRecordController().SaveDataToFile(
+            m_RecordManager.SaveDataToFile(
                 tempData,
                 m_FilePath,
                 tempStartTime,

@@ -9,8 +9,10 @@ public class StudyModeManager : MonoBehaviour
     private string m_strFileName; //需对比的文件路径
     private bool bIsRecord;
     private bool bIsStart;
+    private StudyController m_StudyController;
+
     // Use this for initialization
-    void Start()
+    void Awake()
     {
         m_strRefFileName = null;
         m_strFileName = null;

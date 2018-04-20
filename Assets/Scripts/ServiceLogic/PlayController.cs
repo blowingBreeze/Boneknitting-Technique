@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayController
 {
     private ModelCtrl m_ModelController;
-    private TrailCurveCtrl m_TrailController;
+    private TrailCurveDrawCtrl m_TrailController;
 
     public PlayController(GameObject model)
     {
@@ -15,7 +15,7 @@ public class PlayController
     private bool Init(GameObject model)
     {
         m_ModelController = new ModelCtrl(model);
-        m_TrailController = new TrailCurveCtrl();
+        m_TrailController = new TrailCurveDrawCtrl();
         return true;
     }
 

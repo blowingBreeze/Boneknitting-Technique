@@ -5,8 +5,8 @@ using UnityEngine;
 public class RecordController
 {
     private DeviceCtrl m_DeviceController;
-    private FileWriter m_FileWriter;
     private PlayController m_PlayController;
+    private ModelCtrlData CurrentFrameModelCtrlData;
 
     public RecordController(GameObject model)
     {
@@ -16,7 +16,7 @@ public class RecordController
     public bool Init(GameObject model)
     {
         m_DeviceController = new DeviceCtrl();
-        m_FileWriter = new FileWriter();
+
         m_PlayController = new PlayController(model);
         return true;
     }
@@ -24,9 +24,8 @@ public class RecordController
     // Update is called once per frame
     public void Update()
     {
-        ModelCtrlData modelCtrlData = m_DeviceController.AcquireData();
-        m_FileWriter.CacheData(modelCtrlData);
-        m_PlayController.Update(modelCtrlData);
+        CurrentFrameModelCtrlData = m_DeviceController.AcquireData();
+        m_PlayController.Update(CurrentFrameModelCtrlData);
     }
 
     public bool InitDevice()
@@ -39,18 +38,13 @@ public class RecordController
         m_DeviceController.DisconnectDevice();
     }
 
-    public void SaveDataToFile(MovieHeadData headData, string strFileName, float fStartTime = -1, float fEndTime = -1)
-    {
-        m_FileWriter.SaveDataToFile(headData, strFileName, fStartTime, fEndTime);
-    }
-
     public PlayController GetPlayController()
     {
         return m_PlayController;
     }
 
-    public ModelCtrlData GetModelCtrlDataByTime(float fTime)
+    public ModelCtrlData GetCurrentFrameData()
     {
-        return m_FileWriter.GetModelCtrlDataByTime(fTime);
+        return CurrentFrameModelCtrlData;
     }
 }
