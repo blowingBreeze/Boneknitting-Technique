@@ -46,26 +46,25 @@ public class StudyModelUIPanel : MonoBehaviour
     {
         m_studyManager.SetRecordAsTrue();
         bIsRecordSet = true;
-        ///改变图片
-         m_CompairData.SetActive(true);
+        m_CompairData.SetActive(true);
         m_CompairData.GetComponentInChildren<Text>().text = "将录制";
     }
 
     public void BtnPrepare()
     {
         bool bIsOK = true;
-        if (!bIsRefFileSet )
+        if (!bIsRefFileSet)
         {
             m_WarnText.text = "请选择参考数据";
             bIsOK = false;
         }
-        else if(!(bIsCompairFileSet || bIsRecordSet))
+        else if (!(bIsCompairFileSet || bIsRecordSet))
         {
             m_WarnText.text = "请选择现有数据或实时录制";
             bIsOK = false;
         }
 
-        if(bIsOK)
+        if (bIsOK)
         {
             m_StudyUIPanel.SetActive(false);
             m_StudyPanel.SetActive(true);
@@ -86,21 +85,23 @@ public class StudyModelUIPanel : MonoBehaviour
 
     public void SetFileName(string strFileName)
     {
-        if(bIsRef)
+        if (bIsRef)
         {
             m_studyManager.SetRefFileName(strFileName);
             bIsRefFileSet = true;
-            ///TODO--加载图片，替换信息
-            m_BtnRefData.GetComponentInChildren<Text>().text = "123 \n 2018.04.18";
+            var tempHeadData = FileReader.GetHeadFromFile(strFileName);
+            m_BtnRefData.image.overrideSprite = ToolFunction.CreateSpriteFromImage(tempHeadData.strPortraitPath);
+            m_BtnRefData.GetComponentInChildren<Text>().text = tempHeadData.strDoctorName;
             m_BtnRefData.GetComponentInChildren<Text>().alignment = TextAnchor.LowerCenter;
         }
         else
         {
             m_studyManager.SetCompairFileName(strFileName);
             bIsCompairFileSet = true;
-            ///
             m_CompairData.SetActive(true);
-            m_CompairData.GetComponentInChildren<Text>().text = "456 \n 2018.04.18";
+            var tempHeadData = FileReader.GetHeadFromFile(strFileName);
+            m_CompairData.GetComponentInChildren<Image>().overrideSprite = ToolFunction.CreateSpriteFromImage(tempHeadData.strPortraitPath);
+            m_CompairData.GetComponentInChildren<Text>().text = tempHeadData.strDoctorName;
         }
     }
 }

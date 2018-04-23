@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class SkipToWorkMode : MonoBehaviour
+public class MenuBar : MonoBehaviour
 {
     public GameObject m_PlayModeCanvas;
     public GameObject m_RecordModeCanvas;
@@ -15,15 +15,16 @@ public class SkipToWorkMode : MonoBehaviour
         Destroy(gameObject);
     }
 
-    public void OnMovieMode()
-    {
-        Instantiate(m_PlayModeCanvas);
-        Destroy(gameObject);
-    }
-
     public void OnStudyMode()
     {
         Instantiate(m_StudyModeCanvas);
         Destroy(gameObject);
+    }
+
+    public void OnImportFile()
+    {
+        string filePath = ToolFunction.OpenFilePath(".txt", "打开文件", "");
+        ConfigCenter.GetConfigCenterInstance().AddHistoryFile(filePath);
+        GetComponent<MovieCatalogueScript>().AddListItembByFileName(filePath);
     }
 }

@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class SavePanel : MonoBehaviour
 {
     public GameObject m_SavePanel;
+    public Image m_PortraitImage;
     public GameObject m_InfoSaved;
     public DoubleEndSlider m_CutSlider;
     public InputField m_DoctorName;
@@ -57,7 +58,7 @@ public class SavePanel : MonoBehaviour
         string title = "选择头像";
         string extension = "png";
         m_PortraitPath = ToolFunction.OpenFilePath(filter, title, extension);
-        //TODO-将图片替换
+        m_PortraitImage.overrideSprite = ToolFunction.CreateSpriteFromImage(m_PortraitPath);
     }
 
     public void Btn_Save()

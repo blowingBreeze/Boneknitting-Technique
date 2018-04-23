@@ -867,6 +867,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_SavePanel: {fileID: 1109440434604650}
+  m_PortraitImage: {fileID: 114154724875325310}
   m_InfoSaved: {fileID: 1449000762455382}
   m_CutSlider: {fileID: 114032300619421422}
   m_DoctorName: {fileID: 114456548771901268}

@@ -108,4 +108,18 @@ public class ToolFunction
             return null;
         }
     }
+
+    public static Sprite CreateSpriteFromImage(string path)
+    {
+        if(string.IsNullOrEmpty(path))
+        {
+            return null;
+        }
+        WWW www = new WWW("file://" + path);
+        Texture2D texture = www.texture;
+
+        //创建Sprite
+        Sprite sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
+        return sprite;
+    }
 }

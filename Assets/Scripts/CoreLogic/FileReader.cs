@@ -32,6 +32,7 @@ public class FileReader
         tempMovieHead.fIntervalTime = 1;
         tempMovieHead.fTotalTime = 1000;
         tempMovieHead.strDoctorName = "李医生";
+        tempMovieHead.strPortraitPath = "";
         return tempMovieHead;
     }
 }
