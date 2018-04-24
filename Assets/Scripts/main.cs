@@ -8,7 +8,7 @@ public class main : MonoBehaviour
     // Use this for initialization
     void Awake()
     {
-        ConfigCenter.GetConfigCenterInstance().ConfigDataInit("/Config.xml");
+        ConfigCenter.GetConfigCenterInstance().ConfigDataInit(DataPath.strConfigFilePath);
     }
 
 

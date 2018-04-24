@@ -9,7 +9,8 @@ public class SavePanel : MonoBehaviour
     public Image m_PortraitImage;
     public GameObject m_InfoSaved;
     public DoubleEndSlider m_CutSlider;
-    public InputField m_DoctorName;
+    public InputField m_InputDoctorName;
+    public InputField m_InputFilePath;
 
     private RecordManager m_RecordManager;
 
@@ -57,25 +58,28 @@ public class SavePanel : MonoBehaviour
         string filter = "*.jpg;*.png";
         string title = "选择头像";
         string extension = "png";
-        m_PortraitPath = ToolFunction.OpenFilePath(filter, title, extension);
-        m_PortraitImage.overrideSprite = ToolFunction.CreateSpriteFromImage(m_PortraitPath);
+        string selectPortraitPath = ToolFunction.OpenFilePath(filter, title, extension);
+        var tempSprite= ToolFunction.CreateSpriteFromImage(selectPortraitPath);
+        m_PortraitImage.overrideSprite = tempSprite;
     }
 
     public void Btn_Save()
     {
-        if (string.IsNullOrEmpty(m_DoctorName.text))
+        if (string.IsNullOrEmpty(m_InputDoctorName.text) ||
+            string.IsNullOrEmpty(m_InputFilePath.text))
         {
-            m_DoctorName.placeholder.GetComponent<Text>().color = Color.red;
+            m_InputDoctorName.placeholder.GetComponent<Text>().color = Color.red;
+            m_InputFilePath.placeholder.GetComponent<Text>().color = Color.red;
         }
         else
         {
-            string filter = "*.txt";
-            string title = "保存文件";
-            string extension = "txt";
-            m_FilePath = ToolFunction.SaveFilePath(filter, title, extension);
+            //根据输入的文件名和选择的头像，将文件存储到默认存储文件夹，将头像图片复制到默认头像存储文件夹
+            m_FilePath = ToolFunction.GetMovieSaveFilePath( m_InputFilePath.text,".txt");
+            m_PortraitPath = DataPath.strDefaultPortraitFolder + "/" + ToolFunction.GenerateStringID();
+            ToolFunction.ImageSaveLocal(m_PortraitImage.mainTexture, m_PortraitPath);
 
             MovieHeadData tempData = new MovieHeadData();
-            tempData.strDoctorName = m_DoctorName.text;
+            tempData.strDoctorName = m_InputDoctorName.text;
             tempData.strPortraitPath = m_PortraitPath;
             float tempTimeCount = m_RecordManager.GetTimeCount();
             tempData.fCurrentTime = 0.0f;

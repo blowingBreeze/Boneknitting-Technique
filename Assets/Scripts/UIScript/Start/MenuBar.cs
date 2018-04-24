@@ -23,7 +23,7 @@ public class MenuBar : MonoBehaviour
 
     public void OnImportFile()
     {
-        string filePath = ToolFunction.OpenFilePath(".txt", "打开文件", "");
+        string filePath = ToolFunction.OpenFilePath("*.txt", "打开文件", "");
         ConfigCenter.GetConfigCenterInstance().AddHistoryFile(filePath);
         GetComponent<MovieCatalogueScript>().AddListItembByFileName(filePath);
     }

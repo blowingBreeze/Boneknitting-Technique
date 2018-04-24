@@ -11,17 +11,19 @@ public class PlayRateControl : MonoBehaviour
 
 
     private MoviePlayManager m_MoviePlayManager;
+    private string m_strTotalTime;
 
     private void Start()
     {
         m_MoviePlayManager = GetComponent<MoviePlayManager>();
+        m_strTotalTime = ToolFunction.TranslateToMMSS(m_MoviePlayManager.GetTotalTime());
     }
 
     public void LateUpdate()
     {
         if (m_MoviePlayManager.IsStart())
         {
-            m_TimeCount.text = m_MoviePlayManager.GetCurrentTime() + "/" + m_MoviePlayManager.GetTotalTime();
+            m_TimeCount.text = ToolFunction.TranslateToMMSS( m_MoviePlayManager.GetCurrentTime()) + "/" + m_strTotalTime;
             m_TimeSlider.value = m_MoviePlayManager.GetCurrentTime() / m_MoviePlayManager.GetTotalTime();
         }
     }

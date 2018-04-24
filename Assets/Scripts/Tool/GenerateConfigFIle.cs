@@ -6,17 +6,18 @@ using System.Xml;
 public class GenerateConfigFIle : MonoBehaviour
 {
     string ConfigFileName = "/Config.xml";
-    string DefaultDirectory = "/Movies";
+   
     void Start()
     {
         XmlDocument xml = new XmlDocument();
         xml.AppendChild(xml.CreateXmlDeclaration("1.0", "UTF-8", null));
         XmlElement root = xml.CreateElement("Root");
         XmlElement saveFolder= xml.CreateElement("SaveFloder");
-        saveFolder.SetAttribute("DefaultFolder", DefaultDirectory);
+        saveFolder.SetAttribute("DefaultFolder", DataPath.strDefaultSaveFolderPath);
         XmlElement CurrentFolder = xml.CreateElement("CurrentFolder");
-        CurrentFolder.InnerText = DefaultDirectory;
+        CurrentFolder.InnerText = DataPath.strDefaultSaveFolderPath;
         saveFolder.AppendChild(CurrentFolder);
+
 
         XmlElement HistoryFile = xml.CreateElement("HistoryFile");
         XmlElement history = xml.CreateElement("History");
@@ -29,7 +30,7 @@ public class GenerateConfigFIle : MonoBehaviour
         root.AppendChild(HistoryFile);
         xml.AppendChild(root);
 
-        xml.Save(Application.dataPath + ConfigFileName);
+        xml.Save(Application.dataPath +"/StreamingAssets"+ ConfigFileName);
 
         Debug.Log("GGGGGGGGGGGG");
     }

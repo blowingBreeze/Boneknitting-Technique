@@ -4,13 +4,19 @@ using System.Xml;
 using UnityEngine;
 
 
+public class DataPath
+{
+    public static string strDataRootPath= Application.dataPath + "/StreamingAssets";
+    public static string strConfigFilePath = strDataRootPath + "/Config.xml";
+    public static string strDefaultSaveFolderPath = strDataRootPath + "/Movies";
+    public static string strDefaultPortraitFolder = strDataRootPath + "/Portraits";
+}
+
 public class XmlString
 {
-    public const string strConfigFilePath = "/Config.xml";
-
-    public const  string strDefaultSaveFolder = "/Movies";
     public const string strSaveDirectoryParentNode = "SaveFloder";
     public const string strHistoryParentNode = "HistoryFile";
+
     public const   string strSaveDirectoryNodeName = "CurrentFolder";
     public const  string strHistoryFilePathNodeName = "History";
 }
@@ -55,12 +61,12 @@ public class ConfigCenter
     /// <summary>
     /// 读取Config.xml文件，初始化ConfigCenter,路径；
     /// </summary>
-    /// <param name="path">配置文件相对于Application.datapath路径</param>
+    /// <param name="path">配置文件相对于Application.datapath+"StreamAsserts"路径</param>
     /// <returns></returns>
     public bool ConfigDataInit(string path)
     {
         xml = new XmlDocument();
-        string content = System.IO.File.ReadAllText(Application.dataPath+path);
+        string content = System.IO.File.ReadAllText(path);
         xml.LoadXml(content);
 
         XmlElement players = xml.DocumentElement;//获取根元素  
@@ -86,7 +92,7 @@ public class ConfigCenter
         return true;
     }
 
-    public void SetSaveFilePath(string path)
+    private void SetSaveFilePath(string path)
     {
         if(string.IsNullOrEmpty(path))
         {
@@ -96,7 +102,7 @@ public class ConfigCenter
         SaveFileDirectoryNode[0].InnerText = path;
     }
 
-    public void DeleteHistoryFile()
+    private void DeleteHistoryFile()
     {
         var HistoryNode= xml.GetElementsByTagName(XmlString.strHistoryFilePathNodeName);
         foreach( XmlNode node in HistoryNode)
@@ -115,6 +121,8 @@ public class ConfigCenter
         XmlElement history = xml.CreateElement("History");
         history.InnerText = path;
         HistoryFile[0].AppendChild(history);
-        xml.Save(Application.dataPath+XmlString.strConfigFilePath);
+        xml.Save(DataPath.strConfigFilePath);
     }
+
+
 }

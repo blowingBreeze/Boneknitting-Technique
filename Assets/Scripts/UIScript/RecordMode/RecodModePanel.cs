@@ -24,7 +24,7 @@ public class RecodModePanel : MonoBehaviour
     {
         if(m_RecordManager.IsStartRecord())
         {
-            m_TimeCount.text = ToolFunction.TranslateToMSM(m_RecordManager.GetTimeCount());
+            m_TimeCount.text = ToolFunction.TranslateToMMSS(m_RecordManager.GetTimeCount());
         }
     }
 

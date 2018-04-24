@@ -27,7 +27,7 @@ public class SetUpCompairList : MonoBehaviour
             var FileList = dir.GetFiles();
             for (int tFileIndex = 0; tFileIndex < FileList.Length; ++tFileIndex)
             {
-                SetListItemByFileName(FileList[tFileIndex].FullName);
+                SetCompareListItemByFileName(FileList[tFileIndex].FullName);
             }
         }
     }
@@ -41,16 +41,16 @@ public class SetUpCompairList : MonoBehaviour
 
         for (int tIndex = 0; tIndex < FileNameList.Count; ++tIndex)
         {
-            SetListItemByFileName(FileNameList[tIndex]);
+            SetCompareListItemByFileName(FileNameList[tIndex]);
         }
     }
 
-    private void SetListItemByFileName(string astrFileName)
+    private void SetCompareListItemByFileName(string astrFileName)
     {
         var tempHeadData = FileReader.GetHeadFromFile(astrFileName);
         var tempListItem = Instantiate(m_ListItemPrefab, m_Content.transform);
         ///依据头部信息载入图片,设置按钮信息 TODO
         //tempListItem.GetComponent<Image>().overrideSprite;
-        tempListItem.GetComponent<ClickMovieListItem>().SetFilePath(astrFileName);
+        tempListItem.GetComponent<ClickCompairListItem>().SetFilePath(astrFileName);
     }
 }

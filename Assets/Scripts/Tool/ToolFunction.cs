@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Runtime.InteropServices;
 using UnityEngine;
 
@@ -44,15 +45,15 @@ public class FIleDialogStruct
 public class ToolFunction
 {
     /// <summary>
-    /// 将毫秒时间转换成 mm:ss:sss
+    /// 将毫秒时间转换成 mm:ss
     /// </summary>
-    public static string TranslateToMSM(float fTimeInMiloSecond)
+    public static string TranslateToMMSS(float fTimeInMiloSecond)
     {
         string ret;
         int nMinute = (int)(fTimeInMiloSecond / 60000) % 60;
         int nSecond = (int)(fTimeInMiloSecond / 1000) % 60;
-        int nMilloSecond = (int)fTimeInMiloSecond % 1000;
-        ret = string.Format("{0:D2} : {1:D2} : {2:D3}", nMinute, nSecond, nMilloSecond);
+        //int nMilloSecond = (int)fTimeInMiloSecond % 1000;
+        ret = string.Format("{0:D2} : {1:D2}", nMinute, nSecond);
         return ret;
     }
 
@@ -111,7 +112,7 @@ public class ToolFunction
 
     public static Sprite CreateSpriteFromImage(string path)
     {
-        if(string.IsNullOrEmpty(path))
+        if (string.IsNullOrEmpty(path))
         {
             return null;
         }
@@ -121,5 +122,73 @@ public class ToolFunction
         //创建Sprite
         Sprite sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
         return sprite;
+    }
+
+    /// <summary>
+    /// 生成字符串ID
+    /// </summary>
+    /// <returns></returns>
+    public static string GenerateStringID()
+    {
+        long i = 1;
+        foreach (byte b in Guid.NewGuid().ToByteArray())
+        {
+            i *= ((int)b + 1);
+        }
+        return string.Format("{0:x}", i - DateTime.Now.Ticks);
+    }
+
+    /// <summary>
+    /// 图片保存
+    /// </summary>
+    /// <param name="tex">Tex.</param>
+    public static void ImageSaveLocal(Texture tex,string path)
+    {
+        Texture2D saveImageTex = tex as Texture2D;
+        FileStream newFs = new FileStream(path+".jpg", FileMode.Create, FileAccess.Write);
+        byte[] bytes = saveImageTex.EncodeToJPG();
+        newFs.Write(bytes, 0, bytes.Length);
+        newFs.Close();
+        newFs.Dispose();
+    }
+
+    /// <summary>
+    /// 获取默认存储文件的全路径
+    /// </summary>
+    /// <param name="fileName">文件名</param>
+    /// <param name="extension">后缀</param>
+    /// <returns></returns>
+    public static string GetMovieSaveFilePath(string fileName,string extension)
+    {
+        if(string.IsNullOrEmpty(fileName))
+        {
+            return null;
+        }
+       if(IsExtension(fileName,extension))
+        {
+            return DataPath.strDefaultSaveFolderPath + fileName;
+        }
+        else
+        {
+            return DataPath.strDefaultSaveFolderPath + fileName + extension;
+        }
+    }
+
+    /// <summary>
+    /// 判断文件名是否带有相应后缀
+    /// </summary>
+    /// <param name="fileName">文件名</param>
+    /// <param name="extension">后缀</param>
+    /// <returns></returns>
+    public static bool IsExtension(string fileName,string extension)
+    {
+        for (int ExtensionIndex=extension.Length-1,FileNameIndex=fileName.Length-1;ExtensionIndex>0 && FileNameIndex>0;--ExtensionIndex,--FileNameIndex)
+        {
+            if(! extension[ExtensionIndex].Equals(fileName[FileNameIndex]))
+            {
+                return false; 
+            }
+        }
+        return true;
     }
 }

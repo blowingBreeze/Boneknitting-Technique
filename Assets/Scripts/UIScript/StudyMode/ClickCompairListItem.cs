@@ -13,7 +13,7 @@ public class ClickCompairListItem : MonoBehaviour {
         m_StudyModeCanvas = GameObject.FindGameObjectWithTag("StudyCanvas");
         m_CompairMovieList = GameObject.FindGameObjectWithTag("CompairMovieList");
     }
-    public void OnClickMovieListItem()
+    public void OnClickCompairListItem()
     {
         m_StudyModeCanvas.GetComponent<StudyModelUIPanel>().SetFileName(strFilePath);
         m_CompairMovieList.SetActive(false);

@@ -29,8 +29,8 @@ public class FileReader
     {
         var tempMovieHead = new MovieHeadData();
         tempMovieHead.fCurrentTime = 1;
-        tempMovieHead.fIntervalTime = 1;
-        tempMovieHead.fTotalTime = 1000;
+        tempMovieHead.fIntervalTime = 100;
+        tempMovieHead.fTotalTime = 100000;
         tempMovieHead.strDoctorName = "李医生";
         tempMovieHead.strPortraitPath = "";
         return tempMovieHead;
