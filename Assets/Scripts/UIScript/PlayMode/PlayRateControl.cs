@@ -8,7 +8,9 @@ public class PlayRateControl : MonoBehaviour
     public Slider m_TimeSlider;
     public Text m_TimeCount;
     public Text m_AccelerateCount;
-
+    public Button m_BtnStartOrStop;
+    public Sprite m_Playing;
+    public Sprite m_Stopping;
 
     private MoviePlayManager m_MoviePlayManager;
     private string m_strTotalTime;
@@ -43,6 +45,14 @@ public class PlayRateControl : MonoBehaviour
     public void OnStartOrStopClick()
     {
         m_MoviePlayManager.StartOrStop();
+        if(m_MoviePlayManager.IsStart())
+        {
+            m_BtnStartOrStop.image.overrideSprite = m_Playing;
+        }
+        else
+        {
+            m_BtnStartOrStop.image.overrideSprite = m_Stopping;
+        }
     }
 
     public void OnDeaccelerateClick()
