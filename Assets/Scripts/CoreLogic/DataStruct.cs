@@ -5,7 +5,7 @@ using UnityEngine;
 public class ModelCtrlData
 {
 
-
+    public static HandCtrlData m_HandData;
 }
 
 public class MovieHeadData
@@ -101,4 +101,9 @@ public enum TrailType
     EG_S2,
     EG_S3,
     EG_S4
+}
+
+public class HandCtrlData
+{
+    public float[] HandData=new float[14];
 }

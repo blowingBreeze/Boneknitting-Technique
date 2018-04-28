@@ -1,28 +1,16 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class HandCtrl : MonoBehaviour {
     public static float[] values = new float[20];
-    public GameObject[] Hands;//关节 
-    public GameObject GLOVE;
-    DTGloveManager GloveManager;
-    // Use this for initialization
-    //void Start()
-    //{
-    //    for (int i = 0; i < 15; i++)
-    //    {
-    //        values[i] = DTGloveManager.DTvalues[i];
-    //    }
-    //}
+    public GameObject[] Hands;//保存模型引用
+    public void MoveHand(HandCtrlData handdata)
+    {
 
-    // Update is called once per frame
-    private void MoveHand() {
         for (int i = 0; i < 15; i++)
         {
-            values[i] = DTGloveManager.DTvalues[i];
+            values[i] = handdata.HandData[i];//传递获取的手套数据
         }
-        //0,1,4,6,7,10,13，传感器编号
+        //0,1,4,6,7,10,13号骨骼
         Hands[0].transform.localRotation
                = Quaternion.Euler(70f * values[0], 0f, -15f);
         Hands[1].transform.localRotation
@@ -38,7 +26,7 @@ public class HandCtrl : MonoBehaviour {
         Hands[13].transform.localRotation
             = Quaternion.Euler(110f * values[13], 0f, 0f);
 
-        //5,8,11,14
+        //5,8,11,14号骨骼
         Hands[5].transform.localRotation
             = Quaternion.Euler(110f * values[4] * 0.667f, 0f, 0f);
         Hands[8].transform.localRotation
@@ -48,10 +36,7 @@ public class HandCtrl : MonoBehaviour {
         Hands[14].transform.localRotation
             = Quaternion.Euler(110f * values[13] * 0.667f, 0f, 0f);
 
-        //3,9,12
-        //obj[0].transform.localRotation
-        //       = Quaternion.Euler(70f * values[0], 0f, 0f);
-
+        //3,9,12号骨骼
         Hands[3].transform.localRotation
             = Quaternion.Euler(85 * values[3], 0f, 28f * (1 - values[5]) - 15f);
 
@@ -63,7 +48,7 @@ public class HandCtrl : MonoBehaviour {
         Hands[12].transform.localRotation
             = Quaternion.Euler(90 * values[12], 0f, ringmid + ringlittle);
 
-        //2
+        //2号骨骼
         float thumb_y = values[2] * 1.3f - values[0] * 0.3f;
         if (thumb_y > 1) thumb_y = 1;
         else if (thumb_y < 0) thumb_y = 0;
@@ -73,21 +58,5 @@ public class HandCtrl : MonoBehaviour {
             -5f * thumb_x - 15f,
             -30f * values[2] + 20f);
 
-    }
-    void Update(){
-        GloveManager = GLOVE.GetComponent<DTGloveManager>();
-        GloveManager.AcquireHandData();
-        MoveHand();
-        }
-    private void OnGUI()
-    {
-        if (DTGloveManager.caliFileLoaded)
-        {
-            GUI.Label(new Rect(10, 10, 200, 20), "Calibration File Loaded");
-        }
-        else
-        {
-            GUI.Label(new Rect(10, 10, 200, 20), "Calibration File Loading Failed");
-        }
     }
 }
