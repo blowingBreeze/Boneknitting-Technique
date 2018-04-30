@@ -16,7 +16,10 @@ public class DeviceCtrl
 
     }
 
-    //从设备读取当前帧数据
+    /// <summary>
+    /// 从各个设备读取当前帧数据，整合成为当前帧可以用于控制模型的数据
+    /// </summary>
+    /// <returns></returns>
     public ModelCtrlData AcquireData()
     {
         return new ModelCtrlData();
