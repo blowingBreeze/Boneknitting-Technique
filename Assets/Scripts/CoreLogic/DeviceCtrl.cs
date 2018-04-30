@@ -4,16 +4,18 @@ using UnityEngine;
 
 public class DeviceCtrl
 {
+    
     //初始化设备
     public bool InitDevice()
     {
+        DTGloveManager.instance.InitDevice();
         return true;
     }
 
     //断开设备连接
     public void DisconnectDevice()
     {
-
+        DTGloveManager.instance.DisconnectDevice();
     }
 
     /// <summary>
@@ -22,6 +24,7 @@ public class DeviceCtrl
     /// <returns></returns>
     public ModelCtrlData AcquireData()
     {
+        DTGloveManager.instance.AcquireHandData();
         return new ModelCtrlData();
     }
 }
