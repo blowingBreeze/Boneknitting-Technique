@@ -8,11 +8,11 @@ public class LineChart : MonoBehaviour {
     public LineRenderer m_AxisX;
     public LineRenderer m_AxisY;
 
-    public int m_nMaxCount = 100;
+    private int m_nMaxCount = 500;
 
     private List<Vector3> m_Points;
 
-    readonly int m_nAxisXLenth = 1;
+    readonly int m_nAxisXLenth = 2;
     readonly int m_nAxisXCount = 6;
     readonly int m_nAxisYLenth = 1;
     readonly int m_nAxisYCount = 6;
@@ -28,6 +28,8 @@ public class LineChart : MonoBehaviour {
     int m_nMinYIndex;
 
     enum PeakType { MAXX,MINX,MAXY,MINY};
+
+    float time;
     // Use this for initialization
     void Start()
     {
@@ -41,35 +43,44 @@ public class LineChart : MonoBehaviour {
         m_nMinYIndex = 0;
 
         m_Points = new List<Vector3>();
+
+        time = 0f;
+    }
+
+    private void Update()
+    {
+        time += Time.deltaTime;
+        float y = Random.Range(0, 10000 * Time.deltaTime);
+        UpdateCurveData(time, y, 0);
     }
 
     // Update is called once per frame
-    public void UpdateCurveData()
+    public void UpdateCurveData(float x,float y,float z)
     {
         m_Curve.positionCount = m_Points.Count > m_nMaxCount ? m_nMaxCount : m_Points.Count;
-        m_Curve.SetPositions(m_Points.ToArray());
+        m_Curve.SetPositions(AddPoint(x,y,z));
     }
 
-    private void CaculateDrawPoint(List<Vector2> points, int nCount, float fMaxX, float fMaxY, float fz = 0f)
-    { 
-        //for (int DrawIndex = nCount - 1, PointIndex = points.Count - 1; DrawIndex >= 0 && PointIndex >= 0; --DrawIndex, --PointIndex)
-        //{
-        //    DrawArray[DrawIndex] = new Vector3(points[PointIndex].x * fKx - fMinX, points[PointIndex].y * fKy, fz);
-        //}
-        //return DrawArray;
-    }
 
-    public void AddPoint(float x, float y, float z = 0f)
+    public Vector3[] AddPoint(float x, float y, float z = 0f)
     {
-        if (m_Points.Count == m_nMaxCount)
+        int tDrawPointCount = 0;
+        Vector3[] DrawPoint;
+
+        if (m_Points.Count >= m_nMaxCount)
         {
             MovieListForward();
+            m_Points[m_Points.Count - 1] = new Vector3(x, y, z);
+            tDrawPointCount = m_nMaxCount;
+            DrawPoint = new Vector3[tDrawPointCount];
+        }
+        else
+        {
+            m_Points.Add(new Vector3(x, y, z));  //先添加则下面要减一
+            tDrawPointCount = m_Points.Count;
+            DrawPoint = new Vector3[tDrawPointCount];
         }
 
-        int tDrawPointCount = m_Points.Count < m_nMaxCount ? m_Points.Count : m_nMaxCount;
-        Vector3[] vecDrawPoint = new Vector3[tDrawPointCount];
-
-        m_Points.Add(new Vector3(x, y, z));  //先添加则下面要减一
         if (x > m_fMaxX)
         {
             m_fMaxX = x;
@@ -117,10 +128,14 @@ public class LineChart : MonoBehaviour {
             float fminX = m_fMinX * fKx;
             float fminY = m_fMinY * fKy;
 
-        //for (int DrawIndex = tDrawPointCount - 1, PointIndex = m_Points.Count - 1; DrawIndex >= 0 && PointIndex >= 0; --DrawIndex, --PointIndex)
-        //{
-        //    DrawArray[DrawIndex] = new Vector3(points[PointIndex].x * fKx - fMinX, points[PointIndex].y * fKy, fz);
-        //}
+        for (int DrawIndex = tDrawPointCount - 1, PointIndex = m_Points.Count - 1; DrawIndex >= 0 && PointIndex >= 0; --DrawIndex,--PointIndex)
+        {
+            DrawPoint[DrawIndex].x = m_Points[PointIndex].x * fKx - fminX;
+            DrawPoint[DrawIndex].y = m_Points[PointIndex].y * fKy - fminY;
+            DrawPoint[DrawIndex].z = m_Points[PointIndex].z;
+        }
+
+        return DrawPoint;
     }
 
     private void CaculateNewPeakValue(PeakType peakType)
