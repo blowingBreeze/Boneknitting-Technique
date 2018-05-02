@@ -5,7 +5,8 @@ using UnityEngine;
 public class ModelCtrlData
 {
 
-
+    Quaternion[] jointRotation;
+    Vector3 UserPosition;
 }
 
 public class MovieHeadData

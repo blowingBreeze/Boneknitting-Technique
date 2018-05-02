@@ -4,9 +4,18 @@ using UnityEngine;
 
 public class DeviceCtrl
 {
+    // private instance of the KinectManager
+    protected KinectManager kinectManager;
+
     //初始化设备
     public bool InitDevice()
     {
+        // Get the KinectManager instance
+        if (kinectManager == null)
+        {
+            kinectManager = KinectManager.Instance;
+        }
+
         return true;
     }
 
