@@ -54,7 +54,7 @@ public class TrailCurveDrawCtrl
             trajs[i] = new Trajectory();
         }
 
-        Pose pt = new Pose();
+        TPose pt = new TPose();
         pt.time = modelCtrlData.time.ToString();
         pt.position = new Vec3(0.0f,0.0f,0.0f);
         pt.azimuth = 0.0f;
