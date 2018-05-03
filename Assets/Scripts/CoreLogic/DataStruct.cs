@@ -4,9 +4,12 @@ using UnityEngine;
 
 public class ModelCtrlData
 {
-    public static HandCtrlData m_HandData;
-    Quaternion[] jointRotation;
-    Vector3 UserPosition;
+    public float time;
+    public float[] HandData = new float[14];
+    public Quaternion[] jointRotation = new Quaternion[22];
+    public Vector3 left_wrist_rotate;
+    public Vector3 right_wrist_rotate;
+    public Vector3 UserPosition;
 }
 
 public class MovieHeadData

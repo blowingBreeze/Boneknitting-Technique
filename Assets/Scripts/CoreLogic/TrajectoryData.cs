@@ -104,7 +104,7 @@ namespace TrajectoryData
 
     };
 
-    public struct Pose
+    public struct TPose
     {
         public Point position;
         public float azimuth;
@@ -112,7 +112,7 @@ namespace TrajectoryData
         public float roll;
         public string time;
 
-        public Pose(Point p)
+        public TPose(Point p)
         {
             position = p;
             azimuth = 0;
@@ -121,7 +121,7 @@ namespace TrajectoryData
             time = "";
         }
 
-        public Pose(Pose p)
+        public TPose(TPose p)
         {
             position = p.position;
             azimuth = p.azimuth;
@@ -130,46 +130,46 @@ namespace TrajectoryData
             time = p.time;
         }
 
-        public static Pose operator +(Pose a, Vec3 b)
+        public static TPose operator +(TPose a, Vec3 b)
         {
 
-            Pose p = new Pose(a);
+            TPose p = new TPose(a);
             p.position = a.position + b;
             return p;
         }
-        public static Pose operator -(Pose a, Vec3 b)
+        public static TPose operator -(TPose a, Vec3 b)
         {
-            Pose p = new Pose(a);
+            TPose p = new TPose(a);
             p.position = a.position - b;
             return p;
         }
-        public static Pose operator -(Pose a, Pose b)
+        public static TPose operator -(TPose a, TPose b)
         {
-            Pose p = new Pose(a);
+            TPose p = new TPose(a);
             p.position = a.position - b.position;
             return p;
         }
-        public static Pose operator -(Pose a)
+        public static TPose operator -(TPose a)
         {
-            Pose p = new Pose(a);
+            TPose p = new TPose(a);
             p.position = -a.position;
             return p;
         }
-        public static Pose operator *(Pose a, Vec3 b)
+        public static TPose operator *(TPose a, Vec3 b)
         {
-            Pose p = new Pose(a);
+            TPose p = new TPose(a);
             p.position = a.position * b;
             return p;
         }
-        public static Pose operator *(Pose a, float b)
+        public static TPose operator *(TPose a, float b)
         {
-            Pose p = new Pose(a);
+            TPose p = new TPose(a);
             p.position = a.position * b;
             return p;
         }
-        public static Pose operator /(Pose a, float b)
+        public static TPose operator /(TPose a, float b)
         {
-            Pose p = new Pose(a);
+            TPose p = new TPose(a);
             p.position = a.position / b;
             return p;
         }
@@ -197,7 +197,7 @@ namespace TrajectoryData
 
         public Trajectory append(Trajectory traj)
         {
-            foreach (Pose p in traj.vec)
+            foreach (TPose p in traj.vec)
             {
                 vec.Add(p);
             }
@@ -214,15 +214,15 @@ namespace TrajectoryData
             IsActive = IsOn;
         }
 
-        public void add(Pose p)
+        public void add(TPose p)
         {
             vec.Add(p);
         }
-        public void push_back(Pose p)
+        public void push_back(TPose p)
         {
             vec.Add(p);
         }
-        public void remove(Pose p)
+        public void remove(TPose p)
         {
             vec.Remove(p);
         }
@@ -230,7 +230,7 @@ namespace TrajectoryData
         {
             vec.RemoveAt(i);
         }
-        public bool insert(int i, Pose p)
+        public bool insert(int i, TPose p)
         {
             if (i > vec.Count || i < 0)
             {
@@ -249,7 +249,7 @@ namespace TrajectoryData
         public static Trajectory operator +(Trajectory t, Vec3 a)
         {
             Trajectory traj = new Trajectory();
-            foreach (Pose p in t.vec)
+            foreach (TPose p in t.vec)
             {
                 traj.push_back(p + a);
             }
@@ -259,7 +259,7 @@ namespace TrajectoryData
         public static Trajectory operator -(Trajectory t, Vec3 a)
         {
             Trajectory traj = new Trajectory();
-            foreach (Pose p in t.vec)
+            foreach (TPose p in t.vec)
             {
                 traj.push_back(p - a);
             }
@@ -269,7 +269,7 @@ namespace TrajectoryData
         public static Trajectory operator *(Trajectory t, Vec3 a)
         {
             Trajectory traj = new Trajectory();
-            foreach (Pose p in t.vec)
+            foreach (TPose p in t.vec)
             {
                 traj.push_back(p * a);
             }
@@ -318,7 +318,7 @@ namespace TrajectoryData
                 return v;
             }
         }
-        public List<Point> diff(List<Pose> vec)
+        public List<Point> diff(List<TPose> vec)
         {
             List<Point> v = new List<Point>();
             if (vec.Count < 2)
@@ -400,7 +400,7 @@ namespace TrajectoryData
             if (end <= 0) return;
             if (end >= vec.Count) end = vec.Count - 1;
 
-            List<Pose> temp = new List<Pose>();
+            List<TPose> temp = new List<TPose>();
 
             for (int i = start; i < end + 1; ++i)
             {
@@ -416,7 +416,7 @@ namespace TrajectoryData
             if (end <= 0.0F) return;
             if (end >= 1.0F) end = 1.0F;
 
-            List<Pose> temp = new List<Pose>();
+            List<TPose> temp = new List<TPose>();
 
             int start_index = (int)(start * vec.Count);
             int end_index = (int)(end * vec.Count);
@@ -430,7 +430,7 @@ namespace TrajectoryData
         }
 
 
-        public List<Pose> vec = new List<Pose>();
+        public List<TPose> vec = new List<TPose>();
 
         private bool IsActive = true;
     };
@@ -510,7 +510,7 @@ namespace TrajectoryData
         public static Dictionary<float, float> matching8Max(Trajectory traj1, Trajectory traj2)
         {
             Dictionary<float, float> temp_result = new Dictionary<float, float>();
-            Pose temp = new Pose(traj1.vec[0] - traj2.vec[0]);
+            TPose temp = new TPose(traj1.vec[0] - traj2.vec[0]);
             float delta = (float)temp.norm();
 
             float a = 0.0F, b = 0.0F;
@@ -520,7 +520,7 @@ namespace TrajectoryData
 
             for (int i = 1; i < match_length - 1; ++i)
             {
-                temp = new Pose(traj1.vec[i] - traj2.vec[i]);
+                temp = new TPose(traj1.vec[i] - traj2.vec[i]);
                 b = (float)temp.norm() - delta;
                 if (b > a && upORdown >= 0)
                 {
@@ -561,7 +561,7 @@ namespace TrajectoryData
             }
 
             result.Add(0.0F, 0.0F);
-            temp = new Pose(traj1.vec[match_length - 1] - traj2.vec[match_length - 1]);
+            temp = new TPose(traj1.vec[match_length - 1] - traj2.vec[match_length - 1]);
             result.Add(1.0F, Math.Abs((float)(temp.norm() - delta)));
 
             return result;
@@ -571,7 +571,7 @@ namespace TrajectoryData
         {
             List<float> result = new List<float>();
             result.Add(0.0F);
-            Pose temp = new Pose(traj1.vec[0] - traj2.vec[0]);
+            TPose temp = new TPose(traj1.vec[0] - traj2.vec[0]);
             float delta = (float)temp.norm();
 
             float a = 0.0F, b = 0.0F;
@@ -580,7 +580,7 @@ namespace TrajectoryData
 
             for (int i = 1; i < match_length; ++i)
             {
-                temp = new Pose(traj1.vec[i] - traj2.vec[i]);
+                temp = new TPose(traj1.vec[i] - traj2.vec[i]);
                 b = (float)temp.norm() - delta;
                 result.Add(Math.Abs(a));
                 a = b;
