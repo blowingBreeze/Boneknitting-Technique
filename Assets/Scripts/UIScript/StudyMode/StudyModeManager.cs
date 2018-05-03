@@ -39,6 +39,7 @@ public class StudyModeManager : MonoBehaviour
         if(bIsStart)
         {
             m_StudyController.Update(fTimeCount, fTimeCount);
+            fTimeCount += Time.deltaTime * 1000;
         }
     }
 
