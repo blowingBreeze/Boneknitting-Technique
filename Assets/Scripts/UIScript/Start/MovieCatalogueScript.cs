@@ -9,11 +9,8 @@ public class MovieCatalogueScript : MonoBehaviour
     public RectTransform m_Content;
     public GameObject m_MovieListItemPrefab;
 
-    private FileReader m_FileReader;
-
     private void Start()
     {
-        m_FileReader = new FileReader();
         ListMovieByDirectory(ConfigCenter.GetConfigCenterInstance().GetDefaultDirPath());
         ListMovieByFileNames(ConfigCenter.GetConfigCenterInstance().GetHistoryFilePathList());
     }
@@ -22,7 +19,6 @@ public class MovieCatalogueScript : MonoBehaviour
     {
         if(string.IsNullOrEmpty( strDirectoryPath))
         {
-            Debug.Log("null directory path");
             return;
         }
         var dir = new DirectoryInfo(strDirectoryPath);
@@ -31,25 +27,34 @@ public class MovieCatalogueScript : MonoBehaviour
             var FileList = dir.GetFiles();
             for (int tFileIndex = 0; tFileIndex < FileList.Length; ++tFileIndex)
             {
-                SetListItemByFileName(FileList[tFileIndex].FullName);
+                AddListItembByFileName(FileList[tFileIndex].FullName);
             }
         }
     }
 
     private void ListMovieByFileNames(List<string> FileNameList)
     {
+        if(FileNameList==null)
+        {
+            return;
+        }
+
         for(int tIndex=0;tIndex<FileNameList.Count;++tIndex)
         {
-            SetListItemByFileName(FileNameList[tIndex]);
+            AddListItembByFileName(FileNameList[tIndex]);
         }
     }
 
-    private void SetListItemByFileName(string astrFileName)
+    public void AddListItembByFileName(string astrFileName)
     {
-        var tempHeadData = m_FileReader.GetHeadFromFile(astrFileName);
+        if(string.IsNullOrEmpty(astrFileName))
+        {
+            return;
+        }
+        var tempHeadData = FileReader.GetHeadFromFile(astrFileName);
         var tempListItem = Instantiate(m_MovieListItemPrefab, m_Content.transform);
-        ///依据头部信息载入图片,设置按钮信息 TODO
-        //tempListItem.GetComponent<Image>().overrideSprite;
+        tempListItem.GetComponent<Image>().overrideSprite=ToolFunction.CreateSpriteFromImage(tempHeadData.strPortraitPath);
+        tempListItem.GetComponentInChildren<Text>().text = tempHeadData.strDoctorName;
         tempListItem.GetComponent<ClickMovieListItem>().SetFilePath(astrFileName);
     }
 }

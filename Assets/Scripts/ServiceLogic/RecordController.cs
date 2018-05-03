@@ -4,29 +4,47 @@ using UnityEngine;
 
 public class RecordController
 {
-    private float fInterval;
-    //private DeviceCtrl m_DeviceController;
-    //private ModelCtrl m_ModelController;
-    private FileWriter m_FileWriter;
+    private DeviceCtrl m_DeviceController;
+    private PlayController m_PlayController;
+    private ModelCtrlData CurrentFrameModelCtrlData;
 
-    public RecordController()
+    public RecordController(GameObject model)
     {
-
+        Init(model);
     }
 
-    public bool Init()
+    public bool Init(GameObject model)
     {
+        m_DeviceController = new DeviceCtrl();
+
+        m_PlayController = new PlayController(model);
         return true;
     }
 
     // Update is called once per frame
     public void Update()
     {
-         //此处添加录制逻辑
+        CurrentFrameModelCtrlData = m_DeviceController.AcquireData();
+        m_PlayController.Update(CurrentFrameModelCtrlData);
     }
 
     public bool InitDevice()
     {
-        return true;
+        return m_DeviceController.InitDevice();
+    }
+
+    public void DisconnectDevice()
+    {
+        m_DeviceController.DisconnectDevice();
+    }
+
+    public PlayController GetPlayController()
+    {
+        return m_PlayController;
+    }
+
+    public ModelCtrlData GetCurrentData()
+    {
+        return CurrentFrameModelCtrlData;
     }
 }

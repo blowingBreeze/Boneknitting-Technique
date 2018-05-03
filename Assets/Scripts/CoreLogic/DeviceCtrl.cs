@@ -22,12 +22,16 @@ public class DeviceCtrl
     //断开设备连接
     public void DisconnectDevice()
     {
-
+        DTGloveManager.instance.DisconnectDevice();
     }
 
-    //从设备读取当前帧数据
+    /// <summary>
+    /// 从各个设备读取当前帧数据，整合成为当前帧可以用于控制模型的数据
+    /// </summary>
+    /// <returns></returns>
     public ModelCtrlData AcquireData()
     {
+        DTGloveManager.instance.AcquireHandData();
         return new ModelCtrlData();
     }
 }
