@@ -16,18 +16,22 @@ public class StudyModelUIPanel : MonoBehaviour
 
 
     private StudyModeManager m_studyManager;
+    private GameObject m_ChartCanvas;
     private bool bIsRef;
     private bool bIsRefFileSet;
     private bool bIsCompairFileSet;
     private bool bIsRecordSet;
+    private bool bIsChart;
     // Use this for initialization
     void Start()
     {
         m_studyManager = GetComponent<StudyModeManager>();
+        m_ChartCanvas = m_studyManager.GetStudyModeChartCanvas();
         bIsRef = true;
         bIsRefFileSet = false;
         bIsCompairFileSet = false;
         bIsRecordSet = false;
+        bIsChart = false;
     }
 
     public void BtnRefData()
@@ -81,6 +85,12 @@ public class StudyModelUIPanel : MonoBehaviour
     {
         Instantiate(m_StartCanvasPrefab);
         Destroy(gameObject);
+    }
+
+    public void BtnChart()
+    {
+        bIsChart = !bIsChart;
+        m_ChartCanvas.SetActive(bIsChart);
     }
 
     public void SetFileName(string strFileName)

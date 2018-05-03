@@ -6,17 +6,19 @@ using UnityEngine.SceneManagement;
 public class PlayModeControlPanel : MonoBehaviour
 {
     public GameObject m_StartCanvasPrefab;
-
+    private GameObject m_ChartCanvas;
     private PlayController m_PlayerController;
     private void Start()
     {
         m_PlayerController = GetComponent<MoviePlayManager>().GetPlayController();
+        m_ChartCanvas = GetComponent<MoviePlayManager>().GetChartCanvas();
     }
 
     bool S1 = true;
     bool S2 = true;
     bool S3 = true;
     bool S4 = true;
+    bool bIsChart = false;
 
     public void BtnS1()
     {
@@ -50,6 +52,10 @@ public class PlayModeControlPanel : MonoBehaviour
         Destroy(gameObject);
     }
 
-
+    public void BtnChart()
+    {
+        bIsChart = !bIsChart;
+        m_ChartCanvas.SetActive(bIsChart);
+    }
 
 }

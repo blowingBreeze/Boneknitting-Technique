@@ -104,6 +104,14 @@ public enum TrailType
     EG_S4
 }
 
+public enum ChartType
+{
+    CHART_SPEED,
+    CHART_ACCELERATE,
+    CHART_CURVATURE,
+    CHART_TORSION
+}
+
 public class HandCtrlData
 {
     public float[] HandData=new float[14];

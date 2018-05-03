@@ -13,11 +13,13 @@ public class RecodModePanel : MonoBehaviour
 
     public Text m_TimeCount;
 
+    private GameObject m_ChartCanvas;
     private RecordManager m_RecordManager;
-
+    private bool bIsChart = false;
     private void Start()
     {
         m_RecordManager = GetComponent<RecordManager>();
+        m_ChartCanvas = m_RecordManager.GetRecordModeChartCanvas();
     }
 
     private void Update()
@@ -55,5 +57,11 @@ public class RecodModePanel : MonoBehaviour
         Instantiate(m_StartCanvas);
         m_RecordManager.DisconnnectDevice();
         Destroy(gameObject);
+    }
+
+    public void BtnChart()
+    {
+        bIsChart = !bIsChart;
+        m_ChartCanvas.SetActive(bIsChart);
     }
 }

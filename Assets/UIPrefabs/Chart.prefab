@@ -155,7 +155,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4708961717540480}
   - component: {fileID: 222984042139693620}
-  - component: {fileID: 114104419561127466}
   m_Layer: 8
   m_Name: Chart
   m_TagString: Untagged
@@ -765,25 +764,6 @@ TextMesh:
   m_Color:
     serializedVersion: 2
     rgba: 4294967295
---- !u!114 &114104419561127466
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1843504287258102}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0d0068ee89e645a4da10ede642a73761, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Speed: {fileID: 0}
-  SpeedRef: {fileID: 0}
-  Accelerate: {fileID: 0}
-  AccelerateRef: {fileID: 0}
-  Curvature: {fileID: 0}
-  CurvatureRef: {fileID: 0}
-  Torsion: {fileID: 0}
-  TorsionRef: {fileID: 0}
 --- !u!114 &114163270217087256
 MonoBehaviour:
   m_ObjectHideFlags: 1

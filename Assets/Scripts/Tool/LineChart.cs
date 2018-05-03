@@ -40,7 +40,7 @@ public class LineChart : MonoBehaviour
     private float m_fKy;
 
     enum PeakType { MAXX, MINX, MAXY, MINY };
-
+    private bool m_bIsDisplay;
     float time;
     // Use this for initialization
     void Start()
@@ -56,6 +56,7 @@ public class LineChart : MonoBehaviour
         m_nMinYIndex = 0;
         m_fKx = 0f;
         m_fKy = 0f;
+        m_bIsDisplay = true;
         time = 0f;
     }
 
@@ -64,6 +65,7 @@ public class LineChart : MonoBehaviour
         time += Time.deltaTime;
         float y = Random.Range(0, 10000 * Time.deltaTime);
         UpdateCurveData(time, y, 0);
+        ShowDataOnMouse();
     }
 
     // Update is called once per frame
@@ -75,11 +77,26 @@ public class LineChart : MonoBehaviour
         AxieXMin.text = string.Format("{0:F2}", m_fMinX);
         AxieYMax.text = string.Format("{0:F2}/xx", m_fMaxY);
         AxieYMin.text = string.Format("{0:F2}", m_fMinY);
-        ShowDataOnMouse();
+        
+        if(m_bIsDisplay)
+        {
+            ShowDataOnMouse();
+        }
     }
 
+    public void HideChart()
+    {
+        m_bIsDisplay = false;
+        gameObject.transform.Translate(new Vector3(0, 0, -10));
+    }
 
-    public Vector3[] AddPoint(float x, float y, float z = 0f)
+    public void ReShowChart()
+    {
+        m_bIsDisplay = true;
+        gameObject.transform.Translate(new Vector3(0, 0, -gameObject.transform.position.z));
+    }
+
+    private Vector3[] AddPoint(float x, float y, float z = 0f)
     {
         int tDrawPointCount = 0;
         Vector3[] DrawPoint;

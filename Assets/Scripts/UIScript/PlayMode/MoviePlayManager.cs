@@ -4,17 +4,25 @@ using UnityEngine;
 
 public class MoviePlayManager : MonoBehaviour
 {
+    public GameObject m_HumenModelPrefab;
+    public GameObject m_ChartCanvasPrefab;
+
     private GameObject m_HumenModel;
+    private GameObject m_ChartCanvas;
+
     private string m_strFileName;
     private PlayController m_PlayController;
     private FileReader m_FileReader;
     private VideoRateCtrl m_VIdeoRateController;
-
+    private ChartController m_PlayModeChartController;
     private bool bIsPlay;
 
     private void Awake()
     {
-        m_HumenModel = null;
+        m_HumenModel = Instantiate(m_HumenModelPrefab);
+        m_ChartCanvas = Instantiate(m_ChartCanvasPrefab);
+        InitPlayModeChart();
+
         m_strFileName = null;
         m_PlayController = new PlayController(m_HumenModel);
         m_FileReader = null;
@@ -84,5 +92,25 @@ public class MoviePlayManager : MonoBehaviour
     public PlayController GetPlayController()
     {
         return m_PlayController;
+    }
+
+    private void InitPlayModeChart()
+    {
+        m_PlayModeChartController = m_ChartCanvas.GetComponent<ChartController>();
+        m_PlayModeChartController.HideRefLineChart(ChartType.CHART_SPEED);
+        m_PlayModeChartController.HideRefLineChart(ChartType.CHART_ACCELERATE);
+        m_PlayModeChartController.HideRefLineChart(ChartType.CHART_CURVATURE);
+        m_PlayModeChartController.HideRefLineChart(ChartType.CHART_TORSION);
+    }
+
+    public GameObject GetChartCanvas()
+    {
+        return m_ChartCanvas;
+    }
+
+    private void OnDestroy()
+    {
+        Destroy(m_HumenModel);
+        Destroy(m_ChartCanvas);
     }
 }
