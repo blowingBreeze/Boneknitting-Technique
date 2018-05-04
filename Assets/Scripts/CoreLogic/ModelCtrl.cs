@@ -9,7 +9,8 @@ public class ModelCtrl
 
     public ModelCtrl(GameObject model)
     {
-        
+        m_HandController = new HandCtrl();
+        m_BodyController = new BodyCtrl();
     }
 
     public void Init(GameObject model)

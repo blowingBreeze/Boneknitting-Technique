@@ -5,8 +5,8 @@ using UnityEngine;
 public class ModelCtrlData
 {
     public float time;
-    public HandCtrlData handCtrlData;
-    public BodyCtrlData bodyCtrlData;
+    public HandCtrlData handCtrlData = new HandCtrlData();
+    public BodyCtrlData bodyCtrlData = new BodyCtrlData();
     public Vector3 left_wrist_rotate;
     public Vector3 right_wrist_rotate;
 }

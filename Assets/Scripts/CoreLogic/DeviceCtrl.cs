@@ -5,7 +5,7 @@ using UnityEngine;
 public class DeviceCtrl
 {
 
-    private ModelCtrlData cur_ModelCtrlData;
+    private ModelCtrlData cur_ModelCtrlData=new ModelCtrlData();
     // private instance of the KinectManager
     protected KinectManager kinectManager;
     protected DTGloveManager gloveManager;
@@ -40,7 +40,7 @@ public class DeviceCtrl
     /// <returns></returns>
     public ModelCtrlData AcquireData()
     {
-        cur_ModelCtrlData.handCtrlData = gloveManager.AcquireHandData();
+        gloveManager.AcquireHandData(ref cur_ModelCtrlData.handCtrlData);
         cur_ModelCtrlData.bodyCtrlData = kinectManager.getBodyCtrlData(); 
         return cur_ModelCtrlData;
     }

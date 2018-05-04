@@ -29,11 +29,11 @@ public class DTGloveManager : MonoBehaviour {
     }
 
    
-    public HandCtrlData AcquireHandData()
+    public void AcquireHandData(ref HandCtrlData Data)
     {
-        HandCtrlData result = new HandCtrlData();
-        glove.GetSensorScaledAll(ref result.HandData);
-        return result;
+        
+        glove.GetSensorScaledAll(ref Data.HandData);
+        
     }
 
     void Start()
