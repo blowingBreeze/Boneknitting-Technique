@@ -6,13 +6,14 @@ using UnityEngine;
 
 public class FileConfig
 {
-    public static const int KINECT_NODE_NUM = 22;
-    public static const int FIVE_DT_NODE_NUM = 14;
+    public const int KINECT_NODE_NUM = 22;
+    public const int FIVE_DT_NODE_NUM = 14;
 }
 
 public class FileReader
 {
     private string m_filepath;
+    public MovieHeadData m_head_data;
     public List<ModelCtrlData> m_data_list = new List<ModelCtrlData>();
 
     //用文件路径初始化对象
@@ -20,6 +21,7 @@ public class FileReader
     {
         m_filepath = strFilePath;
         readTxtFile(m_filepath,ref m_data_list);
+        m_head_data = GetHeadFromFile(strFilePath);
     }
 
     /// <summary>
@@ -29,6 +31,7 @@ public class FileReader
     /// <returns></returns>
     public ModelCtrlData PraseDataByTime(float fTime)
     {
+        fTime = fTime / m_head_data.fTotalTime;
         fTime = Math.Abs(fTime);
         if(fTime>1.0f)
             fTime = fTime - (float)Math.Ceiling(fTime) + 1;
@@ -65,30 +68,31 @@ public class FileReader
 
                     for (int i = start_index; i < FileConfig.FIVE_DT_NODE_NUM + start_index; ++i)
                     {
-                        frame.HandData[i] = float.Parse(temp[i]);
+                        frame.handCtrlData.HandData[i] = float.Parse(temp[i]);
                     }
 
                     start_index = FileConfig.FIVE_DT_NODE_NUM + start_index;
 
                     for (int i = 0; i < FileConfig.KINECT_NODE_NUM; ++i)
                     {
-                        frame.jointRotation[i].w = float.Parse(temp[start_index + i * 4]);
-                        frame.jointRotation[i].x = float.Parse(temp[start_index + i * 4 + 1]);
-                        frame.jointRotation[i].y = float.Parse(temp[start_index + i * 4 + 2]);
-                        frame.jointRotation[i].z = float.Parse(temp[start_index + i * 4 + 3]);
+                        frame.bodyCtrlData.jointRotation[i].w = float.Parse(temp[start_index + i * 4]);
+                        frame.bodyCtrlData.jointRotation[i].x = float.Parse(temp[start_index + i * 4 + 1]);
+                        frame.bodyCtrlData.jointRotation[i].y = float.Parse(temp[start_index + i * 4 + 2]);
+                        frame.bodyCtrlData.jointRotation[i].z = float.Parse(temp[start_index + i * 4 + 3]);
                     }
 
                     start_index = start_index + FileConfig.KINECT_NODE_NUM;
 
-                    frame.left_wrist_rotate.x = float.Parse(temp[start_index]);
-                    frame.left_wrist_rotate.y = float.Parse(temp[start_index + 1]);
-                    frame.left_wrist_rotate.z = float.Parse(temp[start_index + 2]);
-                    frame.right_wrist_rotate.x = float.Parse(temp[start_index + 3]);
-                    frame.right_wrist_rotate.y = float.Parse(temp[start_index + 4]);
-                    frame.right_wrist_rotate.z = float.Parse(temp[start_index + 5]);
-                    frame.UserPosition.x = float.Parse(temp[start_index + 6]);
-                    frame.UserPosition.y = float.Parse(temp[start_index + 7]);
-                    frame.UserPosition.z = float.Parse(temp[start_index + 8]);
+                    frame.bodyCtrlData.userPosition.x = float.Parse(temp[start_index]);
+                    frame.bodyCtrlData.userPosition.y = float.Parse(temp[start_index + 1]);
+                    frame.bodyCtrlData.userPosition.z = float.Parse(temp[start_index + 2]);
+
+                    frame.left_wrist_rotate.x = float.Parse(temp[start_index + 3]);
+                    frame.left_wrist_rotate.y = float.Parse(temp[start_index + 4]);
+                    frame.left_wrist_rotate.z = float.Parse(temp[start_index + 5]);
+                    frame.right_wrist_rotate.x = float.Parse(temp[start_index + 6]);
+                    frame.right_wrist_rotate.y = float.Parse(temp[start_index + 7]);
+                    frame.right_wrist_rotate.z = float.Parse(temp[start_index + 8]);
 
                     target.Add(frame);
                 }

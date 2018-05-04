@@ -31,8 +31,9 @@ public class DTGloveManager : MonoBehaviour {
     // Update is called once per frame
     public HandCtrlData AcquireHandData()
     {
-        glove.GetSensorScaledAll(ref ModelCtrlData.m_HandData.HandData);
-        return ModelCtrlData.m_HandData;
+        HandCtrlData result = new HandCtrlData();
+        glove.GetSensorScaledAll(ref result.HandData);
+        return result;
     }
 
     void Start()

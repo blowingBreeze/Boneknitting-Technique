@@ -64,16 +64,20 @@ public class FileWriter
                     sw.Write("{0}\t", cacheDataList[i].time);
                     for (int j = 0; j < FileConfig.FIVE_DT_NODE_NUM; ++j)
                     {
-                        sw.Write("{0}\t", cacheDataList[i].HandData[j]);
+                        sw.Write("{0}\t", cacheDataList[i].handCtrlData.HandData[j]);
                     }
                     for (int j = 0; j < FileConfig.KINECT_NODE_NUM; ++j)
                     {
                         sw.Write("{0}\t{1}\t{2}\t{3}\t",
-                            cacheDataList[i].jointRotation[j].w,
-                            cacheDataList[i].jointRotation[j].x,
-                            cacheDataList[i].jointRotation[j].y,
-                            cacheDataList[i].jointRotation[j].z);
+                            cacheDataList[i].bodyCtrlData.jointRotation[j].w,
+                            cacheDataList[i].bodyCtrlData.jointRotation[j].x,
+                            cacheDataList[i].bodyCtrlData.jointRotation[j].y,
+                            cacheDataList[i].bodyCtrlData.jointRotation[j].z);
                     }
+                    sw.Write("{0}\t{1}\t{2}\t",
+                        cacheDataList[i].bodyCtrlData.userPosition.x,
+                        cacheDataList[i].bodyCtrlData.userPosition.y,
+                        cacheDataList[i].bodyCtrlData.userPosition.z);
                     sw.Write("{0}\t{1}\t{2}\t",
                         cacheDataList[i].left_wrist_rotate.x,
                         cacheDataList[i].left_wrist_rotate.y,
@@ -82,10 +86,6 @@ public class FileWriter
                         cacheDataList[i].right_wrist_rotate.x,
                         cacheDataList[i].right_wrist_rotate.y,
                         cacheDataList[i].right_wrist_rotate.z);
-                    sw.Write("{0}\t{1}\t{2}\t",
-                        cacheDataList[i].UserPosition.x,
-                        cacheDataList[i].UserPosition.y,
-                        cacheDataList[i].UserPosition.z);
 
                     sw.Write("\n");
                 }
