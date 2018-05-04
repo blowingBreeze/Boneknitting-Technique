@@ -296,6 +296,23 @@ namespace TrajectoryData
                 return v;
             }
         }
+        public float lastSpeed(int deta = 0)
+        {
+            float v = 0.0f;
+            if (vec.Count < 2)
+            {
+                return v;
+            }
+            else
+            {
+                int len = vec.Count - deta;
+                if (len - 2 < 0)
+                    return v;
+                v = (float)(vec[len - 1].position - vec[len - 2].position).norm();
+
+                return v;
+            }
+        }
         public List<float> acceleration()
         {
             List<float> s = speed();
@@ -314,6 +331,21 @@ namespace TrajectoryData
                     v.Add((float)((s[i + 1] - s[i - 1]) / 2.0));
                 }
                 v.Add((s[len - 1] - s[len - 2]));
+
+                return v;
+            }
+        }
+        public float lastAcceleration()
+        {
+            float v = 0.0f;
+
+            if (vec.Count < 2)
+            {
+                return v;
+            }
+            else
+            {
+                v = (lastSpeed() - lastSpeed(1));
 
                 return v;
             }
@@ -375,6 +407,26 @@ namespace TrajectoryData
 
             return v;
         }
+        public float lastCurvature()
+        {
+            float v = 0.0f;
+            int len = vec.Count;
+            if (len < 2)
+                return v;
+
+            List<TPose> nv = new List<TPose>();
+            nv.Add(vec[len - 1]);
+            nv.Add(vec[len - 2]);
+
+            List<Point> d1 = diff(nv);
+            List<Point> d2 = diff(d1);
+            Point c = d1[1].cross(d2[1]);
+            double n1 = c.norm();
+            double n2 = Math.Pow(d1[1].norm(), 3);
+            v = (float)(n1 / n2);
+
+            return v;
+        }
         public List<float> torsion()
         {
             List<float> v = new List<float>();
@@ -385,11 +437,34 @@ namespace TrajectoryData
 
             for (int i = 0; i < len; ++i)
             {
-                Vec3 c = d1[i].cross(d2[2]);
+                Vec3 c = d1[i].cross(d2[i]);
                 double n1 = c.dot(d3[i]);
                 double n2 = Math.Pow(c.norm(), 2);
                 v.Add((float)(n1 / n2));
             }
+
+            return v;
+        }
+        public float lastTorsion()
+        {
+            float v = 0.0f;
+            int len = vec.Count;
+            if (len < 2)
+                return v;
+
+            List<TPose> nv = new List<TPose>();
+            nv.Add(vec[len - 1]);
+            nv.Add(vec[len - 2]);
+
+            List<Point> d1 = diff(nv);
+            List<Point> d2 = diff(d1);
+            List<Point> d3 = diff(d2);
+
+            Vec3 c = d1[1].cross(d2[1]);
+            double n1 = c.dot(d3[1]);
+            double n2 = Math.Pow(c.norm(), 2);
+
+            v = (float)(n1 / n2);
 
             return v;
         }

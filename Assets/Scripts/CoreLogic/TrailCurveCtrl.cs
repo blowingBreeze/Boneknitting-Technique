@@ -94,6 +94,22 @@ public class TrailCurveDrawCtrl
     {
         return curMotion.getTraj(trailType.GetHashCode()).torsion();
     }
+    public float lastSpeed(TrailType trailType)
+    {
+        return curMotion.getTraj(trailType.GetHashCode()).lastSpeed();
+    }
+    public float lastAcceleration(TrailType trailType)
+    {
+        return curMotion.getTraj(trailType.GetHashCode()).lastAcceleration();
+    }
+    public float lastCurvature(TrailType trailType)
+    {
+        return curMotion.getTraj(trailType.GetHashCode()).lastCurvature();
+    }
+    public float lastTorsion(TrailType trailType)
+    {
+        return curMotion.getTraj(trailType.GetHashCode()).lastTorsion();
+    }
 }
 
 public class TrailCurveAppraiseCtrl
