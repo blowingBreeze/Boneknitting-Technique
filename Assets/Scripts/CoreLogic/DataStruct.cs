@@ -123,5 +123,6 @@ public class BodyCtrlData
     public Quaternion[] jointRotation = new Quaternion[22];
     public Vector3 userPosition;
     public uint UserID;
-
+    public Vector3 HandLeftPos;
+    public Vector3 HandRightPos;
 }

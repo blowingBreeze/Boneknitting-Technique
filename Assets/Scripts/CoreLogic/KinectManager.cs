@@ -115,9 +115,9 @@ public class KinectManager : MonoBehaviour
     private int Player1Index;
     private int Player2Index;
 
-    // Lists of AvatarControllers that will let the models get updated.
-    private List<AvatarController> Player1Controllers;
-    private List<AvatarController> Player2Controllers;
+    // Lists of BodyCtrls that will let the models get updated.
+    private List<BodyCtrl> Player1Controllers;
+    private List<BodyCtrl> Player2Controllers;
 
     // User Map vars.
     private Texture2D usersLblTex;
@@ -186,7 +186,6 @@ public class KinectManager : MonoBehaviour
     private BoneOrientationsConstraint boneConstraintsFilter;
     private SelfIntersectionConstraint selfIntersectionConstraint;
 
-
     // returns the single KinectManager instance
     public static KinectManager Instance
     {
@@ -208,7 +207,7 @@ public class KinectManager : MonoBehaviour
         return KinectInitialized;
     }
 
-    // this function is used internally by AvatarController
+    // this function is used internally by BodyCtrl
     public static bool IsCalibrationNeeded()
     {
         return false;
@@ -751,13 +750,13 @@ public class KinectManager : MonoBehaviour
     }
 
     // recreates and reinitializes the lists of avatar controllers, after the list of avatars for player 1/2 was changed
-    public void ResetAvatarControllers()
+    public void ResetBodyCtrls()
     {
         if (Player1Avatars.Count == 0 && Player2Avatars.Count == 0)
         {
-            AvatarController[] avatars = FindObjectsOfType(typeof(AvatarController)) as AvatarController[];
+            BodyCtrl[] avatars = FindObjectsOfType(typeof(BodyCtrl)) as BodyCtrl[];
 
-            foreach (AvatarController avatar in avatars)
+            foreach (BodyCtrl avatar in avatars)
             {
                 Player1Avatars.Add(avatar.gameObject);
             }
@@ -771,7 +770,7 @@ public class KinectManager : MonoBehaviour
             {
                 if (avatar != null && avatar.activeInHierarchy)
                 {
-                    AvatarController controller = avatar.GetComponent<AvatarController>();
+                    BodyCtrl controller = avatar.GetComponent<BodyCtrl>();
                     controller.ResetToInitialPosition();
                     controller.Awake();
 
@@ -788,7 +787,7 @@ public class KinectManager : MonoBehaviour
             {
                 if (avatar != null && avatar.activeInHierarchy)
                 {
-                    AvatarController controller = avatar.GetComponent<AvatarController>();
+                    BodyCtrl controller = avatar.GetComponent<BodyCtrl>();
                     controller.ResetToInitialPosition();
                     controller.Awake();
 
@@ -1043,9 +1042,9 @@ public class KinectManager : MonoBehaviour
         // try to automatically find the available avatar controllers in the scene
         if (Player1Avatars.Count == 0 && Player2Avatars.Count == 0)
         {
-            AvatarController[] avatars = FindObjectsOfType(typeof(AvatarController)) as AvatarController[];
+            BodyCtrl[] avatars = FindObjectsOfType(typeof(BodyCtrl)) as BodyCtrl[];
 
-            foreach (AvatarController avatar in avatars)
+            foreach (BodyCtrl avatar in avatars)
             {
                 Player1Avatars.Add(avatar.gameObject);
             }
@@ -1054,16 +1053,16 @@ public class KinectManager : MonoBehaviour
         // Initialize user list to contain ALL users.
         allUsers = new List<uint>();
 
-        // Pull the AvatarController from each of the players Avatars.
-        Player1Controllers = new List<AvatarController>();
-        Player2Controllers = new List<AvatarController>();
+        // Pull the BodyCtrl from each of the players Avatars.
+        Player1Controllers = new List<BodyCtrl>();
+        Player2Controllers = new List<BodyCtrl>();
 
         // Add each of the avatars' controllers into a list for each player.
         foreach (GameObject avatar in Player1Avatars)
         {
             if (avatar != null && avatar.activeInHierarchy)
             {
-                Player1Controllers.Add(avatar.GetComponent<AvatarController>());
+                Player1Controllers.Add(avatar.GetComponent<BodyCtrl>());
             }
         }
 
@@ -1071,7 +1070,7 @@ public class KinectManager : MonoBehaviour
         {
             if (avatar != null && avatar.activeInHierarchy)
             {
-                Player2Controllers.Add(avatar.GetComponent<AvatarController>());
+                Player2Controllers.Add(avatar.GetComponent<BodyCtrl>());
             }
         }
 
@@ -1092,9 +1091,6 @@ public class KinectManager : MonoBehaviour
         {
             CalibrationText.GetComponent<GUIText>().text = "WAITING FOR USERS";
         }
-
-        Debug.Log("Waiting for users.");
-
         KinectInitialized = true;
     }
 
@@ -1133,11 +1129,13 @@ public class KinectManager : MonoBehaviour
             // Update player 1's models if he/she is calibrated and the model is active.
             if (Player1Calibrated)
             {
-                foreach (AvatarController controller in Player1Controllers)
+                foreach (BodyCtrl controller in Player1Controllers)
                 {
                     //if(controller.Active)
                     {
                         controller.UpdateAvatar(Player1ID);
+                        BodyCtrlData = controller.getBodyCtrlData();
+                        controller.MoveBody(BodyCtrlData);
                     }
                 }
 
@@ -1218,11 +1216,13 @@ public class KinectManager : MonoBehaviour
             // Update player 2's models if he/she is calibrated and the model is active.
             if (Player2Calibrated)
             {
-                foreach (AvatarController controller in Player2Controllers)
+                foreach (BodyCtrl controller in Player2Controllers)
                 {
                     //if(controller.Active)
                     {
                         controller.UpdateAvatar(Player2ID);
+                        BodyCtrlData = controller.getBodyCtrlData();
+                        controller.MoveBody(BodyCtrlData);
                     }
                 }
 
@@ -1529,7 +1529,7 @@ public class KinectManager : MonoBehaviour
 
                     allUsers.Add(UserId);
 
-                    foreach (AvatarController controller in Player1Controllers)
+                    foreach (BodyCtrl controller in Player1Controllers)
                     {
                         controller.SuccessfulCalibration(UserId);
                     }
@@ -1570,7 +1570,7 @@ public class KinectManager : MonoBehaviour
 
                     allUsers.Add(UserId);
 
-                    foreach (AvatarController controller in Player2Controllers)
+                    foreach (BodyCtrl controller in Player2Controllers)
                     {
                         controller.SuccessfulCalibration(UserId);
                     }
@@ -1619,7 +1619,7 @@ public class KinectManager : MonoBehaviour
             Player1Index = 0;
             Player1Calibrated = false;
 
-            foreach (AvatarController controller in Player1Controllers)
+            foreach (BodyCtrl controller in Player1Controllers)
             {
                 controller.ResetToInitialPosition();
             }
@@ -1640,7 +1640,7 @@ public class KinectManager : MonoBehaviour
             Player2Index = 0;
             Player2Calibrated = false;
 
-            foreach (AvatarController controller in Player2Controllers)
+            foreach (BodyCtrl controller in Player2Controllers)
             {
                 controller.ResetToInitialPosition();
             }
@@ -2209,6 +2209,14 @@ public class KinectManager : MonoBehaviour
 
         return false;
     }
+
+
+    private BodyCtrlData BodyCtrlData;
+    public BodyCtrlData getBodyCtrlData()
+    {
+        return BodyCtrlData;
+    }
+
 
 }
 

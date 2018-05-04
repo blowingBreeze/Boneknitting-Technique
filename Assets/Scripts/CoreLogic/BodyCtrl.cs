@@ -23,17 +23,9 @@ public class BodyCtrl : MonoBehaviour
     // Slerp smooth factor
     public float smoothFactor = 5f;
 
-    // Whether the offset node must be repositioned to the user's coordinates, as reported by the sensor or not.F
+    // Whether the offset node must be repositioned to the user's coordinates, as reported by the sensor or not.
     public bool offsetRelativeToSensor = false;
 
-
-    //Mine
-    public String fsPath;
-    public FileStream fs;
-    // StreamWriter for the stored data
-    public StreamWriter sw;
-    public int count = 0;
-    //EndMine
 
     // The body root node
     protected Transform bodyRoot;
@@ -56,6 +48,10 @@ public class BodyCtrl : MonoBehaviour
     protected bool offsetCalibrated = false;
     protected float xOffset, yOffset, zOffset;
 
+    // private instance of the KinectManager
+    protected KinectManager kinectManager;
+
+
     // transform caching gives performance boost since Unity calls GetComponent<Transform>() each time you call transform 
     private Transform _transformCache;
     public new Transform transform
@@ -68,20 +64,15 @@ public class BodyCtrl : MonoBehaviour
             return _transformCache;
         }
     }
-    private GameObject body;
-    private BodyCtrlData BCD;
 
-    StreamReader sr;
-    String Path = "E:\\Boneknitting2018-May-03-03-23-41.txt";
-
-    void Awake()
+    private BodyCtrlData bodyCtrlData;
+    public BodyCtrlData getBodyCtrlData()
     {
-        Debug.Log("TestBody Awake!");
-        initBodyCtrlData();
-        sr = new StreamReader(Path, Encoding.Default);
+        return bodyCtrlData;
     }
 
-    public void initBodyCtrlData()
+
+    public void Awake()
     {
         // check for double start
         if (bones != null)
@@ -99,34 +90,52 @@ public class BodyCtrl : MonoBehaviour
 
         // Get initial bone rotations
         GetInitialRotations();
+
+        initbodyCtrlData();
     }
-    String DataString;
-    // Update the avatar each frame.
-    public void Update()
+
+    private void initbodyCtrlData()
     {
-        String DataString = sr.ReadLine();
-        if (DataString == null) return;
-        String[] parts = DataString.Split('\t');
+        bodyCtrlData.userPosition = Vector3.zero;
+        bodyCtrlData.UserID = 0;
+        bodyCtrlData.jointRotation = new Quaternion[22];
+        bodyCtrlData.HandLeftPos = Vector3.zero;
+        bodyCtrlData.HandRightPos = Vector3.zero;
+    }
+    // Update the avatar each frame.
+    public void UpdateAvatar(uint UserID)
+    {
+        bodyCtrlData.UserID = UserID;
 
-        BCD.userPosition = new Vector3(float.Parse(parts[1]), float.Parse(parts[2]), float.Parse(parts[3]));
-        BCD.UserID = 2;
-        BCD.jointRotation = new Quaternion[22];
+        if (!transform.gameObject.activeInHierarchy)
+            return;
 
-        for (int i = 4, j = 0; j < 22; i += 4, j++)
+        // Get the KinectManager instance
+        if (kinectManager == null)
         {
-            BCD.jointRotation[j].x = float.Parse(parts[i]);
-            BCD.jointRotation[j].y = float.Parse(parts[i + 1]);
-            BCD.jointRotation[j].z = float.Parse(parts[i + 2]);
-            BCD.jointRotation[j].w = float.Parse(parts[i + 3]);
+            kinectManager = KinectManager.Instance;
         }
-        /*
-        foreach (String part in parts)
+
+        // Get the position of the body and store it.
+        bodyCtrlData.userPosition = kinectManager.GetUserPosition(UserID);
+
+        for (var boneIndex = 0; boneIndex < bones.Length; boneIndex++)
         {
-            Debug.Log(part);
-            //Debug.Log(Double.Parse(part)); ;
+            if (!bones[boneIndex])
+                continue;
+
+            if (boneIndex2JointMap.ContainsKey(boneIndex))
+            {
+                KinectWrapper.NuiSkeletonPositionIndex joint = boneIndex2JointMap[boneIndex];
+                TransformBone(UserID, joint, boneIndex, true);
+            }
+            else bodyCtrlData.jointRotation[boneIndex] = Quaternion.identity;
         }
-        */
-        MoveBody(BCD);
+
+        KinectWrapper.NuiSkeletonPositionIndex HandLeftJointPos = boneIndex2JointMap[8];
+        bodyCtrlData.HandLeftPos = kinectManager.GetJointPosition(UserID, (int)HandLeftJointPos);
+        KinectWrapper.NuiSkeletonPositionIndex HandRightJointPos = boneIndex2JointMap[13];
+        bodyCtrlData.HandRightPos = kinectManager.GetJointPosition(UserID, (int)HandRightJointPos);
     }
 
     // Update the avatar each frame.
@@ -143,12 +152,26 @@ public class BodyCtrl : MonoBehaviour
             if (!bones[boneIndex])
                 continue;
 
-            Transform boneTransform = bones[boneIndex];
+            if (boneIndex2JointMap.ContainsKey(boneIndex))
+            {
+                Transform boneTransform = bones[boneIndex];
 
-            if (smoothFactor != 0f)
-                boneTransform.rotation = Quaternion.Slerp(boneTransform.rotation, bodyCtrlData.jointRotation[boneIndex], smoothFactor * Time.deltaTime);
-            else
-                boneTransform.rotation = bodyCtrlData.jointRotation[boneIndex];
+                if (smoothFactor != 0f)
+                    boneTransform.rotation = Quaternion.Slerp(boneTransform.rotation, bodyCtrlData.jointRotation[boneIndex], smoothFactor * Time.deltaTime);
+                else
+                    boneTransform.rotation = bodyCtrlData.jointRotation[boneIndex];
+            }
+            else if (specIndex2JointMap.ContainsKey(boneIndex))
+            {
+                // special bones (clavicles)
+                List<KinectWrapper.NuiSkeletonPositionIndex> alJoints = !mirroredMovement ? specIndex2JointMap[boneIndex] : specIndex2MirrorJointMap[boneIndex];
+
+                if (alJoints.Count >= 2)
+                {
+                    //Vector3 baseDir = alJoints[0].ToString().EndsWith("Left") ? Vector3.left : Vector3.right;
+                    //TransformSpecialBone(UserID, alJoints[0], alJoints[1], boneIndex, baseDir, !mirroredMovement);
+                }
+            }
         }
     }
 
@@ -208,16 +231,76 @@ public class BodyCtrl : MonoBehaviour
         offsetCalibrated = false;
     }
 
+    // Apply the rotations tracked by kinect to the joints.
+    protected void TransformBone(uint userId, KinectWrapper.NuiSkeletonPositionIndex joint, int boneIndex, bool flip)
+    {
+        Transform boneTransform = bones[boneIndex];
+        if (boneTransform == null || kinectManager == null)
+            return;
+
+        int iJoint = (int)joint;
+        if (iJoint < 0)
+            return;
+
+        // Get Kinect joint orientation
+        Quaternion jointRotation = kinectManager.GetJointOrientation(userId, iJoint, flip);
+        if (jointRotation == Quaternion.identity)
+            return;
+
+        // Smoothly transition to the new rotation
+        Quaternion newRotation = Kinect2AvatarRot(jointRotation, boneIndex);
+        bodyCtrlData.jointRotation[boneIndex] = newRotation;
+    }
+
+    // Apply the rotations tracked by kinect to a special joint
+    protected void TransformSpecialBone(uint userId, KinectWrapper.NuiSkeletonPositionIndex joint, KinectWrapper.NuiSkeletonPositionIndex jointParent, int boneIndex, Vector3 baseDir, bool flip)
+    {
+        Transform boneTransform = bones[boneIndex];
+        if (boneTransform == null || kinectManager == null)
+            return;
+
+        if (!kinectManager.IsJointTracked(userId, (int)joint) ||
+           !kinectManager.IsJointTracked(userId, (int)jointParent))
+        {
+            return;
+        }
+
+        Vector3 jointDir = kinectManager.GetDirectionBetweenJoints(userId, (int)jointParent, (int)joint, false, true);
+        Quaternion jointRotation = jointDir != Vector3.zero ? Quaternion.FromToRotation(baseDir, jointDir) : Quaternion.identity;
+
+        //		if(!flip)
+        //		{
+        //			Vector3 mirroredAngles = jointRotation.eulerAngles;
+        //			mirroredAngles.y = -mirroredAngles.y;
+        //			mirroredAngles.z = -mirroredAngles.z;
+        //			
+        //			jointRotation = Quaternion.Euler(mirroredAngles);
+        //		}
+
+        if (jointRotation != Quaternion.identity)
+        {
+            // Smoothly transition to the new rotation
+            Quaternion newRotation = Kinect2AvatarRot(jointRotation, boneIndex);
+
+            if (smoothFactor != 0f)
+                boneTransform.rotation = Quaternion.Slerp(boneTransform.rotation, newRotation, smoothFactor * Time.deltaTime);
+            else
+                boneTransform.rotation = newRotation;
+        }
+
+    }
 
     // Moves the avatar in 3D space - pulls the tracked position of the spine and applies it to root.
     // Only pulls positional, not rotational.
     protected void MoveAvatar(uint UserID)
     {
-        if (bodyRoot == null)
+        if (bodyRoot == null || kinectManager == null)
+            return;
+        if (!kinectManager.IsJointTracked(UserID, (int)KinectWrapper.NuiSkeletonPositionIndex.HipCenter))
             return;
 
         // Get the position of the body and store it.
-        Vector3 trans = BCD.userPosition;
+        Vector3 trans = kinectManager.GetUserPosition(UserID);
 
         // If this is the first time we're moving the avatar, set the offset. Otherwise ignore it.
         if (!offsetCalibrated)
