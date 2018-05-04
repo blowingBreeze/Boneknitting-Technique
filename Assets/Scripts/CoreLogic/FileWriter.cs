@@ -61,11 +61,14 @@ public class FileWriter
                 //数据
                 for (int i = start_index; i < end_index; ++i)
                 {
+                    //时间
                     sw.Write("{0}\t", cacheDataList[i].time);
+                    //5DT数据
                     for (int j = 0; j < FileConfig.FIVE_DT_NODE_NUM; ++j)
                     {
                         sw.Write("{0}\t", cacheDataList[i].handCtrlData.HandData[j]);
                     }
+                    //kinect数据
                     for (int j = 0; j < FileConfig.KINECT_NODE_NUM; ++j)
                     {
                         sw.Write("{0}\t{1}\t{2}\t{3}\t",
@@ -74,10 +77,23 @@ public class FileWriter
                             cacheDataList[i].bodyCtrlData.jointRotation[j].y,
                             cacheDataList[i].bodyCtrlData.jointRotation[j].z);
                     }
+                    //模型整体位置
                     sw.Write("{0}\t{1}\t{2}\t",
                         cacheDataList[i].bodyCtrlData.userPosition.x,
                         cacheDataList[i].bodyCtrlData.userPosition.y,
                         cacheDataList[i].bodyCtrlData.userPosition.z);
+                    //左右手腕位置
+                    sw.Write("{0}\t{1}\t{2}\t",
+                        cacheDataList[i].bodyCtrlData.HandLeftPos.x,
+                        cacheDataList[i].bodyCtrlData.HandLeftPos.y,
+                        cacheDataList[i].bodyCtrlData.HandLeftPos.z);
+                    sw.Write("{0}\t{1}\t{2}\t",
+                        cacheDataList[i].bodyCtrlData.HandRightPos.x,
+                        cacheDataList[i].bodyCtrlData.HandRightPos.y,
+                        cacheDataList[i].bodyCtrlData.HandRightPos.z);
+                    //用户ID
+                    sw.Write("{0}\t", cacheDataList[i].bodyCtrlData.UserID);
+                    //左右手腕旋转量
                     sw.Write("{0}\t{1}\t{2}\t",
                         cacheDataList[i].left_wrist_rotate.x,
                         cacheDataList[i].left_wrist_rotate.y,

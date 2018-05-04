@@ -62,10 +62,12 @@ public class FileReader
                 while ((line = sr.ReadLine()) != null)
                 {
                     temp = line.Split('\t');
+                    //时间
                     frame.time = float.Parse(temp[0]);
 
                     int start_index = 1;
 
+                    //5DT数据
                     for (int i = start_index; i < FileConfig.FIVE_DT_NODE_NUM + start_index; ++i)
                     {
                         frame.handCtrlData.HandData[i] = float.Parse(temp[i]);
@@ -73,6 +75,7 @@ public class FileReader
 
                     start_index = FileConfig.FIVE_DT_NODE_NUM + start_index;
 
+                    //Kinect数据
                     for (int i = 0; i < FileConfig.KINECT_NODE_NUM; ++i)
                     {
                         frame.bodyCtrlData.jointRotation[i].w = float.Parse(temp[start_index + i * 4]);
@@ -81,18 +84,35 @@ public class FileReader
                         frame.bodyCtrlData.jointRotation[i].z = float.Parse(temp[start_index + i * 4 + 3]);
                     }
 
-                    start_index = start_index + FileConfig.KINECT_NODE_NUM;
+                    start_index = start_index + FileConfig.KINECT_NODE_NUM * 4;
 
+                    //模型整体位置
                     frame.bodyCtrlData.userPosition.x = float.Parse(temp[start_index]);
                     frame.bodyCtrlData.userPosition.y = float.Parse(temp[start_index + 1]);
                     frame.bodyCtrlData.userPosition.z = float.Parse(temp[start_index + 2]);
 
-                    frame.left_wrist_rotate.x = float.Parse(temp[start_index + 3]);
-                    frame.left_wrist_rotate.y = float.Parse(temp[start_index + 4]);
-                    frame.left_wrist_rotate.z = float.Parse(temp[start_index + 5]);
-                    frame.right_wrist_rotate.x = float.Parse(temp[start_index + 6]);
-                    frame.right_wrist_rotate.y = float.Parse(temp[start_index + 7]);
-                    frame.right_wrist_rotate.z = float.Parse(temp[start_index + 8]);
+                    start_index = start_index + 3;
+                    //左右手腕位置
+                    frame.bodyCtrlData.userPosition.x = float.Parse(temp[start_index]);
+                    frame.bodyCtrlData.userPosition.y = float.Parse(temp[start_index + 1]);
+                    frame.bodyCtrlData.userPosition.z = float.Parse(temp[start_index + 2]);
+                    frame.bodyCtrlData.userPosition.x = float.Parse(temp[start_index + 3]);
+                    frame.bodyCtrlData.userPosition.y = float.Parse(temp[start_index + 4]);
+                    frame.bodyCtrlData.userPosition.z = float.Parse(temp[start_index + 5]);
+
+                    start_index = start_index + 6;
+                    
+                    //用户ID
+                    frame.bodyCtrlData.UserID = uint.Parse(temp[start_index]);
+
+                    start_index = start_index + 1;
+                    //左右手腕旋转量
+                    frame.left_wrist_rotate.x = float.Parse(temp[start_index]);
+                    frame.left_wrist_rotate.y = float.Parse(temp[start_index + 1]);
+                    frame.left_wrist_rotate.z = float.Parse(temp[start_index + 2]);
+                    frame.right_wrist_rotate.x = float.Parse(temp[start_index + 3]);
+                    frame.right_wrist_rotate.y = float.Parse(temp[start_index + 4]);
+                    frame.right_wrist_rotate.z = float.Parse(temp[start_index + 5]);
 
                     target.Add(frame);
                 }

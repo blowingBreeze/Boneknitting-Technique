@@ -40,7 +40,8 @@ public class DeviceCtrl
     /// <returns></returns>
     public ModelCtrlData AcquireData()
     {
-        cur_ModelCtrlData.handCtrlData=gloveManager.AcquireHandData();
+        cur_ModelCtrlData.handCtrlData = gloveManager.AcquireHandData();
+        cur_ModelCtrlData.bodyCtrlData = kinectManager.getBodyCtrlData(); 
         return cur_ModelCtrlData;
     }
 }
