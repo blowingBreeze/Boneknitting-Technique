@@ -5,25 +5,22 @@ using UnityEngine;
 public class ModelCtrl 
 {
     private HandCtrl m_HandController;
-    private ModelCtrlData cur_ModelCtrlData;
+    private BodyCtrl m_BodyController;
 
     public ModelCtrl(GameObject model)
     {
-        cur_ModelCtrlData = new ModelCtrlData();
+        
     }
 
     public void Init(GameObject model)
     {
 
     }
-    public ModelCtrlData getCurrentModelData()
-    {
-        return cur_ModelCtrlData;
-    }
 
     //接收外部数据，移动模型
     public void MoveModel(ModelCtrlData modelCtrlData)
     {
+        m_BodyController.MoveBody(modelCtrlData.bodyCtrlData);
         m_HandController.MoveHand(modelCtrlData.handCtrlData);
     }
 

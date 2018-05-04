@@ -4,8 +4,11 @@ using UnityEngine;
 
 public class DeviceCtrl
 {
+
+    private ModelCtrlData cur_ModelCtrlData;
     // private instance of the KinectManager
     protected KinectManager kinectManager;
+    protected DTGloveManager gloveManager;
 
     //初始化设备
     public bool InitDevice()
@@ -16,13 +19,19 @@ public class DeviceCtrl
             kinectManager = KinectManager.Instance;
         }
 
+        if (gloveManager == null)
+        {
+            gloveManager = DTGloveManager.instance;
+        }
+
         return true;
+
     }
 
     //断开设备连接
     public void DisconnectDevice()
     {
-        DTGloveManager.instance.DisconnectDevice();
+        gloveManager.DisconnectDevice();
     }
 
     /// <summary>
@@ -31,7 +40,7 @@ public class DeviceCtrl
     /// <returns></returns>
     public ModelCtrlData AcquireData()
     {
-        DTGloveManager.instance.AcquireHandData();
-        return new ModelCtrlData();
+        cur_ModelCtrlData.handCtrlData=gloveManager.AcquireHandData();
+        return cur_ModelCtrlData;
     }
 }

@@ -2,7 +2,7 @@
 
 public class HandCtrl : MonoBehaviour {
     public static float[] values = new float[20];
-    public GameObject[] Hands;//保存模型引用
+    public GameObject[] Hands;//模型引用
     public void MoveHand(HandCtrlData handdata)
     {
 

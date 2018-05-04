@@ -28,7 +28,7 @@ public class DTGloveManager : MonoBehaviour {
         }
     }
 
-    // Update is called once per frame
+   
     public HandCtrlData AcquireHandData()
     {
         HandCtrlData result = new HandCtrlData();
