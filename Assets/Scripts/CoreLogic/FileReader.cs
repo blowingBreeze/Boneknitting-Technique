@@ -107,12 +107,12 @@ public class FileReader
 
                     start_index = start_index + 1;
                     //左右手腕旋转量
-                    frame.left_wrist_rotate.x = float.Parse(temp[start_index]);
-                    frame.left_wrist_rotate.y = float.Parse(temp[start_index + 1]);
-                    frame.left_wrist_rotate.z = float.Parse(temp[start_index + 2]);
-                    frame.right_wrist_rotate.x = float.Parse(temp[start_index + 3]);
-                    frame.right_wrist_rotate.y = float.Parse(temp[start_index + 4]);
-                    frame.right_wrist_rotate.z = float.Parse(temp[start_index + 5]);
+                    frame.wristCtrlData.left_wrist_rotate.x = float.Parse(temp[start_index]);
+                    frame.wristCtrlData.left_wrist_rotate.y = float.Parse(temp[start_index + 1]);
+                    frame.wristCtrlData.left_wrist_rotate.z = float.Parse(temp[start_index + 2]);
+                    frame.wristCtrlData.right_wrist_rotate.x = float.Parse(temp[start_index + 3]);
+                    frame.wristCtrlData.right_wrist_rotate.y = float.Parse(temp[start_index + 4]);
+                    frame.wristCtrlData.right_wrist_rotate.z = float.Parse(temp[start_index + 5]);
 
                     target.Add(frame);
                 }

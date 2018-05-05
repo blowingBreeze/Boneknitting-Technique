@@ -94,14 +94,7 @@ public class FileWriter
                     //用户ID
                     sw.Write("{0}\t", cacheDataList[i].bodyCtrlData.UserID);
                     //左右手腕旋转量
-                    sw.Write("{0}\t{1}\t{2}\t",
-                        cacheDataList[i].left_wrist_rotate.x,
-                        cacheDataList[i].left_wrist_rotate.y,
-                        cacheDataList[i].left_wrist_rotate.z);
-                    sw.Write("{0}\t{1}\t{2}\t",
-                        cacheDataList[i].right_wrist_rotate.x,
-                        cacheDataList[i].right_wrist_rotate.y,
-                        cacheDataList[i].right_wrist_rotate.z);
+                    sw.Write(cacheDataList[i].wristCtrlData.toStr());
 
                     sw.Write("\n");
                 }
