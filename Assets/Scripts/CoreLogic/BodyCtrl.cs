@@ -96,6 +96,7 @@ public class BodyCtrl : MonoBehaviour
 
     private void initbodyCtrlData()
     {
+        bodyCtrlData = new BodyCtrlData();
         bodyCtrlData.userPosition = Vector3.zero;
         bodyCtrlData.UserID = 0;
         bodyCtrlData.jointRotation = new Quaternion[22];
