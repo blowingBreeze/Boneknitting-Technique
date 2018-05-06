@@ -37,15 +37,6 @@ public class ZCameraController : MonoBehaviour
             transform.position += transform.right.normalized * fMoveRate;
         }
 
-        if(Input.GetKey(KeyCode.Q))
-        {
-            transform.position+=( new Vector3( 0, 0.2f, 0 ) );
-        }
-        if(Input.GetKey(KeyCode.E))
-        {
-            transform.position+=( new Vector3( 0f, -0.2f, 0 ) );
-        }
-
         if(Input.GetKeyDown(KeyCode.Mouse1))
         {
             vec3MouseStart = Input.mousePosition;

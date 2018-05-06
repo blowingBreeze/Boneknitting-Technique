@@ -15,6 +15,7 @@ public class RecordManager:MonoBehaviour
     private GameObject m_ChartCanvas;
     private ChartController m_RecordModeChartController;
 
+    private int m_nFrameCount;
     private void Awake()
     {
         m_HumenModel = Instantiate(m_HumenModelPrefab);
@@ -25,6 +26,7 @@ public class RecordManager:MonoBehaviour
         bIsStartRecord = false;
         fTimeCount = 0.0f;
         m_FileWriter = new FileWriter();
+        m_nFrameCount = 0;
     }
 
     private void Update()
@@ -35,6 +37,12 @@ public class RecordManager:MonoBehaviour
             m_RecordController.Update();
             ModelCtrlData modelCtrlData = m_RecordController.GetCurrentData();
             m_FileWriter.CacheData(modelCtrlData);
+
+            m_RecordModeChartController.UpdateLineChart(ChartType.CHART_SPEED, m_nFrameCount, TrailCurveDrawCtrl.Instance().lastSpeed(TrailType.EG_S1));
+            m_RecordModeChartController.UpdateLineChart(ChartType.CHART_ACCELERATE, m_nFrameCount, TrailCurveDrawCtrl.Instance().lastAcceleration(TrailType.EG_S1));
+            m_RecordModeChartController.UpdateLineChart(ChartType.CHART_CURVATURE, m_nFrameCount, TrailCurveDrawCtrl.Instance().lastCurvature(TrailType.EG_S1));
+            m_RecordModeChartController.UpdateLineChart(ChartType.CHART_TORSION, m_nFrameCount, TrailCurveDrawCtrl.Instance().lastTorsion(TrailType.EG_S1));
+            ++m_nFrameCount;
         }
     }
 

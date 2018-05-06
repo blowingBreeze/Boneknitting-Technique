@@ -60,13 +60,13 @@ public class LineChart : MonoBehaviour
         time = 0f;
     }
 
-    private void Update()
-    {
-        time += Time.deltaTime;
-        float y = Random.Range(0, 10000 * Time.deltaTime);
-        UpdateCurveData(time, y, 0);
-        ShowDataOnMouse();
-    }
+    //private void Update()
+    //{
+    //    time += Time.deltaTime;
+    //    float y = Random.Range(0, 10000 * Time.deltaTime);
+    //    UpdateCurveData(time, y, 0);
+    //    ShowDataOnMouse();
+    //}
 
     // Update is called once per frame
     public void UpdateCurveData(float x, float y, float z)

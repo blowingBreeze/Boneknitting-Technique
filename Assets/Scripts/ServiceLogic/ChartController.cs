@@ -46,7 +46,7 @@ public class ChartController : MonoBehaviour
         }
     }
 
-    public void UpdateRefLineChart(ChartType chartType, float x, float y, float z)
+    public void UpdateRefLineChart(ChartType chartType, float x, float y, float z=0f)
     {
         switch (chartType)
         {
