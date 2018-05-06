@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using UnityEngine;
 namespace TrajectoryData
 {
     using Point = Vec3;
@@ -11,6 +11,7 @@ namespace TrajectoryData
         public float y;
         public float z;
         public Vec3(Vec3 p) { x = p.x; y = p.y; z = p.z; }
+        public Vec3(Vector3 p) { x = p.x; y = p.y; z = p.z; }
         public Vec3(float a, float b, float c) { x = a; y = b; z = c; }
 
         public static Vec3 operator +(Vec3 a, Vec3 b)

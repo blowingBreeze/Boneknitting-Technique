@@ -1,14 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Threading;
 
 public class DeviceCtrl
 {
 
-    private ModelCtrlData cur_ModelCtrlData=new ModelCtrlData();
+    private ModelCtrlData cur_ModelCtrlData = new ModelCtrlData();
     // private instance of the KinectManager
-    protected KinectManager kinectManager;
-    protected DTGloveManager gloveManager;
+    private KinectManager kinectManager;
+    private DTGloveManager gloveManager;
+    private LpSensorManager lpSensorManager;
+    private Thread lpThread;
 
     //初始化设备
     public bool InitDevice()
@@ -23,6 +26,18 @@ public class DeviceCtrl
         {
             gloveManager = DTGloveManager.instance;
         }
+        /*
+        if (lpSensorManager == null)
+        {
+            lpSensorManager = new LpSensorManager(ref cur_ModelCtrlData.wristCtrlData, 23333, "00:04:3E:9E:00:C5");
+
+            if (lpSensorManager.Init())
+            {
+                lpThread = new Thread(new ThreadStart(lpSensorManager.receiveData));
+                lpThread.Start();
+            }
+        }
+        */
 
         return true;
 
@@ -32,6 +47,8 @@ public class DeviceCtrl
     public void DisconnectDevice()
     {
         gloveManager.DisconnectDevice();
+        lpSensorManager.DisconnectDevice();
+        lpThread.Abort();
     }
 
     /// <summary>
