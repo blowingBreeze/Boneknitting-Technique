@@ -231,7 +231,10 @@ public class WristCtrlData
 {
     public Vector3 left_wrist_rotate;
     public Vector3 right_wrist_rotate;
-
+    //public Vector3 left_wrist_accelerometer;
+    //public Vector3 right_wrist_accelerometer;
+    //public Vector3 left_wrist_angular_velocity;
+    //public Vector3 right_wrist_angular_velocity;
     public string toStr()
     {
         string str = string.Format("{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t",

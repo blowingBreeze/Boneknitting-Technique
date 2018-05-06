@@ -30,6 +30,10 @@ public class TrailCurveDrawCtrl
 
         return trajctrl;
     }
+    public void startDraw()
+    {
+        GameObject.Find("DrawCurvesWithGL").GetComponent<DrawCurvesWithGL>().enabled = true;
+    }
 
         /// <summary>
         /// 此接口用于设置那个轨迹要绘制哪个不绘制
@@ -48,21 +52,23 @@ public class TrailCurveDrawCtrl
     /// <param name="modelCtrlData"></param>
     public void RecvTrailData(ModelCtrlData modelCtrlData)
     {
-        Trajectory[] trajs = new Trajectory[trajs_num];
-        for (int i = 0; i < trajs_num; ++i)
-        {
-            trajs[i] = new Trajectory();
-        }
 
-        TPose pt = new TPose();
-        pt.time = modelCtrlData.time.ToString();
-        pt.position = new Vec3(0.0f,0.0f,0.0f);
-        pt.azimuth = 0.0f;
-        pt.elevation = 0.0f;
-        pt.roll = 0.0f;
+        TPose pt1 = new TPose();
+        TPose pt2 = new TPose();
+        pt1.time = modelCtrlData.time.ToString();
+        pt1.position = new Vec3(modelCtrlData.bodyCtrlData.HandLeftPos);
+        pt1.azimuth = modelCtrlData.wristCtrlData.left_wrist_rotate.z;
+        pt1.elevation = modelCtrlData.wristCtrlData.left_wrist_rotate.y;
+        pt1.roll = modelCtrlData.wristCtrlData.left_wrist_rotate.x;
 
-        curMotion.getTraj(0).push_back(pt);
-        curMotion.getTraj(1).push_back(pt);
+        pt2.time = modelCtrlData.time.ToString();
+        pt2.position = new Vec3(modelCtrlData.bodyCtrlData.HandRightPos);
+        pt2.azimuth = modelCtrlData.wristCtrlData.right_wrist_rotate.z;
+        pt2.elevation = modelCtrlData.wristCtrlData.right_wrist_rotate.y;
+        pt2.roll = modelCtrlData.wristCtrlData.right_wrist_rotate.x;
+
+        curMotion.getTraj(0).push_back(pt1);
+        curMotion.getTraj(1).push_back(pt2);
 
     }
 
@@ -114,6 +120,7 @@ public class TrailCurveDrawCtrl
 
 public class TrailCurveAppraiseCtrl
 {
+    public static List<float> color_list = new List<float>();
     /// <summary>
     /// 接收两个轨迹数据，(用于轨迹分析)，每一帧调用
     /// </summary>
@@ -121,7 +128,7 @@ public class TrailCurveAppraiseCtrl
     /// <param name="AppraiseData">分析数据，需要对此数据进行分析</param>
     public void RecvCompairTrailData(ModelCtrlData refData, ModelCtrlData AppraiseData)
     {
-
+        
     }
 
     //根据之前的分析给出评分
