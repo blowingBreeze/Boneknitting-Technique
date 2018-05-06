@@ -16,6 +16,7 @@ public class MoviePlayManager : MonoBehaviour
     private VideoRateCtrl m_VIdeoRateController;
     private ChartController m_PlayModeChartController;
     private bool bIsPlay;
+    private int m_nFrameCount;
 
     private void Awake()
     {
@@ -29,6 +30,7 @@ public class MoviePlayManager : MonoBehaviour
         m_VIdeoRateController = null;
 
         bIsPlay = false;
+        m_nFrameCount = 0;
     }
 
     private void Update()
@@ -38,6 +40,12 @@ public class MoviePlayManager : MonoBehaviour
             m_VIdeoRateController.fCurrentTime += m_VIdeoRateController.fIntervalTime;
             var modelCtrlData = m_FileReader.PraseDataByTime(m_VIdeoRateController.fCurrentTime);
             m_PlayController.Update(modelCtrlData);
+
+            m_PlayModeChartController.UpdateLineChart(ChartType.CHART_SPEED, m_nFrameCount, TrailCurveDrawCtrl.Instance().lastSpeed(TrailType.EG_S1));
+            m_PlayModeChartController.UpdateLineChart(ChartType.CHART_ACCELERATE, m_nFrameCount, TrailCurveDrawCtrl.Instance().lastAcceleration(TrailType.EG_S1));
+            m_PlayModeChartController.UpdateLineChart(ChartType.CHART_CURVATURE, m_nFrameCount, TrailCurveDrawCtrl.Instance().lastCurvature(TrailType.EG_S1));
+            m_PlayModeChartController.UpdateLineChart(ChartType.CHART_TORSION, m_nFrameCount, TrailCurveDrawCtrl.Instance().lastTorsion(TrailType.EG_S1));
+            ++m_nFrameCount;
         }
     }
 

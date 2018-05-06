@@ -19,6 +19,7 @@ public class StudyModeManager : MonoBehaviour
     private GameObject m_ChartCanvas;
     private ChartController m_StudyModeChartController;
 
+    private int m_nFrameCount;
     // Use this for initialization
     void Awake()
     {
@@ -31,6 +32,7 @@ public class StudyModeManager : MonoBehaviour
         m_HumenModelRef= Instantiate(m_HumenModelPrefab);
         m_HumenModel = Instantiate(m_HumenModelPrefab);
         m_ChartCanvas = Instantiate(m_ChartCanvasPrefab);
+        m_nFrameCount = 0;
     }
 
     // Update is called once per frame
@@ -40,6 +42,16 @@ public class StudyModeManager : MonoBehaviour
         {
             m_StudyController.Update(fTimeCount, fTimeCount);
             fTimeCount += Time.deltaTime * 1000;
+
+            m_StudyModeChartController.UpdateLineChart(ChartType.CHART_SPEED, m_nFrameCount, TrailCurveDrawCtrl.Instance().lastSpeed(TrailType.EG_S1));
+            m_StudyModeChartController.UpdateLineChart(ChartType.CHART_ACCELERATE, m_nFrameCount, TrailCurveDrawCtrl.Instance().lastAcceleration(TrailType.EG_S1));
+            m_StudyModeChartController.UpdateLineChart(ChartType.CHART_CURVATURE, m_nFrameCount, TrailCurveDrawCtrl.Instance().lastCurvature(TrailType.EG_S1));
+            m_StudyModeChartController.UpdateLineChart(ChartType.CHART_TORSION, m_nFrameCount, TrailCurveDrawCtrl.Instance().lastTorsion(TrailType.EG_S1));
+            m_StudyModeChartController.UpdateRefLineChart(ChartType.CHART_SPEED, m_nFrameCount, TrailCurveDrawCtrl.Instance().lastSpeed(TrailType.EG_S1));
+            m_StudyModeChartController.UpdateRefLineChart(ChartType.CHART_ACCELERATE, m_nFrameCount, TrailCurveDrawCtrl.Instance().lastAcceleration(TrailType.EG_S1));
+            m_StudyModeChartController.UpdateRefLineChart(ChartType.CHART_CURVATURE, m_nFrameCount, TrailCurveDrawCtrl.Instance().lastCurvature(TrailType.EG_S1));
+            m_StudyModeChartController.UpdateRefLineChart(ChartType.CHART_TORSION, m_nFrameCount, TrailCurveDrawCtrl.Instance().lastTorsion(TrailType.EG_S1));
+            ++m_nFrameCount;
         }
     }
 
