@@ -14,7 +14,7 @@ public class PlayController
 
     private bool Init(GameObject model)
     {
-        m_ModelController = new ModelCtrl(model);
+        m_ModelController = model.GetComponent<ModelCtrl>();
         m_TrailController = TrailCurveDrawCtrl.Instance();
         return true;
     }

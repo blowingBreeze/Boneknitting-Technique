@@ -2,15 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ModelCtrl 
+public class ModelCtrl :MonoBehaviour
 {
     private HandCtrl m_HandController;
     private BodyCtrl m_BodyController;
 
-    public ModelCtrl(GameObject model)
+    private void Start()
     {
-        m_HandController = new HandCtrl();
-        m_BodyController = new BodyCtrl();
+        m_HandController = GetComponentInChildren<HandCtrl>();
+        m_BodyController = GetComponentInChildren<BodyCtrl>();
     }
 
     public void Init(GameObject model)
