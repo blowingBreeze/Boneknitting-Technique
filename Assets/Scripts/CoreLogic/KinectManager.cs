@@ -1092,11 +1092,41 @@ public class KinectManager : MonoBehaviour
             CalibrationText.GetComponent<GUIText>().text = "WAITING FOR USERS";
         }
         KinectInitialized = true;
+
+        bodyCtrl = new BodyCtrl();
+        bodyCtrlData = new BodyCtrlData();
+        //initBodyCtrlData
+        bodyCtrlData.userPosition = Vector3.zero;
+        bodyCtrlData.UserID = 0;
+        bodyCtrlData.jointRotation = new Quaternion[22];
+        for (int i = 0; i < 22; i++) bodyCtrlData.jointRotation[i] = Quaternion.identity;
+        bodyCtrlData.HandLeftPos = Vector3.zero;
+        bodyCtrlData.HandRightPos = Vector3.zero;
+        Debug.Log("KinectManager Awake !");
+    }
+    public void setUserPosition(Vector3 userPosition)
+    {
+        bodyCtrlData.userPosition = userPosition;
+    }
+    public void setUserID(uint UserID)
+    {
+        bodyCtrlData.UserID = UserID;
+    }
+    public void setJointRotation(Quaternion jointRotation, int index)
+    {
+        bodyCtrlData.jointRotation[index] = jointRotation;
+    }
+    public void setHandLeftPos(Vector3 HandLeftPos)
+    {
+        bodyCtrlData.HandLeftPos = HandLeftPos;
+    }
+    public void setHandRightPos(Vector3 HandRightPos)
+    {
+        bodyCtrlData.HandRightPos = HandRightPos;
     }
 
     void Update()
     {
-        Debug.Log("Kinect Manager Update !");
         if (KinectInitialized)
         {
             // needed by the KinectExtras' native wrapper to check for next frames
@@ -1134,10 +1164,10 @@ public class KinectManager : MonoBehaviour
                 {
                     //if(controller.Active)
                     {
-                        Debug.Log("KinectManager BodyCtrl Update !");
+                        //Debug.Log("KinectManager BodyCtrl Update !");
                         controller.UpdateAvatar(Player1ID);
-                        BodyCtrlData = controller.getBodyCtrlData();
-                        BodyCtrl = controller;
+                        bodyCtrlData = controller.getBodyCtrlData();
+                        bodyCtrl = controller;
                     }
                 }
 
@@ -1222,10 +1252,10 @@ public class KinectManager : MonoBehaviour
                 {
                     //if(controller.Active)
                     {
-                        Debug.Log("KinectManager BodyCtrl Update !");
+                        //Debug.Log("KinectManager BodyCtrl Update !");
                         controller.UpdateAvatar(Player2ID);
-                        BodyCtrlData = controller.getBodyCtrlData();
-                        BodyCtrl = controller;
+                        bodyCtrlData = controller.getBodyCtrlData();
+                        bodyCtrl = controller;
                     }
                 }
 
@@ -2214,17 +2244,17 @@ public class KinectManager : MonoBehaviour
     }
 
 
-    private BodyCtrlData BodyCtrlData;
+    private BodyCtrlData bodyCtrlData;
     public BodyCtrlData getBodyCtrlData()
     {
-        return BodyCtrlData;
+        return bodyCtrlData;
     }
 
 
-    private BodyCtrl BodyCtrl;
+    private BodyCtrl bodyCtrl;
     public BodyCtrl getBodyCtrl()
     {
-        return BodyCtrl;
+        return bodyCtrl;
     }
 }
 

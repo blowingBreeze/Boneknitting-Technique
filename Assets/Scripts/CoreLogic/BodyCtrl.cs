@@ -118,7 +118,8 @@ public class BodyCtrl : MonoBehaviour
         }
 
         // Get the position of the body and store it.
-        bodyCtrlData.userPosition = kinectManager.GetUserPosition(UserID);
+        //bodyCtrlData.userPosition = kinectManager.GetUserPosition(UserID);
+        kinectManager.setUserPosition(kinectManager.GetUserPosition(UserID));
 
         for (var boneIndex = 0; boneIndex < bones.Length; boneIndex++)
         {
@@ -130,13 +131,15 @@ public class BodyCtrl : MonoBehaviour
                 KinectWrapper.NuiSkeletonPositionIndex joint = boneIndex2JointMap[boneIndex];
                 TransformBone(UserID, joint, boneIndex, true);
             }
-            else bodyCtrlData.jointRotation[boneIndex] = Quaternion.identity;
+            else kinectManager.setJointRotation(Quaternion.identity, boneIndex);
         }
 
         KinectWrapper.NuiSkeletonPositionIndex HandLeftJointPos = boneIndex2JointMap[8];
-        bodyCtrlData.HandLeftPos = kinectManager.GetJointPosition(UserID, (int)HandLeftJointPos);
+        //bodyCtrlData.HandLeftPos = kinectManager.GetJointPosition(UserID, (int)HandLeftJointPos);
+        kinectManager.setHandLeftPos(kinectManager.GetJointPosition(UserID, (int)HandLeftJointPos));
         KinectWrapper.NuiSkeletonPositionIndex HandRightJointPos = boneIndex2JointMap[13];
-        bodyCtrlData.HandRightPos = kinectManager.GetJointPosition(UserID, (int)HandRightJointPos);
+        //bodyCtrlData.HandRightPos = kinectManager.GetJointPosition(UserID, (int)HandRightJointPos);
+        kinectManager.setHandRightPos(kinectManager.GetJointPosition(UserID, (int)HandRightJointPos));
     }
 
     // Update the avatar each frame.
@@ -150,7 +153,7 @@ public class BodyCtrl : MonoBehaviour
 
         for (var boneIndex = 0; boneIndex < bones.Length; boneIndex++)
         {
-            if (!bones[boneIndex])
+            if (!bones[boneIndex]|| bodyCtrlData.jointRotation[boneIndex] == Quaternion.identity)
                 continue;
 
             if (boneIndex2JointMap.ContainsKey(boneIndex))
@@ -250,7 +253,8 @@ public class BodyCtrl : MonoBehaviour
 
         // Smoothly transition to the new rotation
         Quaternion newRotation = Kinect2AvatarRot(jointRotation, boneIndex);
-        bodyCtrlData.jointRotation[boneIndex] = newRotation;
+        //bodyCtrlData.jointRotation[boneIndex] = newRotation;
+        kinectManager.setJointRotation(newRotation, boneIndex);
     }
 
     // Apply the rotations tracked by kinect to a special joint
