@@ -41,15 +41,15 @@ public class DTGloveManager : MonoBehaviour {
         instance = this;
         InitDevice();
     }
-    private void OnGUI()
-    {
-        if (caliFileLoaded)
-        {
-            GUI.Label(new Rect(10, 10, 200, 20), "Calibration File Loaded");
-        }
-        else
-        {
-            GUI.Label(new Rect(10, 10, 200, 20), "Calibration File Loading Failed");
-        }
-    }
+    //private void OnGUI()
+    //{
+    //    if (caliFileLoaded)
+    //    {
+    //        GUI.Label(new Rect(10, 10, 200, 20), "Calibration File Loaded");
+    //    }
+    //    else
+    //    {
+    //        GUI.Label(new Rect(10, 10, 200, 20), "Calibration File Loading Failed");
+    //    }
+    //}
 }
