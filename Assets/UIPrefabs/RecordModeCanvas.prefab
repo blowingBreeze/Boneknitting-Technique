@@ -1634,7 +1634,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b495cec6052ef26499fa13b27bb08303, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_HumenModelPrefab: {fileID: 1612977887708770, guid: 43490db463114c2439ec406c027afaf9,
+  m_HumenModelPrefab: {fileID: 1092805444626928, guid: a64019e32cc534c459dfab62db6fd9aa,
     type: 2}
   m_ChartCanvasPrefab: {fileID: 1584829846224094, guid: d31886912255871459a6602f88e62566,
     type: 2}
