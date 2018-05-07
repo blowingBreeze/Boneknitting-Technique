@@ -1096,6 +1096,7 @@ public class KinectManager : MonoBehaviour
 
     void Update()
     {
+        Debug.Log("Kinect Manager Update !");
         if (KinectInitialized)
         {
             // needed by the KinectExtras' native wrapper to check for next frames
@@ -1133,9 +1134,10 @@ public class KinectManager : MonoBehaviour
                 {
                     //if(controller.Active)
                     {
+                        Debug.Log("KinectManager BodyCtrl Update !");
                         controller.UpdateAvatar(Player1ID);
                         BodyCtrlData = controller.getBodyCtrlData();
-                        controller.MoveBody(BodyCtrlData);
+                        BodyCtrl = controller;
                     }
                 }
 
@@ -1220,9 +1222,10 @@ public class KinectManager : MonoBehaviour
                 {
                     //if(controller.Active)
                     {
+                        Debug.Log("KinectManager BodyCtrl Update !");
                         controller.UpdateAvatar(Player2ID);
                         BodyCtrlData = controller.getBodyCtrlData();
-                        controller.MoveBody(BodyCtrlData);
+                        BodyCtrl = controller;
                     }
                 }
 
@@ -2218,6 +2221,11 @@ public class KinectManager : MonoBehaviour
     }
 
 
+    private BodyCtrl BodyCtrl;
+    public BodyCtrl getBodyCtrl()
+    {
+        return BodyCtrl;
+    }
 }
 
 
