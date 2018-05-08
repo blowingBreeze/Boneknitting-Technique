@@ -31,6 +31,8 @@ public class FileReader
     /// <returns></returns>
     public ModelCtrlData PraseDataByTime(float fTime)
     {
+        Debug.Log("fTime");
+        Debug.Log(fTime);
         fTime = fTime / m_head_data.fTotalTime;
         fTime = Math.Abs(fTime);
         if(fTime>1.0f)
@@ -61,9 +63,8 @@ public class FileReader
                     frame.time = float.Parse(temp[0]);
 
                     int start_index = 1;
-
                     //5DT数据
-                    for (int i = start_index; i < FileConfig.FIVE_DT_NODE_NUM + start_index; ++i)
+                    for (int i = 0; i < FileConfig.FIVE_DT_NODE_NUM; ++i)
                     {
                         frame.handCtrlData.HandData[i] = float.Parse(temp[i]);
                     }

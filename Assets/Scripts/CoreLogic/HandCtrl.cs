@@ -6,7 +6,7 @@ public class HandCtrl : MonoBehaviour {
     public void MoveHand(HandCtrlData handdata)
     {
 
-        for (int i = 0; i < 15; i++)
+        for (int i = 0; i < 14; i++)
         {
             values[i] = handdata.HandData[i];//传递获取的手套数据
         }
