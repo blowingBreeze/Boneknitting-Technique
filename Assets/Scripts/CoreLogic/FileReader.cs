@@ -20,8 +20,8 @@ public class FileReader
     public FileReader(string strFilePath)
     {
         m_filepath = strFilePath;
-        readTxtFile(m_filepath,ref m_data_list);
         m_head_data = GetHeadFromFile(strFilePath);
+        readTxtFile(m_filepath,ref m_data_list);
     }
 
     /// <summary>
@@ -51,11 +51,6 @@ public class FileReader
                 line = sr.ReadLine();
                 var temp = line.Split('\t');
                 if (temp[0] != "MOVIE_DATA")
-                    return false;
-
-                line = sr.ReadLine();
-                temp = line.Split('\t');
-                if (temp[0] != "time")
                     return false;
 
                 ModelCtrlData frame = new ModelCtrlData();

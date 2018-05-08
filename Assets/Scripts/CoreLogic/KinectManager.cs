@@ -1058,21 +1058,24 @@ public class KinectManager : MonoBehaviour
         Player2Controllers = new List<BodyCtrl>();
 
         // Add each of the avatars' controllers into a list for each player.
-        foreach (GameObject avatar in Player1Avatars)
-        {
-            if (avatar != null && avatar.activeInHierarchy)
-            {
-                Player1Controllers.Add(avatar.GetComponent<BodyCtrl>());
-            }
-        }
+        /* foreach (GameObject avatar in Player1Avatars)
+         {
+             if (avatar != null && avatar.activeInHierarchy)
+             {
+                 Player1Controllers.Add(avatar.GetComponent<BodyCtrl>());
+             }
+         }*/
+        BodyCtrl BodyController = GetComponentInChildren<BodyCtrl>();
+        Player1Controllers.Add(BodyController);
+        Player2Controllers.Add(BodyController);
 
-        foreach (GameObject avatar in Player2Avatars)
-        {
-            if (avatar != null && avatar.activeInHierarchy)
-            {
-                Player2Controllers.Add(avatar.GetComponent<BodyCtrl>());
-            }
-        }
+        //foreach (GameObject avatar in Player2Avatars)
+        //{
+        //    if (avatar != null && avatar.activeInHierarchy)
+        //    {
+        //        Player2Controllers.Add(avatar.GetComponent<BodyCtrl>());
+        //    }
+        //}
 
         // create the list of gesture listeners
         gestureListeners = new List<KinectGestures.GestureListenerInterface>();
@@ -1158,13 +1161,14 @@ public class KinectManager : MonoBehaviour
             }
 
             // Update player 1's models if he/she is calibrated and the model is active.
+            Debug.Log(Player1Calibrated);
             if (Player1Calibrated)
             {
                 foreach (BodyCtrl controller in Player1Controllers)
                 {
                     //if(controller.Active)
                     {
-                        //Debug.Log("KinectManager BodyCtrl Update !");
+                        Debug.Log("KinectManager BodyCtrl Update !");
                         controller.UpdateAvatar(Player1ID);
                         bodyCtrlData = controller.getBodyCtrlData();
                         bodyCtrl = controller;
@@ -1252,7 +1256,7 @@ public class KinectManager : MonoBehaviour
                 {
                     //if(controller.Active)
                     {
-                        //Debug.Log("KinectManager BodyCtrl Update !");
+                        Debug.Log("KinectManager BodyCtrl Update !");
                         controller.UpdateAvatar(Player2ID);
                         bodyCtrlData = controller.getBodyCtrlData();
                         bodyCtrl = controller;

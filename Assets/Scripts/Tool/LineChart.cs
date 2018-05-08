@@ -280,8 +280,6 @@ public class LineChart : MonoBehaviour
         var tempViewPos = m_ChartCamera.ScreenToViewportPoint(mousePos);
         var tempWordPos = m_ChartCamera.ScreenToWorldPoint(mousePos);
 
-        Debug.Log(tempViewPos);
-
         if (tempViewPos.x < RightBorder&&tempViewPos.x>LeftBorder
             && tempViewPos.y > BottemBorder&&tempViewPos.y<UpBorder)
         {
