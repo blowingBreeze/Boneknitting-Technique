@@ -78,11 +78,9 @@ public class ConfigCenter
                 switch (xe.Name)
                 {
                     case XmlString.strSaveDirectoryNodeName:
-                        Debug.Log(xe.InnerText);
                         strSaveDirectory = xe.InnerText;
                         break;
                     case XmlString.strHistoryFilePathNodeName:
-                        Debug.Log(xe.InnerText);
                         HistoryFilePathList.Add(xe.InnerText);
                         break;
                 }

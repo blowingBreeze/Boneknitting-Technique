@@ -17,7 +17,7 @@ public class MovieCatalogueScript : MonoBehaviour
 
     private void ListMovieByDirectory(string strDirectoryPath)
     {
-        if(string.IsNullOrEmpty( strDirectoryPath))
+        if (string.IsNullOrEmpty(strDirectoryPath))
         {
             return;
         }
@@ -27,19 +27,22 @@ public class MovieCatalogueScript : MonoBehaviour
             var FileList = dir.GetFiles();
             for (int tFileIndex = 0; tFileIndex < FileList.Length; ++tFileIndex)
             {
-                AddListItembByFileName(FileList[tFileIndex].FullName);
+                if (ToolFunction.IsExtension(FileList[tFileIndex].FullName, ".txt"))
+                {
+                    AddListItembByFileName(FileList[tFileIndex].FullName);
+                }
             }
         }
     }
 
     private void ListMovieByFileNames(List<string> FileNameList)
     {
-        if(FileNameList==null)
+        if (FileNameList == null)
         {
             return;
         }
 
-        for(int tIndex=0;tIndex<FileNameList.Count;++tIndex)
+        for (int tIndex = 0; tIndex < FileNameList.Count; ++tIndex)
         {
             AddListItembByFileName(FileNameList[tIndex]);
         }
@@ -47,13 +50,13 @@ public class MovieCatalogueScript : MonoBehaviour
 
     public void AddListItembByFileName(string astrFileName)
     {
-        if(string.IsNullOrEmpty(astrFileName))
+        if (string.IsNullOrEmpty(astrFileName))
         {
             return;
         }
         var tempHeadData = FileReader.GetHeadFromFile(astrFileName);
         var tempListItem = Instantiate(m_MovieListItemPrefab, m_Content.transform);
-        tempListItem.GetComponent<Image>().overrideSprite=ToolFunction.CreateSpriteFromImage(tempHeadData.strPortraitPath);
+        tempListItem.GetComponent<Image>().overrideSprite = ToolFunction.CreateSpriteFromImage(tempHeadData.strPortraitPath);
         tempListItem.GetComponentInChildren<Text>().text = tempHeadData.strDoctorName;
         tempListItem.GetComponent<ClickMovieListItem>().SetFilePath(astrFileName);
     }

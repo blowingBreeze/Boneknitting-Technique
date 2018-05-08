@@ -9,6 +9,7 @@ public class RecordManager:MonoBehaviour
 
     private RecordController m_RecordController;
     private bool bIsStartRecord;
+    private bool bIsCalibrate;
     private float fTimeCount;
     private FileWriter m_FileWriter;
     private GameObject m_HumenModel;
@@ -24,6 +25,7 @@ public class RecordManager:MonoBehaviour
 
         m_RecordController = new RecordController(m_HumenModel);
         bIsStartRecord = false;
+        bIsCalibrate = false;
         fTimeCount = 0.0f;
         m_FileWriter = new FileWriter();
         m_nFrameCount = 0;
@@ -31,10 +33,14 @@ public class RecordManager:MonoBehaviour
 
     private void Update()
     {
+        if (bIsCalibrate)
+        {
+            m_RecordController.Update();
+        }
         if (bIsStartRecord)
         {
             fTimeCount += Time.deltaTime * 1000;
-            m_RecordController.Update();
+
             ModelCtrlData modelCtrlData = m_RecordController.GetCurrentData();
             m_FileWriter.CacheData(modelCtrlData);
 
@@ -64,6 +70,11 @@ public class RecordManager:MonoBehaviour
     public bool IsStartRecord()
     {
         return bIsStartRecord;
+    }
+
+    public void StartCalibrate()
+    {
+        bIsCalibrate = true;
     }
 
     public void StartOrStopRecord()

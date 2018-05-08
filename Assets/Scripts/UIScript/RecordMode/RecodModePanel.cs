@@ -41,6 +41,7 @@ public class RecodModePanel : MonoBehaviour
     {
         m_BtnBeginRecord.SetActive(true);
         m_RecordManager.InitDevice();
+        m_RecordManager.StartCalibrate();
         Destroy(m_BtnCalibrate);
     }
 
