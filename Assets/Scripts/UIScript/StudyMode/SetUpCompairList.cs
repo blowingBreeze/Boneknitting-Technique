@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SetUpCompairList : MonoBehaviour
 {
@@ -18,7 +19,6 @@ public class SetUpCompairList : MonoBehaviour
     {
         if (string.IsNullOrEmpty(strDirectoryPath))
         {
-            Debug.Log("null directory path");
             return;
         }
         var dir = new DirectoryInfo(strDirectoryPath);
@@ -27,7 +27,10 @@ public class SetUpCompairList : MonoBehaviour
             var FileList = dir.GetFiles();
             for (int tFileIndex = 0; tFileIndex < FileList.Length; ++tFileIndex)
             {
-                SetCompareListItemByFileName(FileList[tFileIndex].FullName);
+                if (ToolFunction.IsExtension(FileList[tFileIndex].FullName, ".txt"))
+                {
+                    AddListItembByFileName(FileList[tFileIndex].FullName);
+                }
             }
         }
     }
@@ -41,16 +44,15 @@ public class SetUpCompairList : MonoBehaviour
 
         for (int tIndex = 0; tIndex < FileNameList.Count; ++tIndex)
         {
-            SetCompareListItemByFileName(FileNameList[tIndex]);
+            AddListItembByFileName(FileNameList[tIndex]);
         }
     }
 
-    private void SetCompareListItemByFileName(string astrFileName)
+    private void AddListItembByFileName(string astrFileName)
     {
         var tempHeadData = FileReader.GetHeadFromFile(astrFileName);
         var tempListItem = Instantiate(m_ListItemPrefab, m_Content.transform);
-        ///依据头部信息载入图片,设置按钮信息 TODO
-        //tempListItem.GetComponent<Image>().overrideSprite;
+        tempListItem.GetComponentsInChildren<Image>()[1].overrideSprite= ToolFunction.CreateSpriteFromImage(tempHeadData.strPortraitPath);
         tempListItem.GetComponent<ClickCompairListItem>().SetFilePath(astrFileName);
     }
 }

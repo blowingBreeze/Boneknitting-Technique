@@ -166,11 +166,11 @@ public class ToolFunction
         }
        if(IsExtension(fileName,extension))
         {
-            return DataPath.strDefaultSaveFolderPath + fileName;
+            return DataPath.strDefaultSaveFolderPath +"/"+ fileName;
         }
         else
         {
-            return DataPath.strDefaultSaveFolderPath + fileName + extension;
+            return DataPath.strDefaultSaveFolderPath+"/" + fileName + extension;
         }
     }
 
