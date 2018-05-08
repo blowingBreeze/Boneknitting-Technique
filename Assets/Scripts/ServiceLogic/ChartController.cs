@@ -16,6 +16,22 @@ public class ChartController : MonoBehaviour
     public LineChart Torsion;
     public LineChart TorsionRef;
 
+    public void InitChart()
+    {
+        Speed.InitLineChart();
+        Accelerate.InitLineChart();
+        Curvature.InitLineChart();
+        Torsion.InitLineChart();
+    }
+
+    public void InitRefChart()
+    {
+        SpeedRef.InitLineChart();
+        AccelerateRef.InitLineChart();
+        CurvatureRef.InitLineChart();
+        TorsionRef.InitLineChart();
+    }
+
     // Update is called once per frame
     public void UpdateLineChart(ChartType chartType, float x, float y, float z = 0f)
     {

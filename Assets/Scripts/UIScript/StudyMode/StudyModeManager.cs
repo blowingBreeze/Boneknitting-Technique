@@ -99,6 +99,8 @@ public class StudyModeManager : MonoBehaviour
     private void InitStudyModeChartCanvas()
     {
         m_StudyModeChartController = m_ChartCanvas.GetComponent<ChartController>();
+        m_StudyModeChartController.InitChart();
+        m_StudyModeChartController.InitRefChart();
     }
 
     public GameObject GetStudyModeChartCanvas()

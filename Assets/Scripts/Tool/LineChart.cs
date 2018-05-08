@@ -24,8 +24,6 @@ public class LineChart : MonoBehaviour
     public int m_nAxisXLenth = 2;
     public int m_nAxisYLenth = 1;
 
-
-
     float m_fMaxX;
     float m_fMinX;
     int m_nMaxXIndex;
@@ -45,6 +43,25 @@ public class LineChart : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        m_Curve.positionCount = 0;
+        m_Points = new List<Vector3>();
+        m_fMaxX = 0.0f;
+        m_fMinX = 0f;
+        m_nMaxXIndex = 0;
+        m_nMinXIndex = 0;
+        m_fMaxY = 0.0f;
+        m_fMinY = 0f;
+        m_nMaxYIndex = 0;
+        m_nMinYIndex = 0;
+        m_fKx = 0f;
+        m_fKy = 0f;
+        m_bIsDisplay = true;
+        time = 0f;
+    }
+
+    public void InitLineChart()
+    {
+        m_Curve.positionCount = 0;
         m_Points = new List<Vector3>();
         m_fMaxX = 0.0f;
         m_fMinX = 0f;

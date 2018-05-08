@@ -105,6 +105,7 @@ public class MoviePlayManager : MonoBehaviour
     private void InitPlayModeChart()
     {
         m_PlayModeChartController = m_ChartCanvas.GetComponent<ChartController>();
+        m_PlayModeChartController.InitChart();
         m_PlayModeChartController.HideRefLineChart(ChartType.CHART_SPEED);
         m_PlayModeChartController.HideRefLineChart(ChartType.CHART_ACCELERATE);
         m_PlayModeChartController.HideRefLineChart(ChartType.CHART_CURVATURE);

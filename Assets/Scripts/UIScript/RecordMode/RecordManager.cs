@@ -93,6 +93,7 @@ public class RecordManager:MonoBehaviour
     private void InitRecordModelChartController()
     {
         m_RecordModeChartController = m_ChartCanvas.GetComponent<ChartController>();
+        m_RecordModeChartController.InitChart();
         m_RecordModeChartController.HideRefLineChart(ChartType.CHART_SPEED);
         m_RecordModeChartController.HideRefLineChart(ChartType.CHART_ACCELERATE);
         m_RecordModeChartController.HideRefLineChart(ChartType.CHART_CURVATURE);
