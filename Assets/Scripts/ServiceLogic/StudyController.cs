@@ -6,7 +6,7 @@ abstract public class StudyController
 {
     // Update is called once per frame
     abstract public bool Ready();
-    abstract public void Update(float fTimeRef, float fTime);
+    abstract public void Update(int nFrameCountRef, int nFrameCount);
     abstract public float GetAppraiseResult();
 }
 
@@ -34,10 +34,10 @@ internal class StudyControllerFileFile : StudyController
         return true;
     }
 
-    public override void Update(float fTimeRef, float fTime)
+    public override void Update(int nFrameCountRef, int nFrameCount)
     {
-        var modelDataRef = m_ReaderRef.PraseDataByTime(fTimeRef);
-        var modelData = m_Reader.PraseDataByTime(fTime);
+        var modelDataRef = m_ReaderRef.PraseDataByTime(nFrameCountRef);
+        var modelData = m_Reader.PraseDataByTime(nFrameCount);
         m_PlayControllerRef.Update(modelDataRef);
         m_PlayController.Update(modelData);
         m_TrailCurveAppraise.RecvCompairTrailData(modelDataRef, modelData);
@@ -74,9 +74,9 @@ internal class StudyControllerFileRecord :StudyController
         return true;
     }
 
-    public override void Update(float fTimeRef, float fTime)
+    public override void Update(int nFrameCountRef, int nFrameCount)
     {
-        var modelDataRef = m_ReaderRef.PraseDataByTime(fTimeRef);
+        var modelDataRef = m_ReaderRef.PraseDataByTime(nFrameCountRef);
         var modelData = m_RecordController.GetCurrentData();
         m_PlayControllerRef.Update(modelDataRef);
         m_RecordController.Update();

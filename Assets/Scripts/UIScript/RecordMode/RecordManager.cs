@@ -10,13 +10,14 @@ public class RecordManager:MonoBehaviour
     private RecordController m_RecordController;
     private bool bIsStartRecord;
     private bool bIsCalibrate;
-    private float fTimeCount;
+
+    private VideoRateCtrl m_RecordRateController;
+
     private FileWriter m_FileWriter;
     private GameObject m_HumenModel;
     private GameObject m_ChartCanvas;
     private ChartController m_RecordModeChartController;
 
-    private int m_nFrameCount;
     private void Awake()
     {
         m_HumenModel = Instantiate(m_HumenModelPrefab);
@@ -26,9 +27,10 @@ public class RecordManager:MonoBehaviour
         m_RecordController = new RecordController(m_HumenModel);
         bIsStartRecord = false;
         bIsCalibrate = false;
-        fTimeCount = 0.0f;
+        m_RecordRateController = new VideoRateCtrl(0, 1000 / 30, 0);
         m_FileWriter = new FileWriter();
-        m_nFrameCount = 0;
+
+        Application.targetFrameRate = 30;
     }
 
     private void Update()
@@ -39,16 +41,14 @@ public class RecordManager:MonoBehaviour
         }
         if (bIsStartRecord)
         {
-            fTimeCount += Time.deltaTime * 1000;
-
             ModelCtrlData modelCtrlData = m_RecordController.GetCurrentData();
             m_FileWriter.CacheData(modelCtrlData);
+            m_RecordModeChartController.UpdateLineChart(ChartType.CHART_SPEED, m_RecordRateController.nTotalFrameCount, TrailCurveDrawCtrl.Instance().lastSpeed(TrailType.EG_S1));
+            m_RecordModeChartController.UpdateLineChart(ChartType.CHART_ACCELERATE, m_RecordRateController.nTotalFrameCount, TrailCurveDrawCtrl.Instance().lastAcceleration(TrailType.EG_S1));
+            m_RecordModeChartController.UpdateLineChart(ChartType.CHART_CURVATURE, m_RecordRateController.nTotalFrameCount, TrailCurveDrawCtrl.Instance().lastCurvature(TrailType.EG_S1));
+            m_RecordModeChartController.UpdateLineChart(ChartType.CHART_TORSION, m_RecordRateController.nTotalFrameCount, TrailCurveDrawCtrl.Instance().lastTorsion(TrailType.EG_S1));
 
-            m_RecordModeChartController.UpdateLineChart(ChartType.CHART_SPEED, m_nFrameCount, TrailCurveDrawCtrl.Instance().lastSpeed(TrailType.EG_S1));
-            m_RecordModeChartController.UpdateLineChart(ChartType.CHART_ACCELERATE, m_nFrameCount, TrailCurveDrawCtrl.Instance().lastAcceleration(TrailType.EG_S1));
-            m_RecordModeChartController.UpdateLineChart(ChartType.CHART_CURVATURE, m_nFrameCount, TrailCurveDrawCtrl.Instance().lastCurvature(TrailType.EG_S1));
-            m_RecordModeChartController.UpdateLineChart(ChartType.CHART_TORSION, m_nFrameCount, TrailCurveDrawCtrl.Instance().lastTorsion(TrailType.EG_S1));
-            ++m_nFrameCount;
+            m_RecordRateController.nTotalFrameCount += 1;  //录制帧编号从0开始
         }
     }
 
@@ -87,9 +87,9 @@ public class RecordManager:MonoBehaviour
         m_FileWriter.SaveDataToFile(headData, strFileName, fStartTime, fEndTime);
     }
 
-    public ModelCtrlData GetModelCtrlDataByTime(float fTime)
+    public ModelCtrlData GetModelCtrlDataByTime(int nFrameCount)
     {
-        return m_FileWriter.GetModelCtrlDataByTime(fTime);
+        return m_FileWriter.GetModelCtrlDataByTime(nFrameCount);
     }
 
     /// <summary>
@@ -98,7 +98,12 @@ public class RecordManager:MonoBehaviour
     /// <returns></returns>
     public float GetTimeCount()
     {
-        return fTimeCount;
+        return m_RecordRateController.nTotalFrameCount*m_RecordRateController.fIntervalTime;
+    }
+
+    public int GetFrameCount()
+    {
+        return m_RecordRateController.nTotalFrameCount;
     }
 
     private void InitRecordModelChartController()

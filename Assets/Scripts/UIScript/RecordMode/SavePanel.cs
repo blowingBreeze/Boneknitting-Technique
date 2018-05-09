@@ -42,8 +42,8 @@ public class SavePanel : MonoBehaviour
         {
             m_fRightSliderValue = value;
         }
-        float tempTimeCount = m_RecordManager.GetTimeCount();
-        ModelCtrlData tempModelCtrlData = m_RecordManager.GetModelCtrlDataByTime(tempTimeCount * value);
+        int tempTotalFrameCount = m_RecordManager.GetFrameCount();
+        ModelCtrlData tempModelCtrlData = m_RecordManager.GetModelCtrlDataByTime((int)(tempTotalFrameCount * value));
         m_RecordManager.GetRecordController().GetPlayController().Update(tempModelCtrlData);
     }
 
@@ -75,17 +75,18 @@ public class SavePanel : MonoBehaviour
         {
             //根据输入的文件名和选择的头像，将文件存储到默认存储文件夹，将头像图片复制到默认头像存储文件夹
             m_FilePath = ToolFunction.GetMovieSaveFilePath( m_InputFilePath.text,".txt");
+            var tempPortrait = ToolFunction.GenerateStringID()+".jpg";
             m_PortraitPath = DataPath.strDefaultPortraitFolder + "/" + ToolFunction.GenerateStringID();
             ToolFunction.ImageSaveLocal(m_PortraitImage.mainTexture, m_PortraitPath);
 
             MovieHeadData tempData = new MovieHeadData();
             tempData.strDoctorName = m_InputDoctorName.text;
-            tempData.strPortraitPath = m_PortraitPath;
-            float tempTimeCount = m_RecordManager.GetTimeCount();
-            tempData.fCurrentTime = 0.0f;
-            float tempStartTime = tempTimeCount * m_fLeftSliderValue;
-            float tempEndTime = tempTimeCount * m_fRightSliderValue;
-            tempData.fTotalTime = tempEndTime - tempStartTime;
+            tempData.strPortrait = tempPortrait;
+            int tempTimeCount = m_RecordManager.GetFrameCount();
+            tempData.nCurrentFrame = 0;
+            int tempStartTime = (int)(tempTimeCount * m_fLeftSliderValue);
+            int tempEndTime = (int)(tempTimeCount * m_fRightSliderValue);
+            tempData.nTotalFrameCount = tempEndTime - tempStartTime;
             m_RecordManager.SaveDataToFile(
                 tempData,
                 m_FilePath,

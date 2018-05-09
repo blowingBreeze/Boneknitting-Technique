@@ -32,42 +32,82 @@ public class ModelCtrlData
 public class MovieHeadData
 {
     public string strDoctorName;
-    //头像路径，用来读取头像放在列表中
-    public string strPortraitPath;
+    //头像名，从Portrait文件夹中获取头像
+    public string strPortrait;
+    //l录制时间 如 2018050914  （年月日时）
+    public string strGenerateTime;
+    //录像裁剪后的总帧数
+    public int nTotalFrameCount;
+    //当前帧数
+    public int nCurrentFrame;
+    //录像帧率
+    public int nFPS;
 
-    //录像裁剪后的时长
-    public float fTotalTime;
-    //录像帧间隔时间
-    public float fIntervalTime;
-    //录像当前已播放时间
-    public float fCurrentTime;
+    /// <summary>
+    /// 将MovieHeadData转换成一个用'\t'分隔的字符串
+    /// </summary>
+    /// <returns></returns>
+    public string toStr()
+    {
+        string temp = string.Format("{0}\t{1}\t{2}\t{3:D}\t{4:D}", strDoctorName, strPortrait, strGenerateTime, nTotalFrameCount, nFPS);
+        return temp;
+    }
+
+    /// <summary>
+    /// 使用一个字符串来初始化MovieHeadData
+    /// </summary>
+    /// <param name="str"></param>
+    public void ReadData(string str)
+    {
+        string[] temp = str.Split('\t');
+        strDoctorName = temp[0];
+        strPortrait = temp[1];
+        strGenerateTime=temp[2];
+        nTotalFrameCount = int.Parse(temp[3]);
+        nFPS = int.Parse(temp[4]);
+    }
+
+    public MovieHeadData()
+    {
+
+    }
+
+    /// <summary>
+    /// 使用一个字符串来构造MovieHeadData
+    /// </summary>
+    /// <param name="str"></param>
+    public MovieHeadData(string str)
+    {
+        ReadData(str);
+    }
 }
 
 public class VideoRateCtrl
 {
-    private float m_fTotalTime;
-    public float fTotalTime
+    private int m_nTotalFrameCount;
+    public int nTotalFrameCount
     {
-        get { return m_fTotalTime; }
+        get { return m_nTotalFrameCount; }
+        set { m_nTotalFrameCount = value; }
     }
 
-    private float m_fCurrentTime;    //当前播放时刻
-    public float fCurrentTime
+    private int m_nCurrentFrame;    //当前帧
+    public int nCurrentFrame
     {
         set
         {
-            if(value>m_fTotalTime)
+            if(value>m_nTotalFrameCount)
             {
-                m_fCurrentTime = m_fTotalTime;
+                m_nCurrentFrame = m_nTotalFrameCount;
             }
             else
             {
-                m_fCurrentTime = value;
+                m_nCurrentFrame = value;
             }
         }
         get
         {
-            return m_fCurrentTime;
+            return m_nCurrentFrame;
         }
     }
 
@@ -101,15 +141,15 @@ public class VideoRateCtrl
         return m_fIntervalTime / m_fDefaultIntervalTime;
     }
 
-    public VideoRateCtrl(float fTotalTime, float fIntervalTime, float fCurrentTime = 0f)
+    public VideoRateCtrl(int nTotalFrameCount, float fIntervalTime, int nCurrentFrame= 0)
     {
-        Init(fTotalTime, fIntervalTime, fCurrentTime);
+        InitVideoRateCtrl(nTotalFrameCount, fIntervalTime, nCurrentFrame);
     }
 
-    public bool Init(float fTotalTime, float fIntervalTime, float fCurrentTime = 0f)
+    public bool InitVideoRateCtrl(int nTotalFrameCount, float fIntervalTime, int nCurrentFrame = 0)
     {
-        m_fTotalTime = fTotalTime;
-        m_fCurrentTime = fCurrentTime;
+        m_nTotalFrameCount = nTotalFrameCount;
+        m_nCurrentFrame = nCurrentFrame;
         m_fIntervalTime = fIntervalTime;
         m_fDefaultIntervalTime = fIntervalTime;
         return true;

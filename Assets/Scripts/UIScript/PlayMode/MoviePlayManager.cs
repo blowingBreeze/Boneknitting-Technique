@@ -16,7 +16,7 @@ public class MoviePlayManager : MonoBehaviour
     private VideoRateCtrl m_VIdeoRateController;
     private ChartController m_PlayModeChartController;
     private bool bIsPlay;
-    private int m_nFrameCount;
+    private float fTimeClock; //计时器以毫秒为单位
 
     private void Awake()
     {
@@ -30,23 +30,27 @@ public class MoviePlayManager : MonoBehaviour
         m_VIdeoRateController = null;
 
         bIsPlay = false;
-        m_nFrameCount = 0;
+        fTimeClock = 0f;
     }
 
     private void Update()
     {
         if (bIsPlay)
         {
-            m_VIdeoRateController.fCurrentTime += Time.deltaTime*1000;// m_VIdeoRateController.fIntervalTime;
-            var modelCtrlData = m_FileReader.PraseDataByTime(m_VIdeoRateController.fCurrentTime);
+            fTimeClock += Time.deltaTime * 1000;
+            if (fTimeClock >= m_VIdeoRateController.fIntervalTime)
+            {
 
-            m_PlayController.Update(modelCtrlData);
+                var modelCtrlData = m_FileReader.PraseDataByTime(m_VIdeoRateController.nCurrentFrame);
+                m_PlayController.Update(modelCtrlData);
+                m_PlayModeChartController.UpdateLineChart(ChartType.CHART_SPEED, m_VIdeoRateController.nCurrentFrame, TrailCurveDrawCtrl.Instance().lastSpeed(TrailType.EG_S1));
+                m_PlayModeChartController.UpdateLineChart(ChartType.CHART_ACCELERATE, m_VIdeoRateController.nCurrentFrame, TrailCurveDrawCtrl.Instance().lastAcceleration(TrailType.EG_S1));
+                m_PlayModeChartController.UpdateLineChart(ChartType.CHART_CURVATURE, m_VIdeoRateController.nCurrentFrame, TrailCurveDrawCtrl.Instance().lastCurvature(TrailType.EG_S1));
+                m_PlayModeChartController.UpdateLineChart(ChartType.CHART_TORSION, m_VIdeoRateController.nCurrentFrame, TrailCurveDrawCtrl.Instance().lastTorsion(TrailType.EG_S1));
 
-            m_PlayModeChartController.UpdateLineChart(ChartType.CHART_SPEED, m_nFrameCount, TrailCurveDrawCtrl.Instance().lastSpeed(TrailType.EG_S1));
-            m_PlayModeChartController.UpdateLineChart(ChartType.CHART_ACCELERATE, m_nFrameCount, TrailCurveDrawCtrl.Instance().lastAcceleration(TrailType.EG_S1));
-            m_PlayModeChartController.UpdateLineChart(ChartType.CHART_CURVATURE, m_nFrameCount, TrailCurveDrawCtrl.Instance().lastCurvature(TrailType.EG_S1));
-            m_PlayModeChartController.UpdateLineChart(ChartType.CHART_TORSION, m_nFrameCount, TrailCurveDrawCtrl.Instance().lastTorsion(TrailType.EG_S1));
-            ++m_nFrameCount;
+                m_VIdeoRateController.nCurrentFrame += 1;
+                fTimeClock = 0f;
+            }
         }
     }
 
@@ -55,7 +59,7 @@ public class MoviePlayManager : MonoBehaviour
         m_strFileName = strFileName;
         m_FileReader = new FileReader(strFileName);
         var tempDataHead = FileReader.GetHeadFromFile(strFileName);
-        m_VIdeoRateController = new VideoRateCtrl(tempDataHead.fTotalTime, tempDataHead.fIntervalTime, tempDataHead.fCurrentTime);
+        m_VIdeoRateController = new VideoRateCtrl(tempDataHead.nTotalFrameCount, 1000f/tempDataHead.nFPS);
     }
 
     public void StartOrStop()
@@ -83,19 +87,24 @@ public class MoviePlayManager : MonoBehaviour
         return m_VIdeoRateController.GetAccelerate();
     }
 
-    public void SetCurrentTime(float fRate)
+    public void SetCurrentTime(float  fRate)
     {
-        m_VIdeoRateController.fCurrentTime = m_VIdeoRateController.fTotalTime * fRate;
+        m_VIdeoRateController.nCurrentFrame =(int) (m_VIdeoRateController.nTotalFrameCount * fRate);
     }
+
 
     public float GetCurrentTime()
     {
-        return m_VIdeoRateController.fCurrentTime;
+        return m_VIdeoRateController.nCurrentFrame * m_VIdeoRateController.fIntervalTime;
     }
 
+    /// <summary>
+    /// 获取录像总时间
+    /// </summary>
+    /// <returns></returns>
     public float GetTotalTime()
     {
-        return m_VIdeoRateController.fTotalTime;
+        return m_VIdeoRateController.nTotalFrameCount * m_VIdeoRateController.fIntervalTime;
     }
 
     public PlayController GetPlayController()

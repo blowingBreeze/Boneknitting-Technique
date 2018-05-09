@@ -11,7 +11,6 @@ public class StudyModeManager : MonoBehaviour
     private string m_strFileName; //需对比的文件路径
     private bool bIsRecord;
     private bool bIsStart;
-    private float fTimeCount;
 
     private GameObject m_HumenModelRef;
     private GameObject m_HumenModel;
@@ -19,7 +18,10 @@ public class StudyModeManager : MonoBehaviour
     private GameObject m_ChartCanvas;
     private ChartController m_StudyModeChartController;
 
-    private int m_nFrameCount;
+    private VideoRateCtrl m_RefRateController;
+    private VideoRateCtrl m_RateController;
+    private float fRefTimeClock;
+    private float fTimeClock;
     // Use this for initialization
     void Awake()
     {
@@ -27,12 +29,13 @@ public class StudyModeManager : MonoBehaviour
         m_strFileName = null;
         bIsRecord = false;
         bIsStart = false;
-        fTimeCount = 0.0f;
 
         m_HumenModelRef= Instantiate(m_HumenModelPrefab);
         m_HumenModel = Instantiate(m_HumenModelPrefab);
         m_ChartCanvas = Instantiate(m_ChartCanvasPrefab);
-        m_nFrameCount = 0;
+
+        fRefTimeClock = 0f;
+        fTimeClock = 0f;
     }
 
     // Update is called once per frame
@@ -40,18 +43,27 @@ public class StudyModeManager : MonoBehaviour
     {
         if(bIsStart)
         {
-            m_StudyController.Update(fTimeCount, fTimeCount);
-            fTimeCount += Time.deltaTime * 1000;
+            fRefTimeClock += Time.deltaTime * 1000;
+            fTimeClock += Time.deltaTime * 1000;
+            if(fRefTimeClock>=m_RefRateController.fIntervalTime)
+            {
+                m_RefRateController.nCurrentFrame += 1;
+            }
+            if(fTimeClock>=m_RateController.fIntervalTime)
+            {
+                m_RateController.nCurrentFrame += 1;
+            }
 
-            m_StudyModeChartController.UpdateLineChart(ChartType.CHART_SPEED, m_nFrameCount, TrailCurveDrawCtrl.Instance().lastSpeed(TrailType.EG_S1));
-            m_StudyModeChartController.UpdateLineChart(ChartType.CHART_ACCELERATE, m_nFrameCount, TrailCurveDrawCtrl.Instance().lastAcceleration(TrailType.EG_S1));
-            m_StudyModeChartController.UpdateLineChart(ChartType.CHART_CURVATURE, m_nFrameCount, TrailCurveDrawCtrl.Instance().lastCurvature(TrailType.EG_S1));
-            m_StudyModeChartController.UpdateLineChart(ChartType.CHART_TORSION, m_nFrameCount, TrailCurveDrawCtrl.Instance().lastTorsion(TrailType.EG_S1));
-            m_StudyModeChartController.UpdateRefLineChart(ChartType.CHART_SPEED, m_nFrameCount, TrailCurveDrawCtrl.Instance().lastSpeed(TrailType.EG_S1));
-            m_StudyModeChartController.UpdateRefLineChart(ChartType.CHART_ACCELERATE, m_nFrameCount, TrailCurveDrawCtrl.Instance().lastAcceleration(TrailType.EG_S1));
-            m_StudyModeChartController.UpdateRefLineChart(ChartType.CHART_CURVATURE, m_nFrameCount, TrailCurveDrawCtrl.Instance().lastCurvature(TrailType.EG_S1));
-            m_StudyModeChartController.UpdateRefLineChart(ChartType.CHART_TORSION, m_nFrameCount, TrailCurveDrawCtrl.Instance().lastTorsion(TrailType.EG_S1));
-            ++m_nFrameCount;
+            m_StudyController.Update(m_RefRateController.nCurrentFrame, m_RateController.nCurrentFrame);
+            m_StudyModeChartController.UpdateRefLineChart(ChartType.CHART_SPEED, m_RefRateController.nCurrentFrame, TrailCurveDrawCtrl.Instance().lastSpeed(TrailType.EG_S1));
+            m_StudyModeChartController.UpdateRefLineChart(ChartType.CHART_ACCELERATE, m_RefRateController.nCurrentFrame, TrailCurveDrawCtrl.Instance().lastAcceleration(TrailType.EG_S1));
+            m_StudyModeChartController.UpdateRefLineChart(ChartType.CHART_CURVATURE, m_RefRateController.nCurrentFrame, TrailCurveDrawCtrl.Instance().lastCurvature(TrailType.EG_S1));
+            m_StudyModeChartController.UpdateRefLineChart(ChartType.CHART_TORSION, m_RefRateController.nCurrentFrame, TrailCurveDrawCtrl.Instance().lastTorsion(TrailType.EG_S1));
+            m_StudyModeChartController.UpdateLineChart(ChartType.CHART_SPEED, m_RateController.nCurrentFrame, TrailCurveDrawCtrl.Instance().lastSpeed(TrailType.EG_S1));
+            m_StudyModeChartController.UpdateLineChart(ChartType.CHART_ACCELERATE, m_RateController.nCurrentFrame, TrailCurveDrawCtrl.Instance().lastAcceleration(TrailType.EG_S1));
+            m_StudyModeChartController.UpdateLineChart(ChartType.CHART_CURVATURE, m_RateController.nCurrentFrame, TrailCurveDrawCtrl.Instance().lastCurvature(TrailType.EG_S1));
+            m_StudyModeChartController.UpdateLineChart(ChartType.CHART_TORSION, m_RateController.nCurrentFrame, TrailCurveDrawCtrl.Instance().lastTorsion(TrailType.EG_S1));
+
         }
     }
 
@@ -62,6 +74,8 @@ public class StudyModeManager : MonoBehaviour
             return;
         }
         m_strRefFileName =strFileName;
+        var tempHeadData = FileReader.GetHeadFromFile(m_strRefFileName);
+        m_RefRateController = new VideoRateCtrl(tempHeadData.nTotalFrameCount, 1000 / tempHeadData.nFPS);
     }
 
     public void SetCompairFileName(string strFileName)
@@ -71,11 +85,14 @@ public class StudyModeManager : MonoBehaviour
             return;
         }
         m_strFileName = strFileName;
+        var tempHeadData = FileReader.GetHeadFromFile(m_strRefFileName);
+        m_RateController = new VideoRateCtrl(tempHeadData.nTotalFrameCount, 1000 / tempHeadData.nFPS);
     }
 
     public void SetRecordAsTrue()
     {
         bIsRecord = true;
+        m_RateController = new VideoRateCtrl(0, 1000 / 30);
     }
 
     public void Prepare()
@@ -88,11 +105,11 @@ public class StudyModeManager : MonoBehaviour
         {
             m_StudyController = new StudyControllerFileFile(m_HumenModelRef, m_HumenModel, m_strRefFileName, m_strFileName);
         }
+        m_StudyController.Ready();
     }
 
     public void StartStudy()
     {
-        m_StudyController.Ready();
         bIsStart = !bIsStart;
     }
 
