@@ -9,7 +9,8 @@ public class FileWriter
     //此接口用于缓存每一帧传来的数据，（设备传来的数据）
     public void CacheData(ModelCtrlData modelCtrlData)
     {
-        cacheDataList.Add(modelCtrlData);
+        ModelCtrlData temp = ModelCtrlData.DeepCopy(modelCtrlData);
+        cacheDataList.Add(temp);
     }
 
     /// <summary>
@@ -42,7 +43,7 @@ public class FileWriter
         if (start <= 0.0F) start = 0.0F;
         if (end >= 1.0F) end = 1.0F;
 
-        int start_index = (int)(start * cacheDataList.Count);
+        int start_index = (int)(start * (cacheDataList.Count-1));
         int end_index = (int)(end * (cacheDataList.Count-1));
 
         try

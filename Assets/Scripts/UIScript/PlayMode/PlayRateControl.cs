@@ -33,7 +33,7 @@ public class PlayRateControl : MonoBehaviour
     public void OnTimeChanged()
     {
         m_MoviePlayManager.SetCurrentTime(m_TimeSlider.value);
-        Debug.Log("ValueChanged"+m_TimeSlider.value);
+        //Debug.Log("ValueChanged"+m_TimeSlider.value);
     }
 
     public void OnAccelerateClick()

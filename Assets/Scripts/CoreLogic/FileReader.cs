@@ -31,14 +31,13 @@ public class FileReader
     /// <returns></returns>
     public ModelCtrlData PraseDataByTime(float fTime)
     {
-        Debug.Log("fTime");
-        Debug.Log(fTime);
         fTime = fTime / m_head_data.fTotalTime;
         fTime = Math.Abs(fTime);
         if(fTime>1.0f)
             fTime = fTime - (float)Math.Ceiling(fTime) + 1;
 
         int index = (int)((m_data_list.Count - 1) * fTime);
+        
         return m_data_list[index];
     }
 
