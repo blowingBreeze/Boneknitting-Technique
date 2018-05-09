@@ -9,6 +9,7 @@ public class main : MonoBehaviour
     void Awake()
     {
         ConfigCenter.GetConfigCenterInstance().ConfigDataInit(DataPath.strConfigFilePath);
+        Application.targetFrameRate = 30;
     }
 
 

@@ -37,8 +37,9 @@ public class MoviePlayManager : MonoBehaviour
     {
         if (bIsPlay)
         {
-            m_VIdeoRateController.fCurrentTime += m_VIdeoRateController.fIntervalTime;
+            m_VIdeoRateController.fCurrentTime += Time.deltaTime*1000;// m_VIdeoRateController.fIntervalTime;
             var modelCtrlData = m_FileReader.PraseDataByTime(m_VIdeoRateController.fCurrentTime);
+
             m_PlayController.Update(modelCtrlData);
 
             m_PlayModeChartController.UpdateLineChart(ChartType.CHART_SPEED, m_nFrameCount, TrailCurveDrawCtrl.Instance().lastSpeed(TrailType.EG_S1));
