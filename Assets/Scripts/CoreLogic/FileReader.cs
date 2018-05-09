@@ -29,16 +29,11 @@ public class FileReader
     /// </summary>
     /// <param name="fTime">时间点，单位毫秒</param>
     /// <returns></returns>
-    public ModelCtrlData PraseDataByTime(float fTime)
+    public ModelCtrlData PraseDataByTime(int frame)
     {
-        fTime = fTime / m_head_data.fTotalTime;
-        fTime = Math.Abs(fTime);
-        if(fTime>1.0f)
-            fTime = fTime - (float)Math.Ceiling(fTime) + 1;
-
-        int index = (int)((m_data_list.Count - 1) * fTime);
-        
-        return m_data_list[index];
+        if (frame < 0) frame = 0;
+        if (frame > m_head_data.nTotalFrameCount - 1) frame = m_head_data.nTotalFrameCount - 1;
+        return m_data_list[frame];
     }
 
     public static bool readTxtFile(string path, ref List<ModelCtrlData> target)
@@ -144,11 +139,11 @@ public class FileReader
                 if (temp[0] != "MOVIE_DATA")
                     Debug.Log("The file could not be read:");
 
-                tempMovieHead.fCurrentTime = float.Parse(temp[1]);
-                tempMovieHead.fIntervalTime = float.Parse(temp[2]);
-                tempMovieHead.fTotalTime = float.Parse(temp[3]);
-                tempMovieHead.strDoctorName = temp[4];
-                tempMovieHead.strPortraitPath = temp[5];
+                tempMovieHead.strDoctorName = temp[1];
+                tempMovieHead.strPortrait = temp[2];
+                tempMovieHead.strGenerateTime = temp[3];
+                tempMovieHead.nTotalFrameCount = int.Parse(temp[4]);
+                tempMovieHead.nFPS = int.Parse(temp[5]);
 
                 sr.Close();
             }

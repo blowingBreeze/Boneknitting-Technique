@@ -18,15 +18,13 @@ public class FileWriter
     /// </summary>
     /// <param name="fTime">传入时刻，单位ms</param>
     /// <returns></returns>
-    public ModelCtrlData GetModelCtrlDataByTime(float fTime)
+    public ModelCtrlData GetModelCtrlDataByTime(int frame)
     {
-        
-        fTime = Math.Abs(fTime);
-        if (fTime > 1.0f)
-            fTime = fTime - (float)Math.Ceiling(fTime) + 1;
 
-        int index = (int)((cacheDataList.Count - 1) * fTime);
-        return cacheDataList[index];
+        if (frame < 0) frame = 0;
+        if (frame > cacheDataList.Count - 1) frame = cacheDataList.Count - 1;
+
+        return cacheDataList[frame];
     }
 
     /// <summary>
@@ -51,13 +49,7 @@ public class FileWriter
             using (StreamWriter sw = new StreamWriter(strFileName, false))
             {
                 //文件头
-                sw.Write("MOVIE_DATA\t");
-                sw.Write("{0}\t", headData.fCurrentTime);
-                sw.Write("{0}\t", headData.fIntervalTime);
-                sw.Write("{0}\t", headData.fTotalTime);
-                sw.Write("{0}\t", headData.strDoctorName);
-                sw.Write("{0}\t", headData.strPortraitPath);
-                sw.Write("\n");
+                sw.Write(headData.toStr());
 
                 //数据
                 for (int i = start_index; i < end_index; ++i)
