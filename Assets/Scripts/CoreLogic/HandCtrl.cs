@@ -10,13 +10,9 @@ public class HandCtrl : MonoBehaviour {
         {
             values[i] = handdata.HandData[i];//传递获取的手套数据
         }
-        //0,1,4,6,7,10,13号骨骼
-        Hands[0].transform.localRotation
-               = Quaternion.Euler(70f * values[0], 0f, -15f);
-        Hands[1].transform.localRotation
-            = Quaternion.Euler(85f * values[1], 0f, 0f);
+        //4,6,7,10,13号骨骼
         Hands[4].transform.localRotation
-            = Quaternion.Euler(110f * values[4], 0f, 0f);
+            = Quaternion.Euler(110f * values[4], 0f, 0f);//（Z，X，Y）
         Hands[6].transform.localRotation
             = Quaternion.Euler(90f * values[6], 0f, 0f);
         Hands[7].transform.localRotation
@@ -48,15 +44,19 @@ public class HandCtrl : MonoBehaviour {
         Hands[12].transform.localRotation
             = Quaternion.Euler(90 * values[12], 0f, ringmid + ringlittle);
 
-        //2号骨骼
-        float thumb_y = values[2] * 1.3f - values[0] * 0.3f;
-        if (thumb_y > 1) thumb_y = 1;
-        else if (thumb_y < 0) thumb_y = 0;
-        float thumb_x = 1 - values[2];
-        Hands[2].transform.localRotation
-            = Quaternion.Euler(30f * thumb_y,
-            -5f * thumb_x - 15f,
-            -30f * values[2] + 20f);
+        //拇指的控制（Y，X，Z）
+        Hands[0].transform.localRotation
+               = Quaternion.Euler(-45f * values[2], 0f, -30f * values[0]);
+        Hands[1].transform.localRotation
+            = Quaternion.Euler(0f, 0f, -85f * values[0]);
+        //float thumb_y = values[2] * 1.3f - values[0] * 0.3f;
+        //if (thumb_y > 1) thumb_y = 1;
+        //else if (thumb_y < 0) thumb_y = 0;
+        //float thumb_x = 1 - values[2];
+        //Hands[2].transform.localRotation
+        //    = Quaternion.Euler(30f * thumb_y,
+        //    -5f * thumb_x - 15f,
+        //    -30f * values[2] + 20f);
 
     }
 }
