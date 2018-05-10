@@ -38,8 +38,9 @@ public class ModelCtrlData
         return str;
     }
 
-    public void readData(string[] data)
+    public void readData(string str_data)
     {
+        var data = str_data.Split('\t');
         frame = int.Parse(data[0]);
         handCtrlData.readData(data);
         bodyCtrlData.readData(data);
@@ -76,12 +77,12 @@ public class MovieHeadData
     /// <param name="str"></param>
     public void ReadData(string str)
     {
-        string[] temp = str.Split('\t');
-        strDoctorName = temp[0];
-        strPortrait = temp[1];
-        strGenerateTime=temp[2];
-        nTotalFrameCount = int.Parse(temp[3]);
-        nFPS = int.Parse(temp[4]);
+        string[] temp = str.Split('\t');//该数组第一位是数据类型标志位，所以从有用数据从下标1开始
+        strDoctorName = temp[1];
+        strPortrait = temp[2];
+        strGenerateTime=temp[3];
+        nTotalFrameCount = int.Parse(temp[4]);
+        nFPS = int.Parse(temp[5]);
     }
 
     public MovieHeadData()
@@ -292,6 +293,18 @@ public class WristCtrlData
     //public Vector3 right_wrist_accelerometer;
     //public Vector3 left_wrist_angular_velocity;
     //public Vector3 right_wrist_angular_velocity;
+
+    public WristCtrlData()
+    {
+        left_wrist_rotate = new Vector3();
+        right_wrist_rotate = new Vector3();
+    }
+
+    public WristCtrlData(WristCtrlData data)
+    {
+        left_wrist_rotate = data.left_wrist_rotate;
+        right_wrist_rotate = new Vector3(data.right_wrist_rotate.x, data.right_wrist_rotate.y, data.right_wrist_rotate.z);
+    }
     public string toStr()
     {
         string str = string.Format("{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t",

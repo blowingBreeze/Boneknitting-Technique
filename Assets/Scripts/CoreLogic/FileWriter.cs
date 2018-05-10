@@ -18,13 +18,13 @@ public class FileWriter
     /// </summary>
     /// <param name="fTime">传入时刻，单位ms</param>
     /// <returns></returns>
-    public ModelCtrlData GetModelCtrlDataByTime(int frame)
+    public ModelCtrlData GetModelCtrlDataByTime(int nFrameCount)
     {
 
-        if (frame < 0) frame = 0;
-        if (frame > cacheDataList.Count - 1) frame = cacheDataList.Count - 1;
+        if (nFrameCount < 0) nFrameCount = 0;
+        if (nFrameCount > cacheDataList.Count - 1) nFrameCount = cacheDataList.Count - 1;
 
-        return cacheDataList[frame];
+        return cacheDataList[nFrameCount];
     }
 
     /// <summary>
@@ -34,15 +34,11 @@ public class FileWriter
     /// <param name="strFileName">文件存储全路径</param>
     /// <param name="fStartTime">裁剪前录像裁剪前端时间点，毫秒为单位</param>
     /// <param name="fEndTime">裁剪前录像裁剪后端时间点，毫秒为单位</param>
-    public void SaveDataToFile(MovieHeadData headData, string strFileName, float start = -1, float end = -1)
+    public void SaveDataToFile(MovieHeadData headData, string strFileName, int StartFrame = -1, float EndFrame = -1)
     {
-        if (cacheDataList.Count <= 0 || end <= start) return;
-        if (end <= 0.0F) return;
-        if (start <= 0.0F) start = 0.0F;
-        if (end >= 1.0F) end = 1.0F;
+        if (StartFrame < 0 || StartFrame >= cacheDataList.Count) StartFrame = 0;
+        if (EndFrame < 1 || EndFrame >= cacheDataList.Count) EndFrame = cacheDataList.Count - 1;
 
-        int start_index = (int)(start * (cacheDataList.Count-1));
-        int end_index = (int)(end * (cacheDataList.Count-1));
 
         try
         {
@@ -52,44 +48,9 @@ public class FileWriter
                 sw.Write(headData.toStr());
 
                 //数据
-                for (int i = start_index; i < end_index; ++i)
+                for (int i = StartFrame; i < EndFrame; ++i)
                 {
-                    //时间
-                    sw.Write("{0}\t", i);
-                    //5DT数据
-                    for (int j = 0; j < FileConfig.FIVE_DT_NODE_NUM; ++j)
-                    {
-                        sw.Write("{0}\t", cacheDataList[i].handCtrlData.HandData[j]);
-                    }
-                    //kinect数据
-                    for (int j = 0; j < FileConfig.KINECT_NODE_NUM; ++j)
-                    {
-                        sw.Write("{0}\t{1}\t{2}\t{3}\t",
-                            cacheDataList[i].bodyCtrlData.jointRotation[j].w,
-                            cacheDataList[i].bodyCtrlData.jointRotation[j].x,
-                            cacheDataList[i].bodyCtrlData.jointRotation[j].y,
-                            cacheDataList[i].bodyCtrlData.jointRotation[j].z);
-                    }
-                    //模型整体位置
-                    sw.Write("{0}\t{1}\t{2}\t",
-                        cacheDataList[i].bodyCtrlData.userPosition.x,
-                        cacheDataList[i].bodyCtrlData.userPosition.y,
-                        cacheDataList[i].bodyCtrlData.userPosition.z);
-                    //左右手腕位置
-                    sw.Write("{0}\t{1}\t{2}\t",
-                        cacheDataList[i].bodyCtrlData.HandLeftPos.x,
-                        cacheDataList[i].bodyCtrlData.HandLeftPos.y,
-                        cacheDataList[i].bodyCtrlData.HandLeftPos.z);
-                    sw.Write("{0}\t{1}\t{2}\t",
-                        cacheDataList[i].bodyCtrlData.HandRightPos.x,
-                        cacheDataList[i].bodyCtrlData.HandRightPos.y,
-                        cacheDataList[i].bodyCtrlData.HandRightPos.z);
-                    //用户ID
-                    sw.Write("{0}\t", cacheDataList[i].bodyCtrlData.UserID);
-                    //左右手腕旋转量
-                    sw.Write(cacheDataList[i].wristCtrlData.toStr());
-
-                    sw.Write("\n");
+                    sw.Write(cacheDataList[i].toStr());
                 }
 
                 sw.Close();
