@@ -36,6 +36,7 @@ public class FileWriter
     /// <param name="fEndTime">裁剪前录像裁剪后端时间点，毫秒为单位</param>
     public void SaveDataToFile(MovieHeadData headData, string strFileName, float start = -1, float end = -1)
     {
+
         if (cacheDataList.Count <= 0 || end <= start) return;
         if (end <= 0.0F) return;
         if (start <= 0.0F) start = 0.0F;

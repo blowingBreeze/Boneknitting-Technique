@@ -24,16 +24,14 @@ public class DTGloveManager : MonoBehaviour {
             glove.Close();
         }
         else {
-            GUI.Label(new Rect(10, 10, 200, 20), "The 5DTGlove has been disconnected!");
+            Debug.Log( "The 5DTGlove has been disconnected!");
         }
     }
 
    
     public void AcquireHandData(ref HandCtrlData Data)
     {
-        
         glove.GetSensorScaledAll(ref Data.HandData);
-        
     }
 
     void Start()
@@ -41,15 +39,4 @@ public class DTGloveManager : MonoBehaviour {
         instance = this;
         InitDevice();
     }
-    //private void OnGUI()
-    //{
-    //    if (caliFileLoaded)
-    //    {
-    //        GUI.Label(new Rect(10, 10, 200, 20), "Calibration File Loaded");
-    //    }
-    //    else
-    //    {
-    //        GUI.Label(new Rect(10, 10, 200, 20), "Calibration File Loading Failed");
-    //    }
-    //}
 }

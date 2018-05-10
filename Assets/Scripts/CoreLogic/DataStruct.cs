@@ -10,7 +10,6 @@ public class ModelCtrlData
     public BodyCtrlData bodyCtrlData = new BodyCtrlData();
     public WristCtrlData wristCtrlData = new WristCtrlData();
 
-
     public static ModelCtrlData DeepCopy(ModelCtrlData obj)
     {
         object retval;
@@ -191,7 +190,7 @@ public enum ChartType
 
 public class HandCtrlData
 {
-    public float[] HandData=new float[14];
+    public float[] HandData;
 
     public string toStr()
     {
@@ -210,6 +209,24 @@ public class HandCtrlData
         for (int i = start_index; i < FileConfig.FIVE_DT_NODE_NUM + start_index; ++i)
         {
             HandData[i] = float.Parse(data[i]);
+        }
+    }
+
+    public HandCtrlData()
+    {
+        HandData = new float[14];
+    }
+
+    /// <summary>
+    /// 复制构造函数
+    /// </summary>
+    /// <param name="data"></param>
+    public HandCtrlData(HandCtrlData data)
+    {
+        HandData = new float[14];
+        for(int i = 0; i < 14; ++i)
+        {
+            HandData[i] = data.HandData[i];
         }
     }
 }
