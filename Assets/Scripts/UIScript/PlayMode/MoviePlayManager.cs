@@ -41,7 +41,7 @@ public class MoviePlayManager : MonoBehaviour
             if (fTimeClock >= m_VIdeoRateController.fIntervalTime)
             {
 
-                var modelCtrlData = m_FileReader.PraseDataByTime(m_VIdeoRateController.nCurrentFrame);
+                var modelCtrlData = m_FileReader.PraseDataByFrameCount(m_VIdeoRateController.nCurrentFrame);
                 m_PlayController.Update(modelCtrlData);
                 m_PlayModeChartController.UpdateLineChart(ChartType.CHART_SPEED, m_VIdeoRateController.nCurrentFrame, TrailCurveDrawCtrl.Instance().lastSpeed(TrailType.EG_S1));
                 m_PlayModeChartController.UpdateLineChart(ChartType.CHART_ACCELERATE, m_VIdeoRateController.nCurrentFrame, TrailCurveDrawCtrl.Instance().lastAcceleration(TrailType.EG_S1));

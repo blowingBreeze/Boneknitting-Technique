@@ -82,9 +82,9 @@ public class RecordManager:MonoBehaviour
         bIsStartRecord = !bIsStartRecord;
     }
 
-    public void SaveDataToFile(MovieHeadData headData, string strFileName, float fStartTime = -1, float fEndTime = -1)
+    public void SaveDataToFile(MovieHeadData headData, string strFileName, int nStartTime = -1, int nEndTime = -1)
     {
-        m_FileWriter.SaveDataToFile(headData, strFileName, fStartTime, fEndTime);
+        m_FileWriter.SaveDataToFile(headData, strFileName, nStartTime, nEndTime);
     }
 
     public ModelCtrlData GetModelCtrlDataByTime(int nFrameCount)

@@ -6,24 +6,23 @@ using UnityEngine;
 public class ModelCtrlData
 {
     public int frame;
-    public HandCtrlData handCtrlData = new HandCtrlData();
-    public BodyCtrlData bodyCtrlData = new BodyCtrlData();
-    public WristCtrlData wristCtrlData = new WristCtrlData();
+    public HandCtrlData handCtrlData;
+    public BodyCtrlData bodyCtrlData;
+    public WristCtrlData wristCtrlData;
 
-    public static ModelCtrlData DeepCopy(ModelCtrlData obj)
+    public ModelCtrlData()
     {
-        object retval;
-        using (MemoryStream ms = new MemoryStream())
-        {
-            BinaryFormatter bf = new BinaryFormatter();
-            //序列化成流
-            bf.Serialize(ms, obj);
-            ms.Seek(0, SeekOrigin.Begin);
-            //反序列化成对象
-            retval = bf.Deserialize(ms);
-            ms.Close();
-        }
-        return (ModelCtrlData)retval;
+        handCtrlData = new HandCtrlData();
+        bodyCtrlData = new BodyCtrlData();
+        wristCtrlData = new WristCtrlData();
+    }
+
+    public  ModelCtrlData(ModelCtrlData obj)
+    {
+        handCtrlData = new HandCtrlData(obj.handCtrlData);
+        bodyCtrlData = new BodyCtrlData(obj.bodyCtrlData);
+        wristCtrlData = new WristCtrlData(obj.wristCtrlData);
+
     }
 
     public string toStr()
@@ -49,6 +48,8 @@ public class ModelCtrlData
 
 public class MovieHeadData
 {
+    //表示用于判断文件格式是否合法
+    public string strIdentify;
     public string strDoctorName;
     //头像名，从Portrait文件夹中获取头像
     public string strPortrait;
@@ -61,13 +62,25 @@ public class MovieHeadData
     //录像帧率
     public int nFPS;
 
+    public MovieHeadData(string identify,string name,string portrait,string time,int nTotalCount,int nCurrentFrame, int nFPS)
+    {
+        strIdentify = identify;
+        strDoctorName = name;
+        strPortrait = portrait;
+        strGenerateTime = time;
+        nTotalFrameCount = nTotalCount;
+        this.nCurrentFrame = nCurrentFrame;
+        this.nFPS = nFPS;
+    }
+
     /// <summary>
     /// 将MovieHeadData转换成一个用'\t'分隔的字符串
     /// </summary>
     /// <returns></returns>
     public string toStr()
     {
-        return string.Format("MOVIE_DATA\t{0}\t{1}\t{2}\t{3:D}\t{4:D}\n", strDoctorName, strPortrait, strGenerateTime, nTotalFrameCount, nFPS);
+        Debug.Log(string.Format("MOVIE_DATA\t{0}\t{1}\t{2}\t{3}\t{4:D}\t{5:D}\t{6:D}\n", strIdentify, strDoctorName, strPortrait, strGenerateTime, nTotalFrameCount, nCurrentFrame, nFPS));
+        return string.Format("MOVIE_DATA\t{0}\t{1}\t{2}\t{3}\t{4:D}\t{5:D}\t{6:D}\n", strIdentify,strDoctorName, strPortrait, strGenerateTime, nTotalFrameCount,nCurrentFrame, nFPS);
     }
 
     /// <summary>
@@ -77,18 +90,17 @@ public class MovieHeadData
     public void ReadData(string str)
     {
         string[] temp = str.Split('\t');//该数组第一位是数据类型标志位，所以从有用数据从下标1开始
+        strIdentify = temp[0];
         strDoctorName = temp[1];
         strPortrait = temp[2];
         strGenerateTime=temp[3];
+        Debug.Log(temp[4]);
         nTotalFrameCount = int.Parse(temp[4]);
-        nFPS = int.Parse(temp[5]);
+        nCurrentFrame = int.Parse(temp[5]);
+        nFPS = int.Parse(temp[6]);
+
+        Debug.Log(strIdentify+"---"+strDoctorName + "---" + strPortrait + "---" + strGenerateTime + "---" + nTotalFrameCount + "---" +nCurrentFrame+"---"+ nFPS + "---");
     }
-
-    public MovieHeadData()
-    {
-
-    }
-
     /// <summary>
     /// 使用一个字符串来构造MovieHeadData
     /// </summary>
@@ -233,7 +245,7 @@ public class HandCtrlData
 }
 public class BodyCtrlData
 {
-    public Quaternion[] jointRotation = new Quaternion[22];
+    public Quaternion[] jointRotation;
     public Vector3 userPosition;
     public Vector3 HandLeftPos;
     public Vector3 HandRightPos;
@@ -301,6 +313,25 @@ public class BodyCtrlData
         //用户ID
         UserID = uint.Parse(data[start_index]);
     }
+
+    public BodyCtrlData()
+    {
+        jointRotation = new Quaternion[22];
+    }
+
+    public BodyCtrlData(BodyCtrlData data)
+    {
+        jointRotation = new Quaternion[22];
+        for(int i=0;i<jointRotation.Length;++i)
+        {
+            jointRotation[i] = data.jointRotation[i];
+        }
+        userPosition = data.userPosition;
+        HandLeftPos = data.HandLeftPos;
+        HandRightPos = data.HandRightPos;
+        UserID = data.UserID;
+    }
+
 }
 public class WristCtrlData
 {

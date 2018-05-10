@@ -36,8 +36,8 @@ internal class StudyControllerFileFile : StudyController
 
     public override void Update(int nFrameCountRef, int nFrameCount)
     {
-        var modelDataRef = m_ReaderRef.PraseDataByTime(nFrameCountRef);
-        var modelData = m_Reader.PraseDataByTime(nFrameCount);
+        var modelDataRef = m_ReaderRef.PraseDataByFrameCount(nFrameCountRef);
+        var modelData = m_Reader.PraseDataByFrameCount(nFrameCount);
         m_PlayControllerRef.Update(modelDataRef);
         m_PlayController.Update(modelData);
         m_TrailCurveAppraise.RecvCompairTrailData(modelDataRef, modelData);
@@ -76,7 +76,7 @@ internal class StudyControllerFileRecord :StudyController
 
     public override void Update(int nFrameCountRef, int nFrameCount)
     {
-        var modelDataRef = m_ReaderRef.PraseDataByTime(nFrameCountRef);
+        var modelDataRef = m_ReaderRef.PraseDataByFrameCount(nFrameCountRef);
         var modelData = m_RecordController.GetCurrentData();
         m_PlayControllerRef.Update(modelDataRef);
         m_RecordController.Update();

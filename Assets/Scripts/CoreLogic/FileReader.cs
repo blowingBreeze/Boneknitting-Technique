@@ -21,15 +21,15 @@ public class FileReader
     {
         m_filepath = strFilePath;
         m_head_data = GetHeadFromFile(strFilePath);
-        readTxtFile(m_filepath,ref m_data_list);
+        readTxtFile(m_filepath, ref m_data_list);
     }
 
     /// <summary>
-    /// 获取文件中某个时间点的数据 （也是每帧调用）
+    /// 通过帧编号获取模型控制数据
     /// </summary>
-    /// <param name="fTime">时间点，单位毫秒</param>
+    /// <param name="nFrameCount">帧编号</param>
     /// <returns></returns>
-    public ModelCtrlData PraseDataByTime(int nFrameCount)
+    public ModelCtrlData PraseDataByFrameCount(int nFrameCount)
     {
         if (nFrameCount < 0) nFrameCount = 0;
         if (nFrameCount > m_head_data.nTotalFrameCount - 1) nFrameCount = m_head_data.nTotalFrameCount - 1;
