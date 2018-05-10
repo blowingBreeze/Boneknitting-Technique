@@ -68,7 +68,7 @@ public class MovieHeadData
     /// <returns></returns>
     public string toStr()
     {
-        return string.Format("MOVIE_DATA\t{0}\t{1}\t{2}\t{3:D}\t{4:D}", strDoctorName, strPortrait, strGenerateTime, nTotalFrameCount, nFPS);
+        return string.Format("MOVIE_DATA\t{0}\t{1}\t{2}\t{3:D}\t{4:D}\n", strDoctorName, strPortrait, strGenerateTime, nTotalFrameCount, nFPS);
     }
 
     /// <summary>
@@ -303,7 +303,7 @@ public class WristCtrlData
     public WristCtrlData(WristCtrlData data)
     {
         left_wrist_rotate = data.left_wrist_rotate;
-        right_wrist_rotate = new Vector3(data.right_wrist_rotate.x, data.right_wrist_rotate.y, data.right_wrist_rotate.z);
+        right_wrist_rotate = data.right_wrist_rotate;
     }
     public string toStr()
     {
