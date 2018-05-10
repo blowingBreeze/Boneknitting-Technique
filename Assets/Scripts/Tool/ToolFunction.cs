@@ -191,4 +191,9 @@ public class ToolFunction
         }
         return true;
     }
+
+    public static string GetDefaultPortraitPathByName(string PortraitName,string extension)
+    {
+        return string.Format("{0}/{1}{2}", DataPath.strDefaultPortraitFolder, PortraitName, extension);
+    }
 }

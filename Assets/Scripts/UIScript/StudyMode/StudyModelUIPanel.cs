@@ -100,7 +100,7 @@ public class StudyModelUIPanel : MonoBehaviour
             m_studyManager.SetRefFileName(strFileName);
             bIsRefFileSet = true;
             var tempHeadData = FileReader.GetHeadFromFile(strFileName);
-            m_BtnRefData.image.overrideSprite = ToolFunction.CreateSpriteFromImage(tempHeadData.strPortraitPath);
+            m_BtnRefData.image.overrideSprite = ToolFunction.CreateSpriteFromImage(ToolFunction.GetDefaultPortraitPathByName(tempHeadData.strPortrait, ".jpg"));
             m_BtnRefData.GetComponentInChildren<Text>().text = tempHeadData.strDoctorName;
             m_BtnRefData.GetComponentInChildren<Text>().alignment = TextAnchor.LowerCenter;
         }
@@ -110,7 +110,7 @@ public class StudyModelUIPanel : MonoBehaviour
             bIsCompairFileSet = true;
             m_CompairData.SetActive(true);
             var tempHeadData = FileReader.GetHeadFromFile(strFileName);
-            m_CompairData.GetComponentInChildren<Image>().overrideSprite = ToolFunction.CreateSpriteFromImage(tempHeadData.strPortraitPath);
+            m_CompairData.GetComponentInChildren<Image>().overrideSprite = ToolFunction.CreateSpriteFromImage(ToolFunction.GetDefaultPortraitPathByName( tempHeadData.strPortrait,".jpg"));
             m_CompairData.GetComponentInChildren<Text>().text = tempHeadData.strDoctorName;
         }
     }

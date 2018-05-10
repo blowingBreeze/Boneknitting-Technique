@@ -14,7 +14,6 @@ public class SavePanel : MonoBehaviour
 
     private RecordManager m_RecordManager;
 
-    private string m_PortraitPath;
     private string m_FilePath;
     private float m_fLeftSliderValue;
     private float m_fRightSliderValue;
@@ -25,7 +24,6 @@ public class SavePanel : MonoBehaviour
         m_CutSlider.eValueChange += CutSlider_OnValueChange;
         m_RecordManager = GetComponent<RecordManager>();
 
-        m_PortraitPath = null;
         m_FilePath = null;
         m_fLeftSliderValue = 0.0f;
         m_fRightSliderValue = 1.0f;
@@ -75,9 +73,8 @@ public class SavePanel : MonoBehaviour
         {
             //根据输入的文件名和选择的头像，将文件存储到默认存储文件夹，将头像图片复制到默认头像存储文件夹
             m_FilePath = ToolFunction.GetMovieSaveFilePath( m_InputFilePath.text,".txt");
-            var tempPortrait = ToolFunction.GenerateStringID()+".jpg";
-            m_PortraitPath = DataPath.strDefaultPortraitFolder + "/" + ToolFunction.GenerateStringID();
-            ToolFunction.ImageSaveLocal(m_PortraitImage.mainTexture, m_PortraitPath);
+            var tempPortrait = ToolFunction.GenerateStringID();
+            ToolFunction.ImageSaveLocal(m_PortraitImage.mainTexture, ToolFunction.GetDefaultPortraitPathByName(tempPortrait,".jpg"));
 
             MovieHeadData tempData = new MovieHeadData();
             tempData.strDoctorName = m_InputDoctorName.text;
