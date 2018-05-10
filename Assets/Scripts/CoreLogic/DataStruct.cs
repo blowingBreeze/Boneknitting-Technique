@@ -39,7 +39,6 @@ public class ModelCtrlData
     public void readData(string str_data)
     {
         var data = str_data.Split('\t');
-        Debug.Log(data.Length);
         frame = int.Parse(data[0]);
         handCtrlData.readData(data);
         bodyCtrlData.readData(data);
@@ -110,8 +109,6 @@ public class MovieHeadData
             nCurrentFrame = 0;
             nFPS = 0;
         }
-
-        Debug.Log(strIdentify+"---"+strDoctorName + "---" + strPortrait + "---" + strGenerateTime + "---" + nTotalFrameCount + "---" +nCurrentFrame+"---"+ nFPS + "---");
     }
     /// <summary>
     /// 使用一个字符串来构造MovieHeadData

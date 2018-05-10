@@ -13,27 +13,25 @@ public class PlayRateControl : MonoBehaviour
     public Sprite m_Stopping;
 
     private MoviePlayManager m_MoviePlayManager;
-    private string m_strTotalTime;
 
     private void Start()
     {
         m_MoviePlayManager = GetComponent<MoviePlayManager>();
-        m_strTotalTime = ToolFunction.TranslateToMMSS(m_MoviePlayManager.GetTotalTime());
     }
 
     public void LateUpdate()
     {
         if (m_MoviePlayManager.IsStart())
         {
-            m_TimeCount.text = ToolFunction.TranslateToMMSS( m_MoviePlayManager.GetCurrentTime()) + "/" + m_strTotalTime;
-            m_TimeSlider.value = m_MoviePlayManager.GetCurrentTime() / m_MoviePlayManager.GetTotalTime();
+            m_TimeCount.text = ToolFunction.TranslateToMMSS( m_MoviePlayManager.GetCurrentTime()) + "/" + ToolFunction.TranslateToMMSS(m_MoviePlayManager.GetTotalTime());
+            Debug.Log(m_MoviePlayManager.GetCurrentPlayRate()+"CURRENT+++++");
+            m_TimeSlider.value = m_MoviePlayManager.GetCurrentPlayRate();
         }
     }
 
     public void OnTimeChanged()
     {
-        m_MoviePlayManager.SetCurrentTime(m_TimeSlider.value);
-        //Debug.Log("ValueChanged"+m_TimeSlider.value);
+        m_MoviePlayManager.SetCurrentFrame(m_TimeSlider.value);
     }
 
     public void OnAccelerateClick()

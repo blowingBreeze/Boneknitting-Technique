@@ -31,16 +31,14 @@ public class MoviePlayManager : MonoBehaviour
 
         bIsPlay = false;
         fTimeClock = 0f;
+
+        Application.targetFrameRate = 60;
     }
 
     private void Update()
     {
         if (bIsPlay)
         {
-            fTimeClock += Time.deltaTime * 1000;
-            if (fTimeClock >= m_VIdeoRateController.fIntervalTime)
-            {
-
                 var modelCtrlData = m_FileReader.PraseDataByFrameCount(m_VIdeoRateController.nCurrentFrame);
                 m_PlayController.Update(modelCtrlData);
                 m_PlayModeChartController.UpdateLineChart(ChartType.CHART_SPEED, m_VIdeoRateController.nCurrentFrame, TrailCurveDrawCtrl.Instance().lastSpeed(TrailType.EG_S1));
@@ -48,10 +46,8 @@ public class MoviePlayManager : MonoBehaviour
                 m_PlayModeChartController.UpdateLineChart(ChartType.CHART_CURVATURE, m_VIdeoRateController.nCurrentFrame, TrailCurveDrawCtrl.Instance().lastCurvature(TrailType.EG_S1));
                 m_PlayModeChartController.UpdateLineChart(ChartType.CHART_TORSION, m_VIdeoRateController.nCurrentFrame, TrailCurveDrawCtrl.Instance().lastTorsion(TrailType.EG_S1));
 
-                m_VIdeoRateController.nCurrentFrame += 1;
-                fTimeClock = 0f;
-            }
-        }
+                m_VIdeoRateController.nCurrentFrame +=1;
+            }       
     }
 
     public void SetFileName(string strFileName)
@@ -87,11 +83,10 @@ public class MoviePlayManager : MonoBehaviour
         return m_VIdeoRateController.GetAccelerate();
     }
 
-    public void SetCurrentTime(float  fRate)
+    public void SetCurrentFrame(float  fRate)
     {
         m_VIdeoRateController.nCurrentFrame =(int) (m_VIdeoRateController.nTotalFrameCount * fRate);
     }
-
 
     public float GetCurrentTime()
     {
@@ -105,6 +100,16 @@ public class MoviePlayManager : MonoBehaviour
     public float GetTotalTime()
     {
         return m_VIdeoRateController.nTotalFrameCount * m_VIdeoRateController.fIntervalTime;
+    }
+
+    /// <summary>
+    /// 返回当前播放比例
+    /// </summary>
+    /// <returns></returns>
+    public float GetCurrentPlayRate()
+    {
+        float temp = m_VIdeoRateController.nCurrentFrame;
+        return temp / m_VIdeoRateController.nTotalFrameCount;
     }
 
     public PlayController GetPlayController()

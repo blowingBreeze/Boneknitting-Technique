@@ -52,7 +52,7 @@ public class SetUpCompairList : MonoBehaviour
     {
         var tempHeadData = FileReader.GetHeadFromFile(astrFileName);
         var tempListItem = Instantiate(m_ListItemPrefab, m_Content.transform);
-        tempListItem.GetComponentsInChildren<Image>()[1].overrideSprite= ToolFunction.CreateSpriteFromImage(DataPath.strDefaultPortraitFolder+"/"+tempHeadData.strPortrait);
+        tempListItem.GetComponentsInChildren<Image>()[1].overrideSprite= ToolFunction.CreateSpriteFromImage(ToolFunction.GetDefaultPortraitPathByName( tempHeadData.strPortrait,".jpg"));
         tempListItem.GetComponent<ClickCompairListItem>().SetFilePath(astrFileName);
     }
 }
