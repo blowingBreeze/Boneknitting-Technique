@@ -29,11 +29,11 @@ public class FileReader
     /// </summary>
     /// <param name="fTime">时间点，单位毫秒</param>
     /// <returns></returns>
-    public ModelCtrlData PraseDataByTime(int frame)
+    public ModelCtrlData PraseDataByTime(int nFrameCount)
     {
-        if (frame < 0) frame = 0;
-        if (frame > m_head_data.nTotalFrameCount - 1) frame = m_head_data.nTotalFrameCount - 1;
-        return m_data_list[frame];
+        if (nFrameCount < 0) nFrameCount = 0;
+        if (nFrameCount > m_head_data.nTotalFrameCount - 1) nFrameCount = m_head_data.nTotalFrameCount - 1;
+        return m_data_list[nFrameCount];
     }
 
     public static bool readTxtFile(string path, ref List<ModelCtrlData> target)
@@ -49,61 +49,10 @@ public class FileReader
                 if (temp[0] != "MOVIE_DATA")
                     return false;
 
-                ModelCtrlData frame = new ModelCtrlData();
                 while ((line = sr.ReadLine()) != null)
                 {
-                    temp = line.Split('\t');
-                    //时间
-                    frame.frame = int.Parse(temp[0]);
-
-                    int start_index = 1;
-                    //5DT数据
-                    for (int i = 0; i < FileConfig.FIVE_DT_NODE_NUM; ++i)
-                    {
-                        frame.handCtrlData.HandData[i] = float.Parse(temp[i]);
-                    }
-
-                    start_index = FileConfig.FIVE_DT_NODE_NUM + start_index;
-
-                    //Kinect数据
-                    for (int i = 0; i < FileConfig.KINECT_NODE_NUM; ++i)
-                    {
-                        frame.bodyCtrlData.jointRotation[i].w = float.Parse(temp[start_index + i * 4]);
-                        frame.bodyCtrlData.jointRotation[i].x = float.Parse(temp[start_index + i * 4 + 1]);
-                        frame.bodyCtrlData.jointRotation[i].y = float.Parse(temp[start_index + i * 4 + 2]);
-                        frame.bodyCtrlData.jointRotation[i].z = float.Parse(temp[start_index + i * 4 + 3]);
-                    }
-
-                    start_index = start_index + FileConfig.KINECT_NODE_NUM * 4;
-
-                    //模型整体位置
-                    frame.bodyCtrlData.userPosition.x = float.Parse(temp[start_index]);
-                    frame.bodyCtrlData.userPosition.y = float.Parse(temp[start_index + 1]);
-                    frame.bodyCtrlData.userPosition.z = float.Parse(temp[start_index + 2]);
-
-                    start_index = start_index + 3;
-                    //左右手腕位置
-                    frame.bodyCtrlData.userPosition.x = float.Parse(temp[start_index]);
-                    frame.bodyCtrlData.userPosition.y = float.Parse(temp[start_index + 1]);
-                    frame.bodyCtrlData.userPosition.z = float.Parse(temp[start_index + 2]);
-                    frame.bodyCtrlData.userPosition.x = float.Parse(temp[start_index + 3]);
-                    frame.bodyCtrlData.userPosition.y = float.Parse(temp[start_index + 4]);
-                    frame.bodyCtrlData.userPosition.z = float.Parse(temp[start_index + 5]);
-
-                    start_index = start_index + 6;
-                    
-                    //用户ID
-                    frame.bodyCtrlData.UserID = uint.Parse(temp[start_index]);
-
-                    start_index = start_index + 1;
-                    //左右手腕旋转量
-                    frame.wristCtrlData.left_wrist_rotate.x = float.Parse(temp[start_index]);
-                    frame.wristCtrlData.left_wrist_rotate.y = float.Parse(temp[start_index + 1]);
-                    frame.wristCtrlData.left_wrist_rotate.z = float.Parse(temp[start_index + 2]);
-                    frame.wristCtrlData.right_wrist_rotate.x = float.Parse(temp[start_index + 3]);
-                    frame.wristCtrlData.right_wrist_rotate.y = float.Parse(temp[start_index + 4]);
-                    frame.wristCtrlData.right_wrist_rotate.z = float.Parse(temp[start_index + 5]);
-
+                    ModelCtrlData frame = new ModelCtrlData();
+                    frame.readData(line);
                     target.Add(frame);
                 }
 
@@ -126,8 +75,6 @@ public class FileReader
     /// <returns></returns>
     public static MovieHeadData GetHeadFromFile(string strFilePath)
     {
-        var tempMovieHead = new MovieHeadData();
-
         string line = "";
 
         try
@@ -137,13 +84,7 @@ public class FileReader
                 line = sr.ReadLine();
                 var temp = line.Split('\t');
                 if (temp[0] != "MOVIE_DATA")
-                    Debug.Log("The file could not be read:");
-
-                tempMovieHead.strDoctorName = temp[1];
-                tempMovieHead.strPortrait = temp[2];
-                tempMovieHead.strGenerateTime = temp[3];
-                tempMovieHead.nTotalFrameCount = int.Parse(temp[4]);
-                tempMovieHead.nFPS = int.Parse(temp[5]);
+                    Debug.Log("The file is not a movie data!");
 
                 sr.Close();
             }
@@ -152,8 +93,10 @@ public class FileReader
         {
             Debug.Log("The file could not be read:");
             Debug.Log(e.Message);
+            line = "MOVIE_DATA/tFILE_ERROR";
         }
 
-        return tempMovieHead;
+
+        return new MovieHeadData(line);
     }
 }

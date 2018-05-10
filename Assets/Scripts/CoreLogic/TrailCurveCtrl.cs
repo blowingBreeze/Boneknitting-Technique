@@ -73,14 +73,14 @@ public class TrailCurveDrawCtrl
     }
 
     //接收参数，剪切保留某一曲线上在某时间端内的轨迹
-    public void ClipTrailWithinTime(float sTime, float eTime)
+    public void ClipTrailWithinTime(int sFrame, int eFrame)
     {
         if (curMotion == null)
             return;
 
         for (int i = 0; i < curMotion.size(); ++i)
         {
-            curMotion.getTraj(i).clip(sTime, eTime);
+            curMotion.getTraj(i).clip(sFrame, eFrame);
         }
     }
     //-------------轨迹图表----------------
