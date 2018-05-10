@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class ModelCtrlData
 {
-    public float time;
+    public int frame;
     public HandCtrlData handCtrlData = new HandCtrlData();
     public BodyCtrlData bodyCtrlData = new BodyCtrlData();
     public WristCtrlData wristCtrlData = new WristCtrlData();
@@ -29,7 +29,7 @@ public class ModelCtrlData
 
     public string toStr()
     {
-        string str = string.Format("{0}\t",time);
+        string str = string.Format("{0}\t",frame);
 
         str += handCtrlData.toStr();
         str += bodyCtrlData.toStr();
@@ -40,7 +40,7 @@ public class ModelCtrlData
 
     public void readData(string[] data)
     {
-        time = float.Parse(data[0]);
+        frame = int.Parse(data[0]);
         handCtrlData.readData(data);
         bodyCtrlData.readData(data);
         wristCtrlData.readData(data);

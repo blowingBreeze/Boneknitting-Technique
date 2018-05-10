@@ -55,13 +55,13 @@ public class TrailCurveDrawCtrl
 
         TPose pt1 = new TPose();
         TPose pt2 = new TPose();
-        pt1.time = modelCtrlData.time.ToString();
+        pt1.time = modelCtrlData.frame.ToString();
         pt1.position = new Vec3(modelCtrlData.bodyCtrlData.HandLeftPos);
         pt1.azimuth = modelCtrlData.wristCtrlData.left_wrist_rotate.z;
         pt1.elevation = modelCtrlData.wristCtrlData.left_wrist_rotate.y;
         pt1.roll = modelCtrlData.wristCtrlData.left_wrist_rotate.x;
 
-        pt2.time = modelCtrlData.time.ToString();
+        pt2.time = modelCtrlData.frame.ToString();
         pt2.position = new Vec3(modelCtrlData.bodyCtrlData.HandRightPos);
         pt2.azimuth = modelCtrlData.wristCtrlData.right_wrist_rotate.z;
         pt2.elevation = modelCtrlData.wristCtrlData.right_wrist_rotate.y;

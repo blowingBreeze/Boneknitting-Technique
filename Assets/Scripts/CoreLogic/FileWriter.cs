@@ -55,7 +55,7 @@ public class FileWriter
                 for (int i = start_index; i < end_index; ++i)
                 {
                     //时间
-                    sw.Write("{0}\t", cacheDataList[i].time);
+                    sw.Write("{0}\t", i);
                     //5DT数据
                     for (int j = 0; j < FileConfig.FIVE_DT_NODE_NUM; ++j)
                     {
