@@ -79,8 +79,8 @@ public class MovieHeadData
     /// <returns></returns>
     public string toStr()
     {
-        Debug.Log(string.Format("MOVIE_DATA\t{0}\t{1}\t{2}\t{3}\t{4:D}\t{5:D}\t{6:D}\n", strIdentify, strDoctorName, strPortrait, strGenerateTime, nTotalFrameCount, nCurrentFrame, nFPS));
-        return string.Format("MOVIE_DATA\t{0}\t{1}\t{2}\t{3}\t{4:D}\t{5:D}\t{6:D}\n", strIdentify,strDoctorName, strPortrait, strGenerateTime, nTotalFrameCount,nCurrentFrame, nFPS);
+        Debug.Log(string.Format("{0}\t{1}\t{2}\t{3}\t{4:D}\t{5:D}\t{6:D}\n", strIdentify, strDoctorName, strPortrait, strGenerateTime, nTotalFrameCount, nCurrentFrame, nFPS));
+        return string.Format("{0}\t{1}\t{2}\t{3}\t{4:D}\t{5:D}\t{6:D}\n", strIdentify,strDoctorName, strPortrait, strGenerateTime, nTotalFrameCount,nCurrentFrame, nFPS);
     }
 
     /// <summary>
