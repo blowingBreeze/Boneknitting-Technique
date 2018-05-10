@@ -54,7 +54,7 @@ public class FileReader
                 {
                     temp = line.Split('\t');
                     //时间
-                    frame.time = float.Parse(temp[0]);
+                    frame.frame = int.Parse(temp[0]);
 
                     int start_index = 1;
                     //5DT数据
