@@ -21,7 +21,11 @@ public class FileReader
     {
         m_filepath = strFilePath;
         m_head_data = GetHeadFromFile(strFilePath);
-        readTxtFile(m_filepath, ref m_data_list);
+
+        if (m_head_data.strIdentify == "MOVIE_DATA")
+            readTxtFile(m_filepath, ref m_data_list);
+        else
+            Debug.Log("FILE TYPE ERROR!");
     }
 
     /// <summary>
@@ -82,18 +86,12 @@ public class FileReader
             using (StreamReader sr = new StreamReader(strFilePath))
             {
                 line = sr.ReadLine();
-                var temp = line.Split('\t');
-                if (temp[0] != "MOVIE_DATA")
-                    Debug.Log("The file is not a movie data!");
-
-                sr.Close();
             }
         }
         catch (Exception e)
         {
             Debug.Log("The file could not be read:");
             Debug.Log(e.Message);
-            line = "MOVIE_DATA/tFILE_ERROR";
         }
 
 

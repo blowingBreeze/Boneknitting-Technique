@@ -39,6 +39,7 @@ public class ModelCtrlData
     public void readData(string str_data)
     {
         var data = str_data.Split('\t');
+        Debug.Log(data.Length);
         frame = int.Parse(data[0]);
         handCtrlData.readData(data);
         bodyCtrlData.readData(data);
@@ -91,13 +92,24 @@ public class MovieHeadData
     {
         string[] temp = str.Split('\t');//该数组第一位是数据类型标志位，所以从有用数据从下标1开始
         strIdentify = temp[0];
-        strDoctorName = temp[1];
-        strPortrait = temp[2];
-        strGenerateTime=temp[3];
-        Debug.Log(temp[4]);
-        nTotalFrameCount = int.Parse(temp[4]);
-        nCurrentFrame = int.Parse(temp[5]);
-        nFPS = int.Parse(temp[6]);
+        if (strIdentify == "MOVIE_DATA")
+        {
+            strDoctorName = temp[1];
+            strPortrait = temp[2];
+            strGenerateTime = temp[3];
+            nTotalFrameCount = int.Parse(temp[4]);
+            nCurrentFrame = int.Parse(temp[5]);
+            nFPS = int.Parse(temp[6]);
+        }
+        else
+        {
+            strDoctorName = "FILE_ERROR";
+            strPortrait = "FILE_ERROR";
+            strGenerateTime = "FILE_ERROR";
+            nTotalFrameCount = 0;
+            nCurrentFrame = 0;
+            nFPS = 0;
+        }
 
         Debug.Log(strIdentify+"---"+strDoctorName + "---" + strPortrait + "---" + strGenerateTime + "---" + nTotalFrameCount + "---" +nCurrentFrame+"---"+ nFPS + "---");
     }
@@ -219,9 +231,9 @@ public class HandCtrlData
     public void readData(string[] data)
     {
         int start_index = 1;
-        for (int i = start_index; i < FileConfig.FIVE_DT_NODE_NUM + start_index; ++i)
+        for (int i = 0; i < FileConfig.FIVE_DT_NODE_NUM; ++i)
         {
-            HandData[i] = float.Parse(data[i]);
+            HandData[i] = float.Parse(data[i + start_index]);
         }
     }
 
