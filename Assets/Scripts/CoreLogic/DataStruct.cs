@@ -295,10 +295,10 @@ public class BodyCtrlData
         //骨节点
         for (int i = 0; i < FileConfig.KINECT_NODE_NUM; ++i)
         {
-            jointRotation[i].w = float.Parse(data[start_index + i * 4]);
-            jointRotation[i].x = float.Parse(data[start_index + i * 4 + 1]);
-            jointRotation[i].y = float.Parse(data[start_index + i * 4 + 2]);
-            jointRotation[i].z = float.Parse(data[start_index + i * 4 + 3]);
+            jointRotation[i].x = float.Parse(data[start_index + i * 4]);
+            jointRotation[i].y = float.Parse(data[start_index + i * 4 + 1]);
+            jointRotation[i].z = float.Parse(data[start_index + i * 4 + 2]);
+            jointRotation[i].w = float.Parse(data[start_index + i * 4 + 3]);
         }
 
         start_index = start_index + FileConfig.KINECT_NODE_NUM * 4;
