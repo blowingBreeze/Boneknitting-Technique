@@ -45,7 +45,7 @@ public class ZCameraController : MonoBehaviour
         if(Input.GetKey(KeyCode.Mouse1))
         {
             vec3MouseEnd = Input.mousePosition;
-            transform.Rotate( new Vector3( -(vec3MouseEnd.y-vec3MouseStart.y)/Screen.height*180, (vec3MouseEnd.x-vec3MouseStart.x)/Screen.width*360, 0 ) );
+            transform.Rotate( new Vector3( -(vec3MouseEnd.y-vec3MouseStart.y)/Screen.height*90, (vec3MouseEnd.x-vec3MouseStart.x)/Screen.width*360, 0 ) );
             vec3MouseStart = vec3MouseEnd;
         }
     }

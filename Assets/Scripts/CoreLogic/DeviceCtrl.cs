@@ -48,7 +48,7 @@ public class DeviceCtrl
     {
         gloveManager.DisconnectDevice();
         //lpSensorManager.DisconnectDevice();
-        lpThread.Abort();
+        //lpThread.Abort();
     }
 
     /// <summary>
