@@ -24,7 +24,6 @@ public class PlayRateControl : MonoBehaviour
         if (m_MoviePlayManager.IsStart())
         {
             m_TimeCount.text = ToolFunction.TranslateToMMSS( m_MoviePlayManager.GetCurrentTime()) + "/" + ToolFunction.TranslateToMMSS(m_MoviePlayManager.GetTotalTime());
-            //Debug.Log(m_MoviePlayManager.GetCurrentPlayRate()+"CURRENT+++++");
             m_TimeSlider.value = m_MoviePlayManager.GetCurrentPlayRate();
         }
     }

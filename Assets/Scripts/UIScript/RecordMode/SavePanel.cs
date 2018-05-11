@@ -85,7 +85,7 @@ public class SavePanel : MonoBehaviour
      System.DateTime.Now.ToShortTimeString(),
      tempEndTime - tempStartTime,
      0,
-     30
+     ConfigCenter.Instance().GetFPS()
     );
             m_RecordManager.SaveDataToFile(
                 tempData,

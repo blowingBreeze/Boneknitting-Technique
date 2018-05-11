@@ -31,8 +31,6 @@ public class RecordManager:MonoBehaviour
         bIsCalibrate = false;
         m_RecordRateController = new VideoRateCtrl(0, 1000 / 30, 0);
         m_FileWriter = new FileWriter();
-
-        Application.targetFrameRate = 30;
     }
 
     private void Update()

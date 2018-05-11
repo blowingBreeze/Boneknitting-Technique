@@ -129,8 +129,8 @@ public class VideoRateCtrl
         set { m_nTotalFrameCount = value; }
     }
 
-    private int m_nCurrentFrame;    //当前帧
-    public int nCurrentFrame
+    private float m_nCurrentFrame;    //当前帧
+    public float nCurrentFrame
     {
         set
         {
@@ -154,18 +154,7 @@ public class VideoRateCtrl
     {
         set
         {
-            if(value /m_fDefaultIntervalTime>20.0f)
-            {
-                m_fIntervalTime = 20.0f*m_fDefaultIntervalTime;
-            }
-            else if(value / m_fDefaultIntervalTime < 0.05f)
-            {
-                m_fIntervalTime = 0.05f * m_fDefaultIntervalTime;
-            }
-            else
-            {
                 m_fIntervalTime = value;
-            }
         }
         get
         {
@@ -173,10 +162,17 @@ public class VideoRateCtrl
         }
     }
 
-    private float m_fDefaultIntervalTime;
-    public float GetAccelerate()
+    private float m_nAccelerate;
+    public float nAccelerate
     {
-        return m_fIntervalTime / m_fDefaultIntervalTime;
+        set
+        {
+            m_nAccelerate = value;
+        }
+        get
+        {
+            return m_nAccelerate;
+        }
     }
 
     public VideoRateCtrl(int nTotalFrameCount, float fIntervalTime, int nCurrentFrame= 0)
@@ -189,7 +185,7 @@ public class VideoRateCtrl
         m_nTotalFrameCount = nTotalFrameCount;
         m_nCurrentFrame = nCurrentFrame;
         m_fIntervalTime = fIntervalTime;
-        m_fDefaultIntervalTime = fIntervalTime;
+        m_nAccelerate = 1;
         return true;
     }
 }
