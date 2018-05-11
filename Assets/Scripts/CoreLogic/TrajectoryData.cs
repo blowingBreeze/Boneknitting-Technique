@@ -191,9 +191,9 @@ namespace TrajectoryData
             vec = traj.vec;
         }
 
-        public uint size()
+        public int size()
         {
-            return (uint)vec.Count;
+            return vec.Count;
         }
 
         public Trajectory append(Trajectory traj)

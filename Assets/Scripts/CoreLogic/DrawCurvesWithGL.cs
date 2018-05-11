@@ -54,7 +54,7 @@ public class DrawCurvesWithGL : MonoBehaviour
 
     void Update()
     {
-        //drawHand();
+        end_index = (int)motion.getTraj(cur_traj).size();
     }
     // Will be called after all regular rendering is done
     public void OnRenderObject()
@@ -80,6 +80,7 @@ public class DrawCurvesWithGL : MonoBehaviour
 
     void draw()
     {
+        //Debug.Log("draw");
         play();
 
         CreateLineMaterial();
