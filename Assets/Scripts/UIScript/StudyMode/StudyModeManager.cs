@@ -90,7 +90,7 @@ public class StudyModeManager : MonoBehaviour
         if (bIsRecord)
         {
             m_StudyController = new StudyControllerFileRecord(m_HumenModelRef, m_HumenModel, m_strRefFileName);
-            m_HumenModel.AddComponent<KinectManager>();
+            m_HumenModel.GetComponent<KinectManager>().enabled=true;
         }
         else
         {
