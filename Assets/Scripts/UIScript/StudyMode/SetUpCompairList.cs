@@ -11,8 +11,8 @@ public class SetUpCompairList : MonoBehaviour
 
     private void Start()
     {
-        ListMovieByDirectory(ConfigCenter.GetConfigCenterInstance().GetDefaultDirPath());
-        ListMovieByFileNames(ConfigCenter.GetConfigCenterInstance().GetHistoryFilePathList());
+        ListMovieByDirectory(ConfigCenter.Instance().GetDefaultDirPath());
+        ListMovieByFileNames(ConfigCenter.Instance().GetHistoryFilePathList());
     }
 
     private void ListMovieByDirectory(string strDirectoryPath)

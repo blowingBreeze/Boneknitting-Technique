@@ -31,27 +31,20 @@ public class MoviePlayManager : MonoBehaviour
 
         bIsPlay = false;
         fTimeClock = 0f;
-
-        Application.targetFrameRate = 60;
     }
 
     private void Update()
     {
         if (bIsPlay)
         {
-            var modelCtrlData = m_FileReader.PraseDataByFrameCount(m_VIdeoRateController.nCurrentFrame);
+            var modelCtrlData = m_FileReader.PraseDataByFrameCount((int)m_VIdeoRateController.nCurrentFrame);
             m_PlayController.Update(modelCtrlData);
-            //Debug.Log("speed");
-            //Debug.Log(TrailCurveDrawCtrl.Instance().lastSpeed(TrailType.EG_S1));
-            //Debug.Log(TrailCurveDrawCtrl.Instance().lastSpeed(TrailType.EG_S2));
-            //Debug.Log(TrailCurveDrawCtrl.Instance().lastSpeed(TrailType.EG_S3));
-            //Debug.Log(TrailCurveDrawCtrl.Instance().lastSpeed(TrailType.EG_S4));
             m_PlayModeChartController.UpdateLineChart(ChartType.CHART_SPEED, m_VIdeoRateController.nCurrentFrame, TrailCurveDrawCtrl.Instance().lastSpeed(TrailType.EG_S1));
             m_PlayModeChartController.UpdateLineChart(ChartType.CHART_ACCELERATE, m_VIdeoRateController.nCurrentFrame, TrailCurveDrawCtrl.Instance().lastAcceleration(TrailType.EG_S1));
             m_PlayModeChartController.UpdateLineChart(ChartType.CHART_CURVATURE, m_VIdeoRateController.nCurrentFrame, TrailCurveDrawCtrl.Instance().lastCurvature(TrailType.EG_S1));
             m_PlayModeChartController.UpdateLineChart(ChartType.CHART_TORSION, m_VIdeoRateController.nCurrentFrame, TrailCurveDrawCtrl.Instance().lastTorsion(TrailType.EG_S1));
 
-            m_VIdeoRateController.nCurrentFrame +=1;
+            m_VIdeoRateController.nCurrentFrame +=m_VIdeoRateController.nAccelerate;
         }       
     }
 
@@ -75,17 +68,17 @@ public class MoviePlayManager : MonoBehaviour
 
     public void Accelerate()
     {
-        m_VIdeoRateController.fIntervalTime *= 2;
+        m_VIdeoRateController.nAccelerate *= 2;
     }
 
     public void Deaccelerate()
     {
-        m_VIdeoRateController.fIntervalTime *= 0.5f;
+        m_VIdeoRateController.nAccelerate *= 0.5f;
     }
 
     public float GetAccelerate()
     {
-        return m_VIdeoRateController.GetAccelerate();
+        return m_VIdeoRateController.nAccelerate;
     }
 
     public void SetCurrentFrame(float  fRate)

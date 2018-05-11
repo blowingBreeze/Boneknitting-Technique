@@ -44,7 +44,7 @@ public class StudyModeManager : MonoBehaviour
             m_RefRateController.nCurrentFrame += 1;
             m_RateController.nCurrentFrame += 1;
 
-            m_StudyController.Update(m_RefRateController.nCurrentFrame, m_RateController.nCurrentFrame);
+            m_StudyController.Update((int)m_RefRateController.nCurrentFrame, (int)m_RateController.nCurrentFrame);
             m_StudyModeChartController.UpdateRefLineChart(ChartType.CHART_SPEED, m_RefRateController.nCurrentFrame, TrailCurveDrawCtrl.Instance().lastSpeed(TrailType.EG_S1));
             m_StudyModeChartController.UpdateRefLineChart(ChartType.CHART_ACCELERATE, m_RefRateController.nCurrentFrame, TrailCurveDrawCtrl.Instance().lastAcceleration(TrailType.EG_S1));
             m_StudyModeChartController.UpdateRefLineChart(ChartType.CHART_CURVATURE, m_RefRateController.nCurrentFrame, TrailCurveDrawCtrl.Instance().lastCurvature(TrailType.EG_S1));
@@ -90,7 +90,7 @@ public class StudyModeManager : MonoBehaviour
         if (bIsRecord)
         {
             m_StudyController = new StudyControllerFileRecord(m_HumenModelRef, m_HumenModel, m_strRefFileName);
-            m_HumenModel.AddComponent<KinectManager>();
+            m_HumenModel.GetComponent<KinectManager>().enabled=true;
         }
         else
         {

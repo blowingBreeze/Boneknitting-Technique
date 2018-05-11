@@ -21,7 +21,8 @@ public class RecordManager:MonoBehaviour
     private void Awake()
     {
         m_HumenModel = Instantiate(m_HumenModelPrefab);
-        m_HumenModel.AddComponent<KinectManager>();
+        m_HumenModel.GetComponent<KinectManager>().enabled = true;
+
         m_ChartCanvas = Instantiate(m_ChartCanvasPrefab);
         InitRecordModelChartController();
 
@@ -30,8 +31,6 @@ public class RecordManager:MonoBehaviour
         bIsCalibrate = false;
         m_RecordRateController = new VideoRateCtrl(0, 1000 / 30, 0);
         m_FileWriter = new FileWriter();
-
-        Application.targetFrameRate = 30;
     }
 
     private void Update()
