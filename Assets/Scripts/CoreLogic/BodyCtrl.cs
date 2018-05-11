@@ -123,7 +123,7 @@ public class BodyCtrl : MonoBehaviour
 
         for (var boneIndex = 0; boneIndex < bones.Length; boneIndex++)
         {
-            if (!bones[boneIndex])
+            if (!bones[boneIndex]|| boneIndex == 12)
                 continue;
 
             if (boneIndex2JointMap.ContainsKey(boneIndex))
@@ -156,10 +156,11 @@ public class BodyCtrl : MonoBehaviour
             if (!bones[boneIndex]|| bodyCtrlData.jointRotation[boneIndex] == Quaternion.identity)
                 continue;
 
+
+
             if (boneIndex2JointMap.ContainsKey(boneIndex))
             {
                 Transform boneTransform = bones[boneIndex];
-
                 if (smoothFactor != 0f)
                     boneTransform.rotation = Quaternion.Slerp(boneTransform.rotation, bodyCtrlData.jointRotation[boneIndex], smoothFactor * Time.deltaTime);
                 else

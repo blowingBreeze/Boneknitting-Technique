@@ -26,18 +26,18 @@ public class DeviceCtrl
         {
             gloveManager = DTGloveManager.instance;
         }
-        
-        if (lpSensorManager == null)
-        {
-            lpSensorManager = new LpSensorManager(ref cur_ModelCtrlData.bodyCtrlData, ref cur_ModelCtrlData.wristCtrlData, 23333, "00:04:3E:9E:00:C5", 20);
 
-            if (lpSensorManager.Init())
-            {
-                lpThread = new Thread(new ThreadStart(lpSensorManager.receiveData));
-                lpThread.Start();
-            }
-        }
-        
+        //if (lpSensorManager == null)
+        //{
+        //    lpSensorManager = new LpSensorManager(ref cur_ModelCtrlData.bodyCtrlData, ref cur_ModelCtrlData.wristCtrlData, 23333, "00:04:3E:9E:00:C5", 20);
+
+        //    if (lpSensorManager.Init())
+        //    {
+        //        lpThread = new Thread(new ThreadStart(lpSensorManager.receiveData));
+        //        lpThread.Start();
+        //    }
+        //}
+
 
         return true;
 
@@ -47,8 +47,8 @@ public class DeviceCtrl
     public void DisconnectDevice()
     {
         gloveManager.DisconnectDevice();
-        lpSensorManager.DisconnectDevice();
-        lpThread.Abort();
+        //lpSensorManager.DisconnectDevice();
+        //lpThread.Abort();
     }
 
     /// <summary>
@@ -58,8 +58,9 @@ public class DeviceCtrl
     public ModelCtrlData AcquireData()
     {
         cur_ModelCtrlData.bodyCtrlData = kinectManager.getBodyCtrlData();
-        gloveManager.AcquireHandData(ref cur_ModelCtrlData.handCtrlData);
-
+       gloveManager.AcquireHandData(ref cur_ModelCtrlData.handCtrlData);
+        
+        //Debug.Log(cur_ModelCtrlData.bodyCtrlData.jointRotation[12].x);
         return cur_ModelCtrlData;
     }
 }
