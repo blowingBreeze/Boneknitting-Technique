@@ -21,6 +21,7 @@ public class RecordManager:MonoBehaviour
     private void Awake()
     {
         m_HumenModel = Instantiate(m_HumenModelPrefab);
+        m_HumenModel.AddComponent<KinectManager>();
         m_ChartCanvas = Instantiate(m_ChartCanvasPrefab);
         InitRecordModelChartController();
 

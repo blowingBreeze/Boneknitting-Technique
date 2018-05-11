@@ -41,7 +41,11 @@ public class MoviePlayManager : MonoBehaviour
         {
                 var modelCtrlData = m_FileReader.PraseDataByFrameCount(m_VIdeoRateController.nCurrentFrame);
                 m_PlayController.Update(modelCtrlData);
-                m_PlayModeChartController.UpdateLineChart(ChartType.CHART_SPEED, m_VIdeoRateController.nCurrentFrame, TrailCurveDrawCtrl.Instance().lastSpeed(TrailType.EG_S1));
+            Debug.Log(TrailCurveDrawCtrl.Instance().lastSpeed(TrailType.EG_S1));
+            Debug.Log(TrailCurveDrawCtrl.Instance().lastSpeed(TrailType.EG_S2));
+            Debug.Log(TrailCurveDrawCtrl.Instance().lastSpeed(TrailType.EG_S3));
+            Debug.Log(TrailCurveDrawCtrl.Instance().lastSpeed(TrailType.EG_S4));
+            m_PlayModeChartController.UpdateLineChart(ChartType.CHART_SPEED, m_VIdeoRateController.nCurrentFrame, TrailCurveDrawCtrl.Instance().lastSpeed(TrailType.EG_S1));
                 m_PlayModeChartController.UpdateLineChart(ChartType.CHART_ACCELERATE, m_VIdeoRateController.nCurrentFrame, TrailCurveDrawCtrl.Instance().lastAcceleration(TrailType.EG_S1));
                 m_PlayModeChartController.UpdateLineChart(ChartType.CHART_CURVATURE, m_VIdeoRateController.nCurrentFrame, TrailCurveDrawCtrl.Instance().lastCurvature(TrailType.EG_S1));
                 m_PlayModeChartController.UpdateLineChart(ChartType.CHART_TORSION, m_VIdeoRateController.nCurrentFrame, TrailCurveDrawCtrl.Instance().lastTorsion(TrailType.EG_S1));
