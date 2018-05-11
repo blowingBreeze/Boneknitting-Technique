@@ -310,12 +310,12 @@ public class BodyCtrlData
 
         start_index = start_index + 3;
         //左右手腕位置
-        userPosition.x = float.Parse(data[start_index]);
-        userPosition.y = float.Parse(data[start_index + 1]);
-        userPosition.z = float.Parse(data[start_index + 2]);
-        userPosition.x = float.Parse(data[start_index + 3]);
-        userPosition.y = float.Parse(data[start_index + 4]);
-        userPosition.z = float.Parse(data[start_index + 5]);
+        HandLeftPos.x = float.Parse(data[start_index]);
+        HandLeftPos.y = float.Parse(data[start_index + 1]);
+        HandLeftPos.z = float.Parse(data[start_index + 2]);
+        HandRightPos.x = float.Parse(data[start_index + 3]);
+        HandRightPos.y = float.Parse(data[start_index + 4]);
+        HandRightPos.z = float.Parse(data[start_index + 5]);
 
         start_index = start_index + 6;
 
