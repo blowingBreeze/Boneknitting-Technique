@@ -14,25 +14,27 @@ class LpSensorManager
     private IPAddress ip;
     private IPEndPoint ip_end_point;
     private string blue_addr = "00:04:3E:9E:00:C5";
-    private byte[] byteArray_Receive = new byte[16];
-    private WristCtrlData ref_data;
+    private byte[] byteArray_Receive = new byte[40];
+    private BodyCtrlData ref_body_data;
+    private WristCtrlData ref_wrist_data;
     private Process client;
 
-    public LpSensorManager(ref WristCtrlData data,int p, string b_a)
+    public LpSensorManager(ref BodyCtrlData body_data, ref WristCtrlData wrist_data, int p, string b_a, int deta_time)
     {
         port = p;
         blue_addr = b_a;
         IpStr = "127.0.0.1";
         ip = IPAddress.Parse(IpStr);
         ip_end_point = new IPEndPoint(ip, port);
-        ref_data = data;
+        ref_body_data = body_data;
+        ref_wrist_data = wrist_data;
         client = new Process();
 
         client.StartInfo.FileName = string.Format(@"F:\GitHub\Boneknitting-Technique\Assets\Data\LpSensor\LpSensorTest.exe");
         client.StartInfo.UseShellExecute = false;
         client.StartInfo.CreateNoWindow = true;
         client.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
-        client.StartInfo.Arguments = string.Format("{0} {1}", port, blue_addr); ;
+        client.StartInfo.Arguments = string.Format("{0} {1} {2}", port, blue_addr, deta_time);
         client.EnableRaisingEvents = true;
     }
     public bool Init()
@@ -59,10 +61,10 @@ class LpSensorManager
             //接收到数据  
             int intReceiveLength = serverSocket.ReceiveFrom(byteArray_Receive, ref ep);
             //转换数据为字符串  
-            //w_data.left_wrist_rotate.w = BitConverter.ToSingle(byteArray_Receive, 0);
-            ref_data.left_wrist_rotate.x = BitConverter.ToSingle(byteArray_Receive, 4);
-            ref_data.left_wrist_rotate.y = BitConverter.ToSingle(byteArray_Receive, 8);
-            ref_data.left_wrist_rotate.z = BitConverter.ToSingle(byteArray_Receive, 12);
+            ref_body_data.jointRotation[12].x = BitConverter.ToSingle(byteArray_Receive, 0);
+            ref_body_data.jointRotation[12].y = BitConverter.ToSingle(byteArray_Receive, 4);
+            ref_body_data.jointRotation[12].z = BitConverter.ToSingle(byteArray_Receive, 8);
+            ref_body_data.jointRotation[12].w = BitConverter.ToSingle(byteArray_Receive, 12);
         }
     }
     public void DisconnectDevice()
