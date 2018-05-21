@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TrajectoryData;
@@ -126,7 +127,11 @@ public class TrailCurveDrawCtrl
 
 public class TrailCurveAppraiseCtrl
 {
-    public static List<float> color_list = new List<float>();
+    public List<float> left_color_list = new List<float>();
+    public List<float> right_color_list = new List<float>();
+    private int cur_frame = 0;
+    private Vec3 deta_left = new Vec3(0.0f, 0.0f, 0.0f);
+    private Vec3 deta_right = new Vec3(0.0f, 0.0f, 0.0f);
     /// <summary>
     /// 接收两个轨迹数据，(用于轨迹分析)，每一帧调用
     /// </summary>
@@ -134,12 +139,112 @@ public class TrailCurveAppraiseCtrl
     /// <param name="AppraiseData">分析数据，需要对此数据进行分析</param>
     public void RecvCompairTrailData(ModelCtrlData refData, ModelCtrlData AppraiseData)
     {
-        
+        if (cur_frame < 5)
+        {
+            deta_left += new Vec3(AppraiseData.bodyCtrlData.HandLeftPos - refData.bodyCtrlData.HandLeftPos);
+            deta_right += new Vec3(AppraiseData.bodyCtrlData.HandRightPos - refData.bodyCtrlData.HandRightPos);
+
+            if (cur_frame == 4)
+            {
+                deta_left /= 5;
+                deta_right /= 5;
+            }
+            left_color_list.Add(0.0f);
+            right_color_list.Add(0.0f);
+        }
+        else
+        {
+            left_color_list.Add((float)(new Vec3(AppraiseData.bodyCtrlData.HandLeftPos - refData.bodyCtrlData.HandLeftPos) - deta_left).norm());
+            right_color_list.Add((float)(new Vec3(AppraiseData.bodyCtrlData.HandRightPos - refData.bodyCtrlData.HandRightPos) - deta_right).norm());
+        }
+        cur_frame++;
     }
 
     //根据之前的分析给出评分
     public float AppraiseTrailCurve()
     {
-        return 100.0f;
+        float deta = 0.0f;
+        for (int i = 0; i < cur_frame; ++i)
+        {
+            deta += left_color_list[i] + right_color_list[i];
+        }
+        deta /= 100;
+        return (100.0f - deta) > 0.0f ? (100.0f - deta) : 0.0f;
+    }
+
+    //DTW方式查看两条曲线的拟合度
+    public static float compareTrailCurveWithDTW(Trajectory traj1, Trajectory traj2)
+    {
+        if (traj1.size() < 2 || traj2.size() < 2 || traj1.size() * traj2.size() > 200000)
+            return 0.0f;
+
+        float[,] distance_martix = new float[traj1.size(), traj2.size()];
+        for (int i = 0; i < traj1.size(); ++i)
+        {
+            for (int j = 0; j < traj2.size(); ++j)
+            {
+                float temp = 0.0f;
+                temp += Math.Abs(traj1.vec[i].azimuth - traj2.vec[j].azimuth);
+                temp += Math.Abs(traj1.vec[i].roll - traj2.vec[j].roll);
+                temp += Math.Abs(traj1.vec[i].elevation - traj2.vec[j].elevation);
+                temp += (float)(traj1.vec[i].position - traj2.vec[j].position).norm();
+                distance_martix[i, j] = temp;
+            }
+        }
+
+        distance_martix[0, 0] *= 2;
+
+        for (int i = 1; i < traj1.size(); ++i)
+        {
+            distance_martix[i, 0] = distance_martix[i, 0] + distance_martix[i - 1, 0];
+        }
+        for (int j = 1; j < traj2.size(); ++j)
+        {
+            distance_martix[0, j] = distance_martix[0, j] + distance_martix[0, j - 1];
+        }
+
+        for (int i = 1; i < traj1.size(); ++i)
+        {
+            for (int j = 1; j < traj2.size(); ++j)
+            {
+                distance_martix[i, j] = Math.Min(distance_martix[i - 1, j - 1] + 2 * distance_martix[i, j], Math.Min(distance_martix[i - 1, j] + distance_martix[i, j], distance_martix[i - 1, j] + distance_martix[i, j - 1]));
+            }
+        }
+
+        List<float> path = new List<float>();
+        path.Add(distance_martix[0, 0]);
+
+        int row = 0;
+        int col = 0;
+        while (row < traj1.size() && col < traj2.size())
+        {
+            if (distance_martix[row + 1, col] <= distance_martix[row + 1, col + 1] && distance_martix[row + 1, col] <= distance_martix[row, col + 1])
+            {
+                path.Add(distance_martix[row + 1, col]);
+                row += 1;
+            }
+            else if (distance_martix[row, col + 1] <= distance_martix[row + 1, col + 1] && distance_martix[row, col + 1] <= distance_martix[row + 1, col])
+            {
+                path.Add(distance_martix[row, col + 1]);
+                col += 1;
+            }
+            else if (distance_martix[row + 1, col + 1] <= distance_martix[row, col + 1] && distance_martix[row + 1, col + 1] <= distance_martix[row + 1, col])
+            {
+                path.Add(distance_martix[row + 1, col + 1]);
+                row += 1;
+                col += 1;
+            }
+        }
+        
+        float ave_distance = distance_martix[row,col]/path.Count;
+
+        float variance = 0.0f;
+        for (int i = 0; i < path.Count; ++i)
+        {
+            variance += (float)Math.Pow(path[i] - ave_distance, 2);
+        }
+
+        float score = 100 - (float)Math.Sqrt(variance / path.Count) / 100;
+        return score > 0 ? score : 0;
     }
 }
