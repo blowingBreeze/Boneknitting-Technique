@@ -19,7 +19,7 @@ public class LineChart : MonoBehaviour
     public float UpBorder;
     public float BottemBorder;
 
-    private int m_nMaxCount = 100;
+    private int m_nMaxCount = 500;
     private List<Vector3> m_Points;
     public int m_nAxisXLenth = 2;
     public int m_nAxisYLenth = 1;
@@ -76,6 +76,14 @@ public class LineChart : MonoBehaviour
         m_bIsDisplay = true;
         time = 0f;
     }
+
+    //private void Update()
+    //{
+    //    time += Time.deltaTime;
+    //    float y = Random.Range(0, 10000 * Time.deltaTime);
+    //    UpdateCurveData(time, y, 0);
+    //    ShowDataOnMouse();
+    //}
 
     // Update is called once per frame
     public void UpdateCurveData(float x, float y, float z)
@@ -164,15 +172,6 @@ public class LineChart : MonoBehaviour
             CaculateNewPeakValue(PeakType.MINY);
         }
 
-        //防止出现分母为0的情况
-        if (m_fMaxX - m_fMinX <= 0.0000003 && m_fMaxX - m_fMinX >= -0.0000003)
-        {
-            m_fMaxX = m_fMinX + 0.03f;
-        }
-        if (m_fMaxY - m_fMinY <= 0.0000003 && m_fMaxY - m_fMinY >= -0.0000003)
-        {
-            m_fMaxY = m_fMinY + 0.03f;
-        }
 
         m_fKx = m_nAxisXLenth / (m_fMaxX - m_fMinX);
         m_fKy = m_nAxisYLenth / (m_fMaxY - m_fMinY);
@@ -286,6 +285,16 @@ public class LineChart : MonoBehaviour
         {
             float tempX = (tempWordPos.x-transform.position.x) / m_fKx+m_fMinX;
             float tempY = (tempWordPos.y - transform.position.y) / m_fKy + m_fMinY;
+            //if(tempX<=m_fMaxX&&tempY<=m_fMaxY
+            //    &&tempX>=m_fMinX&&tempY>=m_fMinY)
+            //{
+            //    ShowData.text = string.Format("({0:F2},{1:F2})", tempX, tempY);
+
+            //}
+            //else
+            //{
+            //    ShowData.text = string.Format("(maxX,maxY):({0:F2},{1:F2})", m_fMaxX, m_fMaxY);
+            //}
             ShowData.text = string.Format("({0:F2},{1:F2})",
                 tempX < m_fMaxX ? (tempX < m_fMinX ? m_fMinX : tempX) : m_fMaxX,
                 tempY < m_fMaxY ? (tempY < m_fMinY ? m_fMinY : tempY) : m_fMaxY);

@@ -11,8 +11,8 @@ public class MovieCatalogueScript : MonoBehaviour
 
     private void Start()
     {
-        ListMovieByDirectory(ConfigCenter.Instance().GetDefaultDirPath());
-        ListMovieByFileNames(ConfigCenter.Instance().GetHistoryFilePathList());
+        ListMovieByDirectory(ConfigCenter.GetConfigCenterInstance().GetDefaultDirPath());
+        ListMovieByFileNames(ConfigCenter.GetConfigCenterInstance().GetHistoryFilePathList());
     }
 
     private void ListMovieByDirectory(string strDirectoryPath)

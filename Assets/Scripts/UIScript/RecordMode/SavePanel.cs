@@ -53,11 +53,11 @@ public class SavePanel : MonoBehaviour
 
     public void PortraitPath()
     {
-        string filter = "*.jpg,*.png";
+        string filter = "*.jpg;*.png";
         string title = "选择头像";
-        string extension = ".png";
+        string extension = "png";
         string selectPortraitPath = ToolFunction.OpenFilePath(filter, title, extension);
-        var tempSprite = ToolFunction.CreateSpriteFromImage(selectPortraitPath);
+        var tempSprite= ToolFunction.CreateSpriteFromImage(selectPortraitPath);
         m_PortraitImage.overrideSprite = tempSprite;
     }
 
@@ -72,21 +72,18 @@ public class SavePanel : MonoBehaviour
         else
         {
             //根据输入的文件名和选择的头像，将文件存储到默认存储文件夹，将头像图片复制到默认头像存储文件夹
-            m_FilePath = ToolFunction.GetMovieSaveFilePath(m_InputFilePath.text, ".txt");
+            m_FilePath = ToolFunction.GetMovieSaveFilePath( m_InputFilePath.text,".txt");
             var tempPortrait = ToolFunction.GenerateStringID();
-            ToolFunction.ImageSaveLocal(m_PortraitImage.mainTexture, ToolFunction.GetDefaultPortraitPathByName(tempPortrait, ".jpg"));
+            ToolFunction.ImageSaveLocal(m_PortraitImage.mainTexture, ToolFunction.GetDefaultPortraitPathByName(tempPortrait,".jpg"));
+
+            MovieHeadData tempData = new MovieHeadData();
+            tempData.strDoctorName = m_InputDoctorName.text;
+            tempData.strPortrait = tempPortrait;
             int tempTimeCount = m_RecordManager.GetFrameCount();
+            tempData.nCurrentFrame = 0;
             int tempStartTime = (int)(tempTimeCount * m_fLeftSliderValue);
             int tempEndTime = (int)(tempTimeCount * m_fRightSliderValue);
-            MovieHeadData tempData = new MovieHeadData(
-                "MOVIE_DATA",
-     m_InputDoctorName.text,
-     tempPortrait,
-     System.DateTime.Now.ToShortTimeString(),
-     tempEndTime - tempStartTime,
-     0,
-     ConfigCenter.Instance().GetFPS()
-    );
+            tempData.nTotalFrameCount = tempEndTime - tempStartTime;
             m_RecordManager.SaveDataToFile(
                 tempData,
                 m_FilePath,

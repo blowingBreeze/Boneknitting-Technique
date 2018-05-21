@@ -6,23 +6,24 @@ using UnityEngine;
 public class ModelCtrlData
 {
     public int frame;
-    public HandCtrlData handCtrlData;
-    public BodyCtrlData bodyCtrlData;
-    public WristCtrlData wristCtrlData;
+    public HandCtrlData handCtrlData = new HandCtrlData();
+    public BodyCtrlData bodyCtrlData = new BodyCtrlData();
+    public WristCtrlData wristCtrlData = new WristCtrlData();
 
-    public ModelCtrlData()
+    public static ModelCtrlData DeepCopy(ModelCtrlData obj)
     {
-        handCtrlData = new HandCtrlData();
-        bodyCtrlData = new BodyCtrlData();
-        wristCtrlData = new WristCtrlData();
-    }
-
-    public  ModelCtrlData(ModelCtrlData obj)
-    {
-        handCtrlData = new HandCtrlData(obj.handCtrlData);
-        bodyCtrlData = new BodyCtrlData(obj.bodyCtrlData);
-        wristCtrlData = new WristCtrlData(obj.wristCtrlData);
-
+        object retval;
+        using (MemoryStream ms = new MemoryStream())
+        {
+            BinaryFormatter bf = new BinaryFormatter();
+            //序列化成流
+            bf.Serialize(ms, obj);
+            ms.Seek(0, SeekOrigin.Begin);
+            //反序列化成对象
+            retval = bf.Deserialize(ms);
+            ms.Close();
+        }
+        return (ModelCtrlData)retval;
     }
 
     public string toStr()
@@ -48,8 +49,6 @@ public class ModelCtrlData
 
 public class MovieHeadData
 {
-    //表示用于判断文件格式是否合法
-    public string strIdentify;
     public string strDoctorName;
     //头像名，从Portrait文件夹中获取头像
     public string strPortrait;
@@ -62,25 +61,13 @@ public class MovieHeadData
     //录像帧率
     public int nFPS;
 
-    public MovieHeadData(string identify,string name,string portrait,string time,int nTotalCount,int nCurrentFrame, int nFPS)
-    {
-        strIdentify = identify;
-        strDoctorName = name;
-        strPortrait = portrait;
-        strGenerateTime = time;
-        nTotalFrameCount = nTotalCount;
-        this.nCurrentFrame = nCurrentFrame;
-        this.nFPS = nFPS;
-    }
-
     /// <summary>
     /// 将MovieHeadData转换成一个用'\t'分隔的字符串
     /// </summary>
     /// <returns></returns>
     public string toStr()
     {
-        Debug.Log(string.Format("{0}\t{1}\t{2}\t{3}\t{4:D}\t{5:D}\t{6:D}\n", strIdentify, strDoctorName, strPortrait, strGenerateTime, nTotalFrameCount, nCurrentFrame, nFPS));
-        return string.Format("{0}\t{1}\t{2}\t{3}\t{4:D}\t{5:D}\t{6:D}\n", strIdentify,strDoctorName, strPortrait, strGenerateTime, nTotalFrameCount,nCurrentFrame, nFPS);
+        return string.Format("MOVIE_DATA\t{0}\t{1}\t{2}\t{3:D}\t{4:D}\n", strDoctorName, strPortrait, strGenerateTime, nTotalFrameCount, nFPS);
     }
 
     /// <summary>
@@ -90,26 +77,18 @@ public class MovieHeadData
     public void ReadData(string str)
     {
         string[] temp = str.Split('\t');//该数组第一位是数据类型标志位，所以从有用数据从下标1开始
-        strIdentify = temp[0];
-        if (strIdentify == "MOVIE_DATA")
-        {
-            strDoctorName = temp[1];
-            strPortrait = temp[2];
-            strGenerateTime = temp[3];
-            nTotalFrameCount = int.Parse(temp[4]);
-            nCurrentFrame = int.Parse(temp[5]);
-            nFPS = int.Parse(temp[6]);
-        }
-        else
-        {
-            strDoctorName = "FILE_ERROR";
-            strPortrait = "FILE_ERROR";
-            strGenerateTime = "FILE_ERROR";
-            nTotalFrameCount = 0;
-            nCurrentFrame = 0;
-            nFPS = 0;
-        }
+        strDoctorName = temp[1];
+        strPortrait = temp[2];
+        strGenerateTime=temp[3];
+        nTotalFrameCount = int.Parse(temp[4]);
+        nFPS = int.Parse(temp[5]);
     }
+
+    public MovieHeadData()
+    {
+
+    }
+
     /// <summary>
     /// 使用一个字符串来构造MovieHeadData
     /// </summary>
@@ -129,8 +108,8 @@ public class VideoRateCtrl
         set { m_nTotalFrameCount = value; }
     }
 
-    private float m_nCurrentFrame;    //当前帧
-    public float nCurrentFrame
+    private int m_nCurrentFrame;    //当前帧
+    public int nCurrentFrame
     {
         set
         {
@@ -154,7 +133,18 @@ public class VideoRateCtrl
     {
         set
         {
+            if(value /m_fDefaultIntervalTime>20.0f)
+            {
+                m_fIntervalTime = 20.0f*m_fDefaultIntervalTime;
+            }
+            else if(value / m_fDefaultIntervalTime < 0.05f)
+            {
+                m_fIntervalTime = 0.05f * m_fDefaultIntervalTime;
+            }
+            else
+            {
                 m_fIntervalTime = value;
+            }
         }
         get
         {
@@ -162,17 +152,10 @@ public class VideoRateCtrl
         }
     }
 
-    private float m_nAccelerate;
-    public float nAccelerate
+    private float m_fDefaultIntervalTime;
+    public float GetAccelerate()
     {
-        set
-        {
-            m_nAccelerate = value;
-        }
-        get
-        {
-            return m_nAccelerate;
-        }
+        return m_fIntervalTime / m_fDefaultIntervalTime;
     }
 
     public VideoRateCtrl(int nTotalFrameCount, float fIntervalTime, int nCurrentFrame= 0)
@@ -185,7 +168,7 @@ public class VideoRateCtrl
         m_nTotalFrameCount = nTotalFrameCount;
         m_nCurrentFrame = nCurrentFrame;
         m_fIntervalTime = fIntervalTime;
-        m_nAccelerate = 1;
+        m_fDefaultIntervalTime = fIntervalTime;
         return true;
     }
 }
@@ -224,9 +207,9 @@ public class HandCtrlData
     public void readData(string[] data)
     {
         int start_index = 1;
-        for (int i = 0; i < FileConfig.FIVE_DT_NODE_NUM; ++i)
+        for (int i = start_index; i < FileConfig.FIVE_DT_NODE_NUM + start_index; ++i)
         {
-            HandData[i] = float.Parse(data[i + start_index]);
+            HandData[i] = float.Parse(data[i]);
         }
     }
 
@@ -250,7 +233,7 @@ public class HandCtrlData
 }
 public class BodyCtrlData
 {
-    public Quaternion[] jointRotation;
+    public Quaternion[] jointRotation = new Quaternion[22];
     public Vector3 userPosition;
     public Vector3 HandLeftPos;
     public Vector3 HandRightPos;
@@ -291,10 +274,10 @@ public class BodyCtrlData
         //骨节点
         for (int i = 0; i < FileConfig.KINECT_NODE_NUM; ++i)
         {
-            jointRotation[i].x = float.Parse(data[start_index + i * 4]);
-            jointRotation[i].y = float.Parse(data[start_index + i * 4 + 1]);
-            jointRotation[i].z = float.Parse(data[start_index + i * 4 + 2]);
-            jointRotation[i].w = float.Parse(data[start_index + i * 4 + 3]);
+            jointRotation[i].w = float.Parse(data[start_index + i * 4]);
+            jointRotation[i].x = float.Parse(data[start_index + i * 4 + 1]);
+            jointRotation[i].y = float.Parse(data[start_index + i * 4 + 2]);
+            jointRotation[i].z = float.Parse(data[start_index + i * 4 + 3]);
         }
 
         start_index = start_index + FileConfig.KINECT_NODE_NUM * 4;
@@ -306,37 +289,18 @@ public class BodyCtrlData
 
         start_index = start_index + 3;
         //左右手腕位置
-        HandLeftPos.x = float.Parse(data[start_index]);
-        HandLeftPos.y = float.Parse(data[start_index + 1]);
-        HandLeftPos.z = float.Parse(data[start_index + 2]);
-        HandRightPos.x = float.Parse(data[start_index + 3]);
-        HandRightPos.y = float.Parse(data[start_index + 4]);
-        HandRightPos.z = float.Parse(data[start_index + 5]);
+        userPosition.x = float.Parse(data[start_index]);
+        userPosition.y = float.Parse(data[start_index + 1]);
+        userPosition.z = float.Parse(data[start_index + 2]);
+        userPosition.x = float.Parse(data[start_index + 3]);
+        userPosition.y = float.Parse(data[start_index + 4]);
+        userPosition.z = float.Parse(data[start_index + 5]);
 
         start_index = start_index + 6;
 
         //用户ID
         UserID = uint.Parse(data[start_index]);
     }
-
-    public BodyCtrlData()
-    {
-        jointRotation = new Quaternion[22];
-    }
-
-    public BodyCtrlData(BodyCtrlData data)
-    {
-        jointRotation = new Quaternion[22];
-        for(int i=0;i<jointRotation.Length;++i)
-        {
-            jointRotation[i] = data.jointRotation[i];
-        }
-        userPosition = data.userPosition;
-        HandLeftPos = data.HandLeftPos;
-        HandRightPos = data.HandRightPos;
-        UserID = data.UserID;
-    }
-
 }
 public class WristCtrlData
 {

@@ -21,19 +21,15 @@ public class FileReader
     {
         m_filepath = strFilePath;
         m_head_data = GetHeadFromFile(strFilePath);
-
-        if (m_head_data.strIdentify == "MOVIE_DATA")
-            readTxtFile(m_filepath, ref m_data_list);
-        else
-            Debug.Log("FILE TYPE ERROR!");
+        readTxtFile(m_filepath,ref m_data_list);
     }
 
     /// <summary>
-    /// 通过帧编号获取模型控制数据
+    /// 获取文件中某个时间点的数据 （也是每帧调用）
     /// </summary>
-    /// <param name="nFrameCount">帧编号</param>
+    /// <param name="fTime">时间点，单位毫秒</param>
     /// <returns></returns>
-    public ModelCtrlData PraseDataByFrameCount(int nFrameCount)
+    public ModelCtrlData PraseDataByTime(int nFrameCount)
     {
         if (nFrameCount < 0) nFrameCount = 0;
         if (nFrameCount > m_head_data.nTotalFrameCount - 1) nFrameCount = m_head_data.nTotalFrameCount - 1;
@@ -86,12 +82,18 @@ public class FileReader
             using (StreamReader sr = new StreamReader(strFilePath))
             {
                 line = sr.ReadLine();
+                var temp = line.Split('\t');
+                if (temp[0] != "MOVIE_DATA")
+                    Debug.Log("The file is not a movie data!");
+
+                sr.Close();
             }
         }
         catch (Exception e)
         {
             Debug.Log("The file could not be read:");
             Debug.Log(e.Message);
+            line = "MOVIE_DATA/tFILE_ERROR";
         }
 
 

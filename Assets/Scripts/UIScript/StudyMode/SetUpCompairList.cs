@@ -11,8 +11,8 @@ public class SetUpCompairList : MonoBehaviour
 
     private void Start()
     {
-        ListMovieByDirectory(ConfigCenter.Instance().GetDefaultDirPath());
-        ListMovieByFileNames(ConfigCenter.Instance().GetHistoryFilePathList());
+        ListMovieByDirectory(ConfigCenter.GetConfigCenterInstance().GetDefaultDirPath());
+        ListMovieByFileNames(ConfigCenter.GetConfigCenterInstance().GetHistoryFilePathList());
     }
 
     private void ListMovieByDirectory(string strDirectoryPath)
@@ -52,7 +52,7 @@ public class SetUpCompairList : MonoBehaviour
     {
         var tempHeadData = FileReader.GetHeadFromFile(astrFileName);
         var tempListItem = Instantiate(m_ListItemPrefab, m_Content.transform);
-        tempListItem.GetComponentsInChildren<Image>()[1].overrideSprite= ToolFunction.CreateSpriteFromImage(ToolFunction.GetDefaultPortraitPathByName( tempHeadData.strPortrait,".jpg"));
+        tempListItem.GetComponentsInChildren<Image>()[1].overrideSprite= ToolFunction.CreateSpriteFromImage(DataPath.strDefaultPortraitFolder+"/"+tempHeadData.strPortrait);
         tempListItem.GetComponent<ClickCompairListItem>().SetFilePath(astrFileName);
     }
 }

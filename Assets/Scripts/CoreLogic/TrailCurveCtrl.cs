@@ -9,7 +9,7 @@ public class TrailCurveDrawCtrl
     public HandMotion curMotion;
     //储存当前已经打开（读取）的轨迹
     //public List<HandMotion> motionList = new List<HandMotion>();
-    private bool isFirst = true;
+
     //轨迹数量
     private int trajs_num;
 
@@ -32,7 +32,7 @@ public class TrailCurveDrawCtrl
     }
     public void startDraw()
     {
-        GameObject.FindGameObjectWithTag("DrawWithGL").GetComponent<DrawCurvesWithGL>().enabled = true;
+        GameObject.Find("DrawCurvesWithGL").GetComponent<DrawCurvesWithGL>().enabled = true;
     }
 
         /// <summary>
@@ -69,12 +69,6 @@ public class TrailCurveDrawCtrl
 
         curMotion.getTraj(0).push_back(pt1);
         curMotion.getTraj(1).push_back(pt2);
-
-        if (isFirst)
-        {
-            startDraw();
-            isFirst = false;
-        }
 
     }
 

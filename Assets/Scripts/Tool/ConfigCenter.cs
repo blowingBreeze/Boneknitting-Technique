@@ -28,9 +28,9 @@ public class ConfigCenter
     {
         strSaveDirectory = null;
         HistoryFilePathList = new List<string>();
-        m_fFPS = 30;
+        m_fFPS = 60;
     }
-    public static ConfigCenter Instance()
+    public static ConfigCenter GetConfigCenterInstance()
     {
         if (ConfigCenterInstance == null)
         {
@@ -42,7 +42,7 @@ public class ConfigCenter
 
     private string strSaveDirectory;
     private List<string> HistoryFilePathList;
-    private int m_fFPS;
+    private float m_fFPS;
 
     public string GetDefaultDirPath()
     {
@@ -53,7 +53,7 @@ public class ConfigCenter
         return HistoryFilePathList;
     }
 
-    public int GetFPS()
+    public float GetFPS()
     {
         return m_fFPS;
     }

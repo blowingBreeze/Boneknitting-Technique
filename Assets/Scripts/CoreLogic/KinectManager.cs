@@ -1102,7 +1102,7 @@ public class KinectManager : MonoBehaviour
         bodyCtrlData.userPosition = Vector3.zero;
         bodyCtrlData.UserID = 0;
         bodyCtrlData.jointRotation = new Quaternion[22];
-        for (int i = 0; i < 22; i++) if(i!=12)bodyCtrlData.jointRotation[i] = Quaternion.identity;
+        for (int i = 0; i < 22; i++) bodyCtrlData.jointRotation[i] = Quaternion.identity;
         bodyCtrlData.HandLeftPos = Vector3.zero;
         bodyCtrlData.HandRightPos = Vector3.zero;
         Debug.Log("KinectManager Awake !");

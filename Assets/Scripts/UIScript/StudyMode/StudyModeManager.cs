@@ -30,21 +30,31 @@ public class StudyModeManager : MonoBehaviour
         bIsRecord = false;
         bIsStart = false;
 
-        m_HumenModelRef = Instantiate(m_HumenModelPrefab);
+        m_HumenModelRef= Instantiate(m_HumenModelPrefab);
         m_HumenModel = Instantiate(m_HumenModelPrefab);
         m_ChartCanvas = Instantiate(m_ChartCanvasPrefab);
+
+        fRefTimeClock = 0f;
+        fTimeClock = 0f;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (bIsStart)
+        if(bIsStart)
         {
+            fRefTimeClock += Time.deltaTime * 1000;
+            fTimeClock += Time.deltaTime * 1000;
+            if(fRefTimeClock>=m_RefRateController.fIntervalTime)
+            {
+                m_RefRateController.nCurrentFrame += 1;
+            }
+            if(fTimeClock>=m_RateController.fIntervalTime)
+            {
+                m_RateController.nCurrentFrame += 1;
+            }
 
-            m_RefRateController.nCurrentFrame += 1;
-            m_RateController.nCurrentFrame += 1;
-
-            m_StudyController.Update((int)m_RefRateController.nCurrentFrame, (int)m_RateController.nCurrentFrame);
+            m_StudyController.Update(m_RefRateController.nCurrentFrame, m_RateController.nCurrentFrame);
             m_StudyModeChartController.UpdateRefLineChart(ChartType.CHART_SPEED, m_RefRateController.nCurrentFrame, TrailCurveDrawCtrl.Instance().lastSpeed(TrailType.EG_S1));
             m_StudyModeChartController.UpdateRefLineChart(ChartType.CHART_ACCELERATE, m_RefRateController.nCurrentFrame, TrailCurveDrawCtrl.Instance().lastAcceleration(TrailType.EG_S1));
             m_StudyModeChartController.UpdateRefLineChart(ChartType.CHART_CURVATURE, m_RefRateController.nCurrentFrame, TrailCurveDrawCtrl.Instance().lastCurvature(TrailType.EG_S1));
@@ -59,11 +69,11 @@ public class StudyModeManager : MonoBehaviour
 
     public void SetRefFileName(string strFileName)
     {
-        if (string.IsNullOrEmpty(strFileName))
+        if(string.IsNullOrEmpty(strFileName))
         {
             return;
         }
-        m_strRefFileName = strFileName;
+        m_strRefFileName =strFileName;
         var tempHeadData = FileReader.GetHeadFromFile(m_strRefFileName);
         m_RefRateController = new VideoRateCtrl(tempHeadData.nTotalFrameCount, 1000 / tempHeadData.nFPS);
     }
@@ -90,7 +100,6 @@ public class StudyModeManager : MonoBehaviour
         if (bIsRecord)
         {
             m_StudyController = new StudyControllerFileRecord(m_HumenModelRef, m_HumenModel, m_strRefFileName);
-            m_HumenModel.GetComponent<KinectManager>().enabled=true;
         }
         else
         {
