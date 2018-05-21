@@ -82,9 +82,9 @@ public class LineChart : MonoBehaviour
     {
         m_Curve.positionCount = m_Points.Count > m_nMaxCount ? m_nMaxCount : m_Points.Count;
         m_Curve.SetPositions(AddPoint(x, y, z));
-        AxieXMax.text = string.Format("{0:F2}/xx", m_fMaxX);
+        AxieXMax.text = string.Format("{0:F2}/帧", m_fMaxX);
         AxieXMin.text = string.Format("{0:F2}", m_fMinX);
-        AxieYMax.text = string.Format("{0:F2}/xx", m_fMaxY);
+        AxieYMax.text = string.Format("{0:F2}", m_fMaxY);
         AxieYMin.text = string.Format("{0:F2}", m_fMinY);
         
         if(m_bIsDisplay)
