@@ -82,7 +82,7 @@ public class SavePanel : MonoBehaviour
                 "MOVIE_DATA",
      m_InputDoctorName.text,
      tempPortrait,
-     System.DateTime.Now.ToShortTimeString(),
+     System.DateTime.Now.ToString("MM/dd/yyyy H:mm:ss"),
      tempEndTime - tempStartTime,
      0,
      ConfigCenter.Instance().GetFPS()

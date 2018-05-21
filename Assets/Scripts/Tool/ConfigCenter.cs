@@ -100,12 +100,15 @@ public class ConfigCenter
         SaveFileDirectoryNode[0].InnerText = path;
     }
 
-    private void DeleteHistoryFile()
+    public void DeleteFileByPath(string path)
     {
-        var HistoryNode= xml.GetElementsByTagName(XmlString.strHistoryFilePathNodeName);
+        var HistoryNode = xml;
         foreach( XmlNode node in HistoryNode)
         {
-            xml.RemoveChild(node);
+            if (node.InnerText.Equals(path))
+            {
+                xml.RemoveChild(node);
+            }
         }
     }
 

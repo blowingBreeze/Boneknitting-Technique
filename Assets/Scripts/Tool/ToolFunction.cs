@@ -145,7 +145,7 @@ public class ToolFunction
     public static void ImageSaveLocal(Texture tex,string path)
     {
         Texture2D saveImageTex = tex as Texture2D;
-        FileStream newFs = new FileStream(path+".jpg", FileMode.Create, FileAccess.Write);
+        FileStream newFs = new FileStream(path, FileMode.Create, FileAccess.Write);
         byte[] bytes = saveImageTex.EncodeToJPG();
         newFs.Write(bytes, 0, bytes.Length);
         newFs.Close();
