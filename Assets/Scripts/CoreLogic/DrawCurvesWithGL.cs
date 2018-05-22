@@ -45,7 +45,6 @@ public class DrawCurvesWithGL : MonoBehaviour
         start_index = 0;
         end_index = (int)motion.getTraj(cur_traj).size();
 
-        color_list = TrailCurveAppraiseCtrl.color_list;
     }
 
     void Start()
@@ -91,19 +90,18 @@ public class DrawCurvesWithGL : MonoBehaviour
         // Set transformation matrix for drawing to
         // match our transform
         GL.MultMatrix(transform.localToWorldMatrix);
-        // Draw lines
-        GL.Begin(GL.LINE_STRIP);
 
         for (int i = 0; i < motion.size(); ++i)
         {
             drawCurve(motion.getTraj(i));
         }
 
-        GL.End();
         GL.PopMatrix();
     }
     void drawCurve(Trajectory traj)
     {
+        // Draw lines
+        GL.Begin(GL.LINE_STRIP);
         Vec3 temp = new Vec3();
         GL.Color(Color.white);
         for (int j = start_index; j < end_index; ++j)
@@ -111,17 +109,6 @@ public class DrawCurvesWithGL : MonoBehaviour
             temp = traj.vec[j].position;
             GL.Vertex3(temp.x, temp.y, temp.z);
         }
-    }
-
-    void drawCurveWithColorList(Trajectory traj, List<float> color_list)
-    {
-        GL.Color(Color.red);
-        Vec3 temp = new Vec3();
-        for (int j = start_index; j < end_index; ++j)
-        {
-            temp = traj.vec[j].position;
-            GL.Color(new Color(color_list[j] * 2, 1 - color_list[j] * 2, 0, 1.0F));
-            GL.Vertex3(temp.x, temp.y, temp.z);
-        }
+        GL.End();
     }
 }

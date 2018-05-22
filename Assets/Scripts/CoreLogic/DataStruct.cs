@@ -2,6 +2,7 @@
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Collections.Generic;
 using UnityEngine;
+using TrajectoryData;
 
 public class ModelCtrlData
 {
@@ -17,14 +18,37 @@ public class ModelCtrlData
         wristCtrlData = new WristCtrlData();
     }
 
-    public  ModelCtrlData(ModelCtrlData obj)
+    public ModelCtrlData(ModelCtrlData obj)
     {
         handCtrlData = new HandCtrlData(obj.handCtrlData);
         bodyCtrlData = new BodyCtrlData(obj.bodyCtrlData);
         wristCtrlData = new WristCtrlData(obj.wristCtrlData);
 
     }
+    public TPose toLeftTPose()
+    {
+        TPose pose = new TPose();
 
+        pose.time = frame.ToString();
+        pose.position = new Vec3(bodyCtrlData.HandLeftPos);
+        pose.azimuth = wristCtrlData.left_wrist_rotate.z;
+        pose.elevation = wristCtrlData.left_wrist_rotate.y;
+        pose.roll = wristCtrlData.left_wrist_rotate.x;
+
+        return pose;
+    }
+    public TPose toRightTPose()
+    {
+        TPose pose = new TPose();
+
+        pose.time = frame.ToString();
+        pose.position = new Vec3(bodyCtrlData.HandRightPos);
+        pose.azimuth = wristCtrlData.right_wrist_rotate.z;
+        pose.elevation = wristCtrlData.right_wrist_rotate.y;
+        pose.roll = wristCtrlData.right_wrist_rotate.x;
+
+        return pose;
+    }
     public string toStr()
     {
         string str = string.Format("{0}\t",frame);

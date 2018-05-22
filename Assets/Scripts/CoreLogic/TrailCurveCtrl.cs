@@ -8,9 +8,11 @@ public class TrailCurveDrawCtrl
 {
     //储存当前屏幕显示，即要操作的轨迹
     public HandMotion curMotion;
+    public HandMotion studyMotion;
     //储存当前已经打开（读取）的轨迹
     //public List<HandMotion> motionList = new List<HandMotion>();
-    private bool isFirst = true;
+    private bool is_first = true;
+    private bool is_study_first = true;
     //轨迹数量
     private int trajs_num;
 
@@ -22,6 +24,11 @@ public class TrailCurveDrawCtrl
         {
             curMotion.Add(new Trajectory());
         }
+        studyMotion = new HandMotion();
+        for (int i = 0; i < trajs_num; ++i)
+        {
+            studyMotion.Add(new Trajectory());
+        }
     }
     private static TrailCurveDrawCtrl trajctrl;
     public static TrailCurveDrawCtrl Instance()
@@ -31,9 +38,12 @@ public class TrailCurveDrawCtrl
 
         return trajctrl;
     }
-    public void startDraw()
+    public void startDraw(bool is_study)
     {
-        GameObject.FindGameObjectWithTag("DrawWithGL").GetComponent<DrawCurvesWithGL>().enabled = true;
+        if(is_study)
+            GameObject.FindGameObjectWithTag("DrawWithGL").GetComponent<DrawCurvesWithGLColor>().enabled = true;
+        else
+            GameObject.FindGameObjectWithTag("DrawWithGL").GetComponent<DrawCurvesWithGL>().enabled = true;
     }
 
         /// <summary>
@@ -53,28 +63,13 @@ public class TrailCurveDrawCtrl
     /// <param name="modelCtrlData"></param>
     public void RecvTrailData(ModelCtrlData modelCtrlData)
     {
+        curMotion.getTraj(0).push_back(modelCtrlData.toLeftTPose());
+        curMotion.getTraj(1).push_back(modelCtrlData.toRightTPose());
 
-        TPose pt1 = new TPose();
-        TPose pt2 = new TPose();
-        pt1.time = modelCtrlData.frame.ToString();
-        pt1.position = new Vec3(modelCtrlData.bodyCtrlData.HandLeftPos);
-        pt1.azimuth = modelCtrlData.wristCtrlData.left_wrist_rotate.z;
-        pt1.elevation = modelCtrlData.wristCtrlData.left_wrist_rotate.y;
-        pt1.roll = modelCtrlData.wristCtrlData.left_wrist_rotate.x;
-
-        pt2.time = modelCtrlData.frame.ToString();
-        pt2.position = new Vec3(modelCtrlData.bodyCtrlData.HandRightPos);
-        pt2.azimuth = modelCtrlData.wristCtrlData.right_wrist_rotate.z;
-        pt2.elevation = modelCtrlData.wristCtrlData.right_wrist_rotate.y;
-        pt2.roll = modelCtrlData.wristCtrlData.right_wrist_rotate.x;
-
-        curMotion.getTraj(0).push_back(pt1);
-        curMotion.getTraj(1).push_back(pt2);
-
-        if (isFirst)
+        if (is_first)
         {
-            startDraw();
-            isFirst = false;
+            startDraw(false);
+            is_first = false;
         }
 
     }
@@ -127,8 +122,8 @@ public class TrailCurveDrawCtrl
 
 public class TrailCurveAppraiseCtrl
 {
-    public List<float> left_color_list = new List<float>();
-    public List<float> right_color_list = new List<float>();
+    public static List<float> left_color_list = new List<float>();
+    public static List<float> right_color_list = new List<float>();
     private int cur_frame = 0;
     private Vec3 deta_left = new Vec3(0.0f, 0.0f, 0.0f);
     private Vec3 deta_right = new Vec3(0.0f, 0.0f, 0.0f);
@@ -139,6 +134,9 @@ public class TrailCurveAppraiseCtrl
     /// <param name="AppraiseData">分析数据，需要对此数据进行分析</param>
     public void RecvCompairTrailData(ModelCtrlData refData, ModelCtrlData AppraiseData)
     {
+        TrailCurveDrawCtrl.Instance().studyMotion.getTraj(0).add(AppraiseData.toLeftTPose());
+        TrailCurveDrawCtrl.Instance().studyMotion.getTraj(1).add(AppraiseData.toRightTPose());
+
         if (cur_frame < 5)
         {
             deta_left += new Vec3(AppraiseData.bodyCtrlData.HandLeftPos - refData.bodyCtrlData.HandLeftPos);
@@ -151,6 +149,10 @@ public class TrailCurveAppraiseCtrl
             }
             left_color_list.Add(0.0f);
             right_color_list.Add(0.0f);
+            if (cur_frame == 0)
+            {
+                TrailCurveDrawCtrl.Instance().startDraw(true);
+            }
         }
         else
         {
