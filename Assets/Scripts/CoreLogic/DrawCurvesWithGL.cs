@@ -45,7 +45,7 @@ public class DrawCurvesWithGL : MonoBehaviour
         start_index = 0;
         end_index = (int)motion.getTraj(cur_traj).size();
 
-        color_list = TrailCurveAppraiseCtrl.color_list;
+       // color_list = TrailCurveAppraiseCtrl.color_list;
     }
 
     void Start()
