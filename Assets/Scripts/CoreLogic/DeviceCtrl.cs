@@ -48,7 +48,7 @@ public class DeviceCtrl
     public void DisconnectDevice()
     {
         //gloveManager.DisconnectDevice();
-        //lpSensorManager.DisconnectDevice();
+        lpSensorManager.DisconnectDevice();
         lpThread.Abort();
     }
 
@@ -58,16 +58,13 @@ public class DeviceCtrl
     /// <returns></returns>
     public ModelCtrlData AcquireData()
     {
-        //Quaternion q = new Quaternion(cur_ModelCtrlData.bodyCtrlData.jointRotation[12].x, cur_ModelCtrlData.bodyCtrlData.jointRotation[12].y, cur_ModelCtrlData.bodyCtrlData.jointRotation[12].z, cur_ModelCtrlData.bodyCtrlData.jointRotation[12].w);
-        //kinectManager.setJointRotation(q,12);
+
         cur_ModelCtrlData.bodyCtrlData = kinectManager.getBodyCtrlData();
         gloveManager.AcquireHandData(ref cur_ModelCtrlData.handCtrlData);
-        Debug.Log(test_data.jointRotation[12].x);
         GameObject.FindGameObjectWithTag("RightHand").transform.rotation = test_data.jointRotation[12];
         cur_ModelCtrlData.bodyCtrlData.HandRightPos = GameObject.FindGameObjectWithTag("RightHand").transform.position;
         cur_ModelCtrlData.bodyCtrlData.HandLeftPos = GameObject.FindGameObjectWithTag("LeftHand").transform.position;
 
-        Debug.Log(cur_ModelCtrlData.bodyCtrlData.HandRightPos);
         return cur_ModelCtrlData;
     }
 }

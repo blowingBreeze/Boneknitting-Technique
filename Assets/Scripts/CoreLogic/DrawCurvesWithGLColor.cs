@@ -57,6 +57,10 @@ public class DrawCurvesWithGLColor : MonoBehaviour
     void Update()
     {
         end_index = (int)motion.getTraj(cur_traj).size();
+        if (end_index - start_index >= 50)
+        {
+            start_index = end_index - 50;
+        }
     }
     // Will be called after all regular rendering is done
     public void OnRenderObject()

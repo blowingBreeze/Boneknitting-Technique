@@ -571,6 +571,13 @@ namespace TrajectoryData
         {
             m_vecTrajs.Clear();
         }
+        public void clearTrailData()
+        {
+            for (int i = 0; i < m_vecTrajs.Count; ++i)
+            {
+                m_vecTrajs[i].clear();
+            }
+        }
         public int maxLength()
         {
             int len = 0;

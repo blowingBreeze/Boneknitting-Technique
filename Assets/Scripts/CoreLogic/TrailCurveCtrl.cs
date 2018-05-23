@@ -38,6 +38,13 @@ public class TrailCurveDrawCtrl
 
         return trajctrl;
     }
+    public void resetState()
+    {
+        GameObject.FindGameObjectWithTag("DrawWithGL").GetComponent<DrawCurvesWithGLColor>().enabled = false;
+        GameObject.FindGameObjectWithTag("DrawWithGL").GetComponent<DrawCurvesWithGL>().enabled = false;
+        curMotion.clearTrailData();
+        studyMotion.clearTrailData();
+    }
     public void startDraw(bool is_study)
     {
         if (is_study)
@@ -170,7 +177,7 @@ public class TrailCurveAppraiseCtrl
         {
             deta += left_color_list[i] + right_color_list[i];
         }
-        deta /= 100;
+        deta /= 20;
         return (100.0f - deta) > 0.0f ? (100.0f - deta) : 0.0f;
     }
 
