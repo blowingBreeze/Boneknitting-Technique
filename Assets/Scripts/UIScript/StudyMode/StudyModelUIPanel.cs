@@ -13,7 +13,8 @@ public class StudyModelUIPanel : MonoBehaviour
     public Button m_BtnRefData;
     public GameObject m_CompairData;
     public Text m_WarnText;
-
+    public Button m_StudyBtn;
+    public GameObject m_Resoult;
 
     private StudyModeManager m_studyManager;
     private GameObject m_ChartCanvas;
@@ -33,6 +34,7 @@ public class StudyModelUIPanel : MonoBehaviour
         bIsRecordSet = false;
         bIsChart = false;
     }
+
 
     public void BtnRefData()
     {
@@ -78,7 +80,8 @@ public class StudyModelUIPanel : MonoBehaviour
 
     public void BtnStartStudy()
     {
-        m_studyManager.StartStudy();
+        m_studyManager.StartOrStopStudy();
+        m_StudyBtn.gameObject.SetActive(false);
     }
 
     public void BtnReturn()
@@ -91,6 +94,12 @@ public class StudyModelUIPanel : MonoBehaviour
     {
         bIsChart = !bIsChart;
         m_ChartCanvas.SetActive(bIsChart);
+    }
+
+    public void StudyOver(float score)
+    {
+        m_Resoult.SetActive(true);
+        m_Resoult.GetComponentInChildren<Text>().text = "学习结束\n得分："+score.ToString()+" 分";
     }
 
     public void SetFileName(string strFileName)

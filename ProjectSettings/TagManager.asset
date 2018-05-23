@@ -8,6 +8,8 @@ TagManager:
   - StartCanvas
   - StudyCanvas
   - CompairMovieList
+  - RightHand
+  - DrawWithGL
   layers:
   - Default
   - TransparentFX

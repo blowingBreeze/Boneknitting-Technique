@@ -40,17 +40,17 @@ public class TrailCurveDrawCtrl
     }
     public void startDraw(bool is_study)
     {
-        if(is_study)
+        if (is_study)
             GameObject.FindGameObjectWithTag("DrawWithGL").GetComponent<DrawCurvesWithGLColor>().enabled = true;
         else
             GameObject.FindGameObjectWithTag("DrawWithGL").GetComponent<DrawCurvesWithGL>().enabled = true;
     }
 
-        /// <summary>
-        /// 此接口用于设置那个轨迹要绘制哪个不绘制
-        /// </summary>
-        /// <param name="trailType">需要切换的轨迹类型</param>
-        /// <param name="IsOn">该轨迹开启绘制还是关闭绘制</param>
+    /// <summary>
+    /// 此接口用于设置那个轨迹要绘制哪个不绘制
+    /// </summary>
+    /// <param name="trailType">需要切换的轨迹类型</param>
+    /// <param name="IsOn">该轨迹开启绘制还是关闭绘制</param>
     public void SwitchTrailCurve(TrailType trailType, bool IsOn)
     {
         Debug.Log(trailType + "---------" + IsOn);

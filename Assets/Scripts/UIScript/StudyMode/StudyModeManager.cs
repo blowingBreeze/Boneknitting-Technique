@@ -33,6 +33,7 @@ public class StudyModeManager : MonoBehaviour
         m_HumenModelRef = Instantiate(m_HumenModelPrefab);
         m_HumenModel = Instantiate(m_HumenModelPrefab);
         m_ChartCanvas = Instantiate(m_ChartCanvasPrefab);
+        InitStudyModeChartCanvas();
     }
 
     // Update is called once per frame
@@ -54,6 +55,11 @@ public class StudyModeManager : MonoBehaviour
             m_StudyModeChartController.UpdateLineChart(ChartType.CHART_CURVATURE, m_RateController.nCurrentFrame, TrailCurveDrawCtrl.Instance().lastCurvature(TrailType.EG_S1));
             m_StudyModeChartController.UpdateLineChart(ChartType.CHART_TORSION, m_RateController.nCurrentFrame, TrailCurveDrawCtrl.Instance().lastTorsion(TrailType.EG_S1));
 
+            if(m_RefRateController.nCurrentFrame>=m_RefRateController.nTotalFrameCount)
+            {
+                GetComponent<StudyModelUIPanel>().StudyOver(m_StudyController.GetAppraiseResult());
+                StartOrStopStudy();
+            }
         }
     }
 
@@ -99,7 +105,7 @@ public class StudyModeManager : MonoBehaviour
         m_StudyController.Ready();
     }
 
-    public void StartStudy()
+    public void StartOrStopStudy()
     {
         bIsStart = !bIsStart;
     }

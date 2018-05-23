@@ -56,7 +56,6 @@ public class MovieCatalogueScript : MonoBehaviour
         }
         var tempHeadData = FileReader.GetHeadFromFile(astrFileName);
         var tempListItem = Instantiate(m_MovieListItemPrefab, m_Content.transform);
-        Debug.Log(ToolFunction.GetDefaultPortraitPathByName(tempHeadData.strPortrait, ".jpg"));
         tempListItem.GetComponent<Image>().overrideSprite = ToolFunction.CreateSpriteFromImage(ToolFunction.GetDefaultPortraitPathByName( tempHeadData.strPortrait,".jpg"));
         tempListItem.GetComponentInChildren<Text>().text = tempHeadData.strDoctorName + "\n" + tempHeadData.strGenerateTime;
         tempListItem.GetComponent<ClickMovieListItem>().SetFilePath(astrFileName);

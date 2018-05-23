@@ -46,9 +46,9 @@ public class DeviceCtrl
     //断开设备连接
     public void DisconnectDevice()
     {
-        gloveManager.DisconnectDevice();
-        lpSensorManager.DisconnectDevice();
-        lpThread.Abort();
+        //gloveManager.DisconnectDevice();
+        //lpSensorManager.DisconnectDevice();
+        //lpThread.Abort();
     }
 
     /// <summary>
@@ -58,7 +58,8 @@ public class DeviceCtrl
     public ModelCtrlData AcquireData()
     {
         GameObject.FindGameObjectWithTag("RightHand").transform.rotation.Set(cur_ModelCtrlData.bodyCtrlData.jointRotation[12].x, cur_ModelCtrlData.bodyCtrlData.jointRotation[12].y, cur_ModelCtrlData.bodyCtrlData.jointRotation[12].z, cur_ModelCtrlData.bodyCtrlData.jointRotation[12].w);
-        
+        //Quaternion q = new Quaternion(cur_ModelCtrlData.bodyCtrlData.jointRotation[12].x, cur_ModelCtrlData.bodyCtrlData.jointRotation[12].y, cur_ModelCtrlData.bodyCtrlData.jointRotation[12].z, cur_ModelCtrlData.bodyCtrlData.jointRotation[12].w);
+        //kinectManager.setJointRotation(q,12);
         cur_ModelCtrlData.bodyCtrlData = kinectManager.getBodyCtrlData();
         gloveManager.AcquireHandData(ref cur_ModelCtrlData.handCtrlData);
         
