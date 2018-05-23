@@ -30,7 +30,7 @@ class LpSensorManager
         ref_wrist_data = wrist_data;
         client = new Process();
 
-        client.StartInfo.FileName = string.Format(@"F:\GitHub\Boneknitting-Technique\Assets\Data\LpSensor\LpSensorTest.exe");
+        client.StartInfo.FileName = string.Format(@"F:\CodingRoom\Unity\Boneknitting Technique\Assets\Data\LpSensor\LpSensorTest.exe");
         client.StartInfo.UseShellExecute = false;
         client.StartInfo.CreateNoWindow = true;
         client.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;

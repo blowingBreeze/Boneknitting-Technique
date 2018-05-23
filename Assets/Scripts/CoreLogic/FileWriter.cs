@@ -37,7 +37,7 @@ public class FileWriter
     public void SaveDataToFile(MovieHeadData headData, string strFileName, int StartFrame = -1, float EndFrame = -1)
     {
         if (StartFrame < 0 || StartFrame >= cacheDataList.Count) StartFrame = 0;
-        if (EndFrame < 1 || EndFrame >= cacheDataList.Count) EndFrame = cacheDataList.Count - 1;
+        if (EndFrame < 1 || EndFrame >= cacheDataList.Count) EndFrame = cacheDataList.Count ;
 
 
         try

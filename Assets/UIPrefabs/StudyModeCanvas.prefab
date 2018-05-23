@@ -1212,6 +1212,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_HumenModelPrefab: {fileID: 1092805444626928, guid: a64019e32cc534c459dfab62db6fd9aa,
     type: 2}
+  m_HumenModelPrefabRef: {fileID: 1092805444626928, guid: 01ad18f972020b84ab42d701e0f20716,
+    type: 2}
   m_ChartCanvasPrefab: {fileID: 1584829846224094, guid: d31886912255871459a6602f88e62566,
     type: 2}
 --- !u!114 &114406061671505816

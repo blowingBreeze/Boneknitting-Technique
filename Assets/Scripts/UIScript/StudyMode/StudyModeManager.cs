@@ -5,6 +5,7 @@ using UnityEngine;
 public class StudyModeManager : MonoBehaviour
 {
     public GameObject m_HumenModelPrefab;
+    public GameObject m_HumenModelPrefabRef;
     public GameObject m_ChartCanvasPrefab;
 
     private string m_strRefFileName; //参照数据文件路径
@@ -30,7 +31,7 @@ public class StudyModeManager : MonoBehaviour
         bIsRecord = false;
         bIsStart = false;
 
-        m_HumenModelRef = Instantiate(m_HumenModelPrefab);
+        m_HumenModelRef = Instantiate(m_HumenModelPrefabRef);
         m_HumenModel = Instantiate(m_HumenModelPrefab);
         m_ChartCanvas = Instantiate(m_ChartCanvasPrefab);
         InitStudyModeChartCanvas();

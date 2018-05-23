@@ -54,6 +54,10 @@ public class DrawCurvesWithGL : MonoBehaviour
     void Update()
     {
         end_index = (int)motion.getTraj(cur_traj).size();
+        if (end_index - start_index >= 50)
+        {
+            start_index = end_index - 50;
+        }
     }
     // Will be called after all regular rendering is done
     public void OnRenderObject()
@@ -86,17 +90,13 @@ public class DrawCurvesWithGL : MonoBehaviour
         // Apply the line material
         lineMaterial.SetPass(0);
 
-        GL.PushMatrix();
-        // Set transformation matrix for drawing to
-        // match our transform
-        GL.MultMatrix(transform.localToWorldMatrix);
+        
 
         for (int i = 0; i < motion.size(); ++i)
         {
             drawCurve(motion.getTraj(i));
         }
-
-        GL.PopMatrix();
+        
     }
     void drawCurve(Trajectory traj)
     {

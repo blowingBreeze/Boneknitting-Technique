@@ -136,10 +136,10 @@ public class BodyCtrl : MonoBehaviour
 
         KinectWrapper.NuiSkeletonPositionIndex HandLeftJointPos = boneIndex2JointMap[8];
         //bodyCtrlData.HandLeftPos = kinectManager.GetJointPosition(UserID, (int)HandLeftJointPos);
-        kinectManager.setHandLeftPos(kinectManager.GetJointPosition(UserID, (int)HandLeftJointPos));
+        //kinectManager.setHandLeftPos(kinectManager.GetJointPosition(UserID, (int)HandLeftJointPos));
         KinectWrapper.NuiSkeletonPositionIndex HandRightJointPos = boneIndex2JointMap[13];
         //bodyCtrlData.HandRightPos = kinectManager.GetJointPosition(UserID, (int)HandRightJointPos);
-        kinectManager.setHandRightPos(kinectManager.GetJointPosition(UserID, (int)HandRightJointPos));
+        //kinectManager.setHandRightPos(kinectManager.GetJointPosition(UserID, (int)HandRightJointPos));
     }
 
     // Update the avatar each frame.
@@ -153,7 +153,7 @@ public class BodyCtrl : MonoBehaviour
 
         for (var boneIndex = 0; boneIndex < bones.Length; boneIndex++)
         {
-            if (!bones[boneIndex]|| bodyCtrlData.jointRotation[boneIndex] == Quaternion.identity)
+            if (!bones[boneIndex]|| bodyCtrlData.jointRotation[boneIndex] == Quaternion.identity|| boneIndex == 12)
                 continue;
 
 

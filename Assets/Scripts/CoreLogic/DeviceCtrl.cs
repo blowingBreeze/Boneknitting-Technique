@@ -7,6 +7,7 @@ public class DeviceCtrl
 {
 
     private ModelCtrlData cur_ModelCtrlData = new ModelCtrlData();
+    private BodyCtrlData test_data = new BodyCtrlData();
     // private instance of the KinectManager
     private KinectManager kinectManager;
     private DTGloveManager gloveManager;
@@ -29,7 +30,7 @@ public class DeviceCtrl
 
         if (lpSensorManager == null)
         {
-            lpSensorManager = new LpSensorManager(ref cur_ModelCtrlData.bodyCtrlData, ref cur_ModelCtrlData.wristCtrlData, 23333, "00:04:3E:9E:00:C5", 20);
+            lpSensorManager = new LpSensorManager(ref test_data, ref cur_ModelCtrlData.wristCtrlData, 23333, "00:04:3E:9E:00:C5", 20);
 
             if (lpSensorManager.Init())
             {
@@ -48,7 +49,7 @@ public class DeviceCtrl
     {
         //gloveManager.DisconnectDevice();
         //lpSensorManager.DisconnectDevice();
-        //lpThread.Abort();
+        lpThread.Abort();
     }
 
     /// <summary>
@@ -57,12 +58,16 @@ public class DeviceCtrl
     /// <returns></returns>
     public ModelCtrlData AcquireData()
     {
-        GameObject.FindGameObjectWithTag("RightHand").transform.rotation.Set(cur_ModelCtrlData.bodyCtrlData.jointRotation[12].x, cur_ModelCtrlData.bodyCtrlData.jointRotation[12].y, cur_ModelCtrlData.bodyCtrlData.jointRotation[12].z, cur_ModelCtrlData.bodyCtrlData.jointRotation[12].w);
         //Quaternion q = new Quaternion(cur_ModelCtrlData.bodyCtrlData.jointRotation[12].x, cur_ModelCtrlData.bodyCtrlData.jointRotation[12].y, cur_ModelCtrlData.bodyCtrlData.jointRotation[12].z, cur_ModelCtrlData.bodyCtrlData.jointRotation[12].w);
         //kinectManager.setJointRotation(q,12);
         cur_ModelCtrlData.bodyCtrlData = kinectManager.getBodyCtrlData();
         gloveManager.AcquireHandData(ref cur_ModelCtrlData.handCtrlData);
-        
+        Debug.Log(test_data.jointRotation[12].x);
+        GameObject.FindGameObjectWithTag("RightHand").transform.rotation = test_data.jointRotation[12];
+        cur_ModelCtrlData.bodyCtrlData.HandRightPos = GameObject.FindGameObjectWithTag("RightHand").transform.position;
+        cur_ModelCtrlData.bodyCtrlData.HandLeftPos = GameObject.FindGameObjectWithTag("LeftHand").transform.position;
+
+        Debug.Log(cur_ModelCtrlData.bodyCtrlData.HandRightPos);
         return cur_ModelCtrlData;
     }
 }

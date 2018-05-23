@@ -87,16 +87,11 @@ public class DrawCurvesWithGLColor : MonoBehaviour
         CreateLineMaterial();
         // Apply the line material
         lineMaterial.SetPass(0);
-
-        GL.PushMatrix();
-        // Set transformation matrix for drawing to
-        // match our transform
-        GL.MultMatrix(transform.localToWorldMatrix);
+        
 
         drawCurveWithColorList(motion.getTraj(0), left_color_list);
         drawCurveWithColorList(motion.getTraj(1), right_color_list);
-
-        GL.PopMatrix();
+        
     }
 
     void drawCurveWithColorList(Trajectory traj, List<float> color_list)
