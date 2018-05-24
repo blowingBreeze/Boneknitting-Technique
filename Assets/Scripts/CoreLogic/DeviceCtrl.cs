@@ -48,8 +48,8 @@ public class DeviceCtrl
     public void DisconnectDevice()
     {
         //gloveManager.DisconnectDevice();
-        lpSensorManager.DisconnectDevice();
         lpThread.Abort();
+        lpSensorManager.DisconnectDevice();
     }
 
     /// <summary>

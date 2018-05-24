@@ -11,11 +11,7 @@ public class DrawCurvesWithGL : MonoBehaviour
     private HandMotion motion = new HandMotion();
     private int cur_traj = 0;
     private GameObject hand;
-    private List<float> color_list;
-
-    private float speed = 0.5F;
-    private float distance = 1.0F;
-    private bool isPlay = false;
+    private int length = 50;
 
     static Material lineMaterial;
     static void CreateLineMaterial()
@@ -42,6 +38,7 @@ public class DrawCurvesWithGL : MonoBehaviour
         motion = TrailCurveDrawCtrl.Instance().curMotion;
         hand = new GameObject();
 
+        length = TrailCurveDrawCtrl.Instance().curve_length;
         start_index = 0;
         end_index = (int)motion.getTraj(cur_traj).size();
 
@@ -53,16 +50,16 @@ public class DrawCurvesWithGL : MonoBehaviour
 
     void Update()
     {
+        length = TrailCurveDrawCtrl.Instance().curve_length;
         end_index = (int)motion.getTraj(cur_traj).size();
-        if (end_index - start_index >= 50)
+        if (end_index - start_index >= length)
         {
-            start_index = end_index - 50;
+            start_index = end_index - length;
         }
     }
     // Will be called after all regular rendering is done
     public void OnRenderObject()
     {
-        //isPlay = TrailCurveDrawCtrl.Instance().getIsPlay();
         draw();
     }
     void drawHand()
@@ -72,29 +69,18 @@ public class DrawCurvesWithGL : MonoBehaviour
         rotation = new Vector3(motion.getTraj(0).vec[end_index - 1].azimuth, motion.getTraj(0).vec[end_index - 1].elevation, motion.getTraj(0).vec[end_index - 1].roll);
         hand.transform.localEulerAngles = rotation;
     }
-    void play()
-    {
-        if (isPlay)
-        {
-            distance += speed;
-            end_index = (int)distance % ((int)motion.getTraj(cur_traj).size() - 1) + 1;
-        }
-    }
+
 
     void draw()
     {
-        //Debug.Log("draw");
-        play();
-
         CreateLineMaterial();
         // Apply the line material
         lineMaterial.SetPass(0);
 
-        
-
         for (int i = 0; i < motion.size(); ++i)
         {
-            drawCurve(motion.getTraj(i));
+            if (motion.getTraj(i).getActive() == true)
+                drawCurve(motion.getTraj(i));
         }
         
     }

@@ -8,17 +8,9 @@ public class DrawCurvesWithLineRenderer : MonoBehaviour
     private int start_index = 0;
     private int end_index = 0;
     private int cur_traj = 0;
-    private GameObject hand1;
-    private GameObject hand2;
-    private GameObject root1;
-    private GameObject root2;
     private HandMotion motion = new HandMotion();
     private List<LineRenderer> lineRenderer = new List<LineRenderer>();
-    private int lengthOfLineRenderer = 0;
-
-    private float speed = 0.5F;
-    private float distance = 1.0F;
-    private bool isPlay = false;
+    private int length = 0;
 
     private bool button = false;
 
@@ -28,15 +20,13 @@ public class DrawCurvesWithLineRenderer : MonoBehaviour
     {
         motion = TrailCurveDrawCtrl.Instance().curMotion;
         //isPlay = TrailCurveDrawCtrl.Instance().getIsPlay();
-
-        hand1 = new GameObject();
-        hand2 = new GameObject();
+        length = TrailCurveDrawCtrl.Instance().curve_length;
 
         start_index = 0;
         end_index = (int)motion.getTraj(cur_traj).size();
         for (int i = 0; i < motion.size(); ++i)
         {
-            initLineRenderer(i, Color.blue, Color.blue);
+            initLineRenderer(i, Color.red, Color.red, 0.04f, 0.04f);
         }
         /*残影部分gameobject初始化
         root1 = GameObject.Find("GameObject1");
@@ -51,43 +41,52 @@ public class DrawCurvesWithLineRenderer : MonoBehaviour
 
     void initLineRenderer(int index, Color sc, Color ec, float sw = 0.5F, float ew = 0.5F)
     {
-        string name = string.Format("Linerenderer{0}", index);
-        lineRenderer[index] = GameObject.Find(name).GetComponent<LineRenderer>();
-        lineRenderer[index].material = new Material(Shader.Find("Particles/Additive"));
-        lineRenderer[index].startColor = sc;
-        lineRenderer[index].endColor = ec;
-        lineRenderer[index].positionCount = (int)motion.getTraj(cur_traj).size();
-        lineRenderer[index].startWidth = sw;
-        lineRenderer[index].endWidth = ew;
+        string name = string.Format("LineRenderer{0}", index+1);
+        LineRenderer temp_lr = GameObject.FindGameObjectWithTag(name).GetComponent<LineRenderer>();
+        temp_lr.material = new Material(Shader.Find("Particles/Additive"));
+        temp_lr.startColor = sc;
+        temp_lr.endColor = ec;
+        temp_lr.positionCount = (int)motion.getTraj(cur_traj).size();
+        temp_lr.startWidth = sw;
+        temp_lr.endWidth = ew;
+
+        lineRenderer.Add(temp_lr);
     }
     // Update is called once per frame
     void Update()
     {
+        length = TrailCurveDrawCtrl.Instance().curve_length;
+        end_index = (int)motion.getTraj(cur_traj).size();
+        if (end_index - start_index >= length)
+        {
+            start_index = end_index - length;
+        }
         drawCurve();
     }
 
     void drawCurve()
     {
-        play();
-
         for (int traj = 0; traj < motion.size(); ++traj)
         {
             if (motion.getTraj(traj).getActive() == true)
             {
-                lineRenderer[traj].positionCount = end_index;
+                lineRenderer[traj].positionCount = end_index - start_index;
                 Vec3 temp = new Vec3();
                 for (int pos = start_index; pos < end_index; ++pos)
                 {
                     temp = motion.getTraj(traj).vec[pos].position;
-                    lineRenderer[traj].SetPosition(pos, new Vector3(temp.x, temp.y, temp.z));
+                    lineRenderer[traj].SetPosition(pos - start_index, new Vector3(temp.x, temp.y, temp.z));
                 }
-
+            }
+            else
+            {
+                lineRenderer[traj].positionCount = 0;
             }
         }
 
         //drawGhost();
     }
-
+    /*
     void drawGhost()
     {
         if (button)
@@ -100,14 +99,5 @@ public class DrawCurvesWithLineRenderer : MonoBehaviour
             var canying = GameObject.Instantiate(hand1, root1.transform);
         }
     }
-
-    void play()
-    {
-        //isPlay = TrailCurveDrawCtrl.Instance().getIsPlay();
-        if (isPlay)
-        {
-            distance += speed;
-            end_index = (int)distance % ((int)motion.getTraj(cur_traj).size() - 1) + 1;
-        }
-    }
+    */
 }

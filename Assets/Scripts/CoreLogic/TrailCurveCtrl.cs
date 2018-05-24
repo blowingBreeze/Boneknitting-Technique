@@ -11,8 +11,9 @@ public class TrailCurveDrawCtrl
     public HandMotion studyMotion;
     //储存当前已经打开（读取）的轨迹
     //public List<HandMotion> motionList = new List<HandMotion>();
+    public int curve_length = 50;
     private bool is_first = true;
-    private bool is_study_first = true;
+    private bool is_linerenderer = false;
     //轨迹数量
     private int trajs_num;
 
@@ -42,15 +43,28 @@ public class TrailCurveDrawCtrl
     {
         GameObject.FindGameObjectWithTag("DrawWithGL").GetComponent<DrawCurvesWithGLColor>().enabled = false;
         GameObject.FindGameObjectWithTag("DrawWithGL").GetComponent<DrawCurvesWithGL>().enabled = false;
+        GameObject.FindGameObjectWithTag("DrawWithGL").GetComponent<DrawCurvesWithLineRenderer>().enabled = false;
         curMotion.clearTrailData();
         studyMotion.clearTrailData();
     }
+    //设置需要绘制曲线的长度
+    public void setCurveLength(int length)
+    {
+        curve_length = length;
+    }
+    //设置需要绘制曲线的长度
+    public void setIsLineRenderer(bool is_lr)
+    {
+        is_linerenderer = is_lr;
+    }
     public void startDraw(bool is_study)
     {
-        if (is_study)
-            GameObject.FindGameObjectWithTag("DrawWithGL").GetComponent<DrawCurvesWithGLColor>().enabled = true;
+        if (is_linerenderer && !is_study)
+            GameObject.FindGameObjectWithTag("DrawCurve").GetComponent<DrawCurvesWithLineRenderer>().enabled = true;
+        else if (is_study)
+            GameObject.FindGameObjectWithTag("DrawCurve").GetComponent<DrawCurvesWithGLColor>().enabled = true;
         else
-            GameObject.FindGameObjectWithTag("DrawWithGL").GetComponent<DrawCurvesWithGL>().enabled = true;
+            GameObject.FindGameObjectWithTag("DrawCurve").GetComponent<DrawCurvesWithGL>().enabled = true;
     }
 
     /// <summary>
@@ -109,21 +123,21 @@ public class TrailCurveDrawCtrl
     {
         return curMotion.getTraj(trailType.GetHashCode()).torsion();
     }
-    public float lastSpeed(TrailType trailType)
+    public float lastSpeed(TrailType trailType, bool is_study = false)
     {
-        return curMotion.getTraj(trailType.GetHashCode()).lastSpeed();
+        return is_study ? studyMotion.getTraj(trailType.GetHashCode()).lastSpeed() : curMotion.getTraj(trailType.GetHashCode()).lastSpeed();
     }
-    public float lastAcceleration(TrailType trailType)
+    public float lastAcceleration(TrailType trailType, bool is_study = false)
     {
-        return curMotion.getTraj(trailType.GetHashCode()).lastAcceleration();
+        return is_study ? studyMotion.getTraj(trailType.GetHashCode()).lastAcceleration() : curMotion.getTraj(trailType.GetHashCode()).lastAcceleration();
     }
-    public float lastCurvature(TrailType trailType)
+    public float lastCurvature(TrailType trailType, bool is_study = false)
     {
-        return curMotion.getTraj(trailType.GetHashCode()).lastCurvature();
+        return is_study ? studyMotion.getTraj(trailType.GetHashCode()).lastCurvature() : curMotion.getTraj(trailType.GetHashCode()).lastCurvature();
     }
-    public float lastTorsion(TrailType trailType)
+    public float lastTorsion(TrailType trailType, bool is_study = false)
     {
-        return curMotion.getTraj(trailType.GetHashCode()).lastTorsion();
+        return is_study ? studyMotion.getTraj(trailType.GetHashCode()).lastTorsion() : curMotion.getTraj(trailType.GetHashCode()).lastTorsion();
     }
 }
 

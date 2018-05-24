@@ -61,10 +61,12 @@ class LpSensorManager
             //接收到数据  
             int intReceiveLength = serverSocket.ReceiveFrom(byteArray_Receive, ref ep);
             //转换数据为字符串  
-            ref_body_data.jointRotation[12].x = BitConverter.ToSingle(byteArray_Receive, 0);
-            ref_body_data.jointRotation[12].y = BitConverter.ToSingle(byteArray_Receive, 4);
-            ref_body_data.jointRotation[12].z = BitConverter.ToSingle(byteArray_Receive, 8);
-            ref_body_data.jointRotation[12].w = BitConverter.ToSingle(byteArray_Receive, 12);
+            ref_body_data.jointRotation[12].w = -BitConverter.ToSingle(byteArray_Receive, 0);
+            ref_body_data.jointRotation[12].x = BitConverter.ToSingle(byteArray_Receive, 4);
+            ref_body_data.jointRotation[12].y = BitConverter.ToSingle(byteArray_Receive, 8);
+            ref_body_data.jointRotation[12].z = -BitConverter.ToSingle(byteArray_Receive, 12);
+            //UnityEngine.Debug.Log(BitConverter.ToSingle(byteArray_Receive, 16) + ":" + BitConverter.ToSingle(byteArray_Receive, 20) + ":" + BitConverter.ToSingle(byteArray_Receive, 24));
+            //ref_body_data.jointRotation[12] = Quaternion.Euler(-BitConverter.ToSingle(byteArray_Receive, 16), -BitConverter.ToSingle(byteArray_Receive, 20), BitConverter.ToSingle(byteArray_Receive, 24));
         }
     }
     public void DisconnectDevice()

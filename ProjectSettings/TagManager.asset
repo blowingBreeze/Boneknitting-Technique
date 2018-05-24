@@ -11,6 +11,8 @@ TagManager:
   - RightHand
   - DrawWithGL
   - LeftHand
+  - LineRenderer1
+  - LineRenderer2
   layers:
   - Default
   - TransparentFX

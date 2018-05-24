@@ -13,10 +13,7 @@ public class DrawCurvesWithGLColor : MonoBehaviour
     private GameObject hand;
     private List<float> left_color_list;
     private List<float> right_color_list;
-
-    private float speed = 0.5F;
-    private float distance = 1.0F;
-    private bool isPlay = false;
+    private int length = 50;
 
     static Material lineMaterial;
     static void CreateLineMaterial()
@@ -43,6 +40,7 @@ public class DrawCurvesWithGLColor : MonoBehaviour
         motion = TrailCurveDrawCtrl.Instance().studyMotion;
         hand = new GameObject();
 
+        length = TrailCurveDrawCtrl.Instance().curve_length;
         start_index = 0;
         end_index = (int)motion.getTraj(cur_traj).size();
 
@@ -56,10 +54,11 @@ public class DrawCurvesWithGLColor : MonoBehaviour
 
     void Update()
     {
+        length = TrailCurveDrawCtrl.Instance().curve_length;
         end_index = (int)motion.getTraj(cur_traj).size();
-        if (end_index - start_index >= 50)
+        if (end_index - start_index >= length)
         {
-            start_index = end_index - 50;
+            start_index = end_index - length;
         }
     }
     // Will be called after all regular rendering is done
@@ -75,23 +74,12 @@ public class DrawCurvesWithGLColor : MonoBehaviour
         rotation = new Vector3(motion.getTraj(0).vec[end_index - 1].azimuth, motion.getTraj(0).vec[end_index - 1].elevation, motion.getTraj(0).vec[end_index - 1].roll);
         hand.transform.localEulerAngles = rotation;
     }
-    void play()
-    {
-        if (isPlay)
-        {
-            distance += speed;
-            end_index = (int)distance % ((int)motion.getTraj(cur_traj).size() - 1) + 1;
-        }
-    }
 
     void draw()
     {
-        play();
-
         CreateLineMaterial();
         // Apply the line material
         lineMaterial.SetPass(0);
-        
 
         drawCurveWithColorList(motion.getTraj(0), left_color_list);
         drawCurveWithColorList(motion.getTraj(1), right_color_list);
