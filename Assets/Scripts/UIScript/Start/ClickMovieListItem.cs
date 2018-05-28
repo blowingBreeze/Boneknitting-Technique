@@ -7,9 +7,10 @@ using System.IO;
 public class ClickMovieListItem : MonoBehaviour
 {
     public GameObject PlayModeCanvas;
-
+    public GameObject WarningTextPrefab;
     private GameObject StartModeCanvas;
     private string strFilePath;
+   
 
     private void Start()
     {
@@ -24,19 +25,8 @@ public class ClickMovieListItem : MonoBehaviour
 
     public void OnClickDelet_Btn()
     {
-        var filepath = GetComponent<ClickMovieListItem>().GetFilePath();
-        ConfigCenter.Instance().DeleteFileByPath(GetComponent<ClickMovieListItem>().GetFilePath());
-        var temphead = FileReader.GetHeadFromFile(filepath);
-        var portraitpath = ToolFunction.GetDefaultPortraitPathByName(temphead.strPortrait, ".jpg");
-        if (File.Exists(portraitpath))
-        {
-            File.Delete(portraitpath);
-        }
-        if (File.Exists(filepath))
-        {
-            File.Delete(filepath);
-        }
-        Destroy(gameObject);
+        var WarningText = Instantiate(WarningTextPrefab, StartModeCanvas.transform);
+        WarningText.GetComponent<StartDeleteWarningText>().SetDeleteObj(gameObject);
     }
 
     public void SetFilePath(string astrFilePath)
