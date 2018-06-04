@@ -7,6 +7,7 @@ abstract public class StudyController
     // Update is called once per frame
     abstract public bool Ready();
     abstract public void Update(int nFrameCountRef, int nFrameCount);
+    abstract public void Destory();
     abstract public float GetAppraiseResult();
 }
 
@@ -52,6 +53,12 @@ internal class StudyControllerFileFile : StudyController
     {
         return true;
     }
+
+    public override void Destory()
+    {
+        m_PlayControllerRef.Destory();
+
+    }
 }
 
 internal class StudyControllerFileRecord :StudyController
@@ -94,5 +101,10 @@ internal class StudyControllerFileRecord :StudyController
     {
         m_DeviceController.InitDevice();
         return true;
+    }
+
+    public override void Destory()
+    {
+        m_PlayControllerRef.Destory();
     }
 }

@@ -13,6 +13,8 @@ TagManager:
   - LeftHand
   - LineRenderer1
   - LineRenderer2
+  - StartDeleteWarningText
+  - DrawCurve
   layers:
   - Default
   - TransparentFX

@@ -41,9 +41,9 @@ public class TrailCurveDrawCtrl
     }
     public void resetState()
     {
-        GameObject.FindGameObjectWithTag("DrawWithGL").GetComponent<DrawCurvesWithGLColor>().enabled = false;
-        GameObject.FindGameObjectWithTag("DrawWithGL").GetComponent<DrawCurvesWithGL>().enabled = false;
-        GameObject.FindGameObjectWithTag("DrawWithGL").GetComponent<DrawCurvesWithLineRenderer>().enabled = false;
+        GameObject.FindGameObjectWithTag("DrawCurve").GetComponent<DrawCurvesWithGLColor>().enabled = false;
+        GameObject.FindGameObjectWithTag("DrawCurve").GetComponent<DrawCurvesWithGL>().enabled = false;
+        GameObject.FindGameObjectWithTag("DrawCurve").GetComponent<DrawCurvesWithLineRenderer>().enabled = false;
         curMotion.clearTrailData();
         studyMotion.clearTrailData();
     }

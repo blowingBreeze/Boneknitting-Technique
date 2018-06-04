@@ -28,16 +28,16 @@ public class DeviceCtrl
             gloveManager = DTGloveManager.instance;
         }
 
-        if (lpSensorManager == null)
-        {
-            lpSensorManager = new LpSensorManager(ref test_data, ref cur_ModelCtrlData.wristCtrlData, 23333, "00:04:3E:9E:00:C5", 20);
+        //if (lpSensorManager == null)
+        //{
+        //    lpSensorManager = new LpSensorManager(ref test_data, ref cur_ModelCtrlData.wristCtrlData, 23333, "00:04:3E:9E:00:C5", 20);
 
-            if (lpSensorManager.Init())
-            {
-                lpThread = new Thread(new ThreadStart(lpSensorManager.receiveData));
-                lpThread.Start();
-            }
-        }
+        //    if (lpSensorManager.Init())
+        //    {
+        //        lpThread = new Thread(new ThreadStart(lpSensorManager.receiveData));
+        //        lpThread.Start();
+        //    }
+        //}
 
 
         return true;
@@ -48,8 +48,8 @@ public class DeviceCtrl
     public void DisconnectDevice()
     {
         //gloveManager.DisconnectDevice();
-        lpThread.Abort();
-        lpSensorManager.DisconnectDevice();
+        //lpThread.Abort();
+       // lpSensorManager.DisconnectDevice();
     }
 
     /// <summary>

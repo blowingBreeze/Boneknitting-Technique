@@ -51,15 +51,30 @@ public class StudyModeManager : MonoBehaviour
             m_StudyModeChartController.UpdateRefLineChart(ChartType.CHART_ACCELERATE, m_RefRateController.nCurrentFrame, TrailCurveDrawCtrl.Instance().lastAcceleration(TrailType.EG_S1));
             m_StudyModeChartController.UpdateRefLineChart(ChartType.CHART_CURVATURE, m_RefRateController.nCurrentFrame, TrailCurveDrawCtrl.Instance().lastCurvature(TrailType.EG_S1));
             m_StudyModeChartController.UpdateRefLineChart(ChartType.CHART_TORSION, m_RefRateController.nCurrentFrame, TrailCurveDrawCtrl.Instance().lastTorsion(TrailType.EG_S1));
-            m_StudyModeChartController.UpdateLineChart(ChartType.CHART_SPEED, m_RateController.nCurrentFrame, TrailCurveDrawCtrl.Instance().lastSpeed(TrailType.EG_S1));
-            m_StudyModeChartController.UpdateLineChart(ChartType.CHART_ACCELERATE, m_RateController.nCurrentFrame, TrailCurveDrawCtrl.Instance().lastAcceleration(TrailType.EG_S1));
-            m_StudyModeChartController.UpdateLineChart(ChartType.CHART_CURVATURE, m_RateController.nCurrentFrame, TrailCurveDrawCtrl.Instance().lastCurvature(TrailType.EG_S1));
-            m_StudyModeChartController.UpdateLineChart(ChartType.CHART_TORSION, m_RateController.nCurrentFrame, TrailCurveDrawCtrl.Instance().lastTorsion(TrailType.EG_S1));
+            m_StudyModeChartController.UpdateLineChart(ChartType.CHART_SPEED, m_RateController.nCurrentFrame, TrailCurveDrawCtrl.Instance().lastSpeed(TrailType.EG_S1, true));
+            m_StudyModeChartController.UpdateLineChart(ChartType.CHART_ACCELERATE, m_RateController.nCurrentFrame, TrailCurveDrawCtrl.Instance().lastAcceleration(TrailType.EG_S1, true));
+            m_StudyModeChartController.UpdateLineChart(ChartType.CHART_CURVATURE, m_RateController.nCurrentFrame, TrailCurveDrawCtrl.Instance().lastCurvature(TrailType.EG_S1, true));
+            m_StudyModeChartController.UpdateLineChart(ChartType.CHART_TORSION, m_RateController.nCurrentFrame, TrailCurveDrawCtrl.Instance().lastTorsion(TrailType.EG_S1, true));
 
-            if(m_RefRateController.nCurrentFrame>=m_RefRateController.nTotalFrameCount)
+
+
+            Debug.Log(bIsRecord);
+            if (!bIsRecord)
+            { 
+                if (m_RefRateController.nCurrentFrame >= m_RefRateController.nTotalFrameCount||
+                    m_RateController.nCurrentFrame>=m_RateController.nTotalFrameCount)
+                {
+                    GetComponent<StudyModelUIPanel>().StudyOver(m_StudyController.GetAppraiseResult());
+                    StartOrStopStudy();
+                }
+            }
+            else
             {
-                GetComponent<StudyModelUIPanel>().StudyOver(m_StudyController.GetAppraiseResult());
-                StartOrStopStudy();
+                if (m_RefRateController.nCurrentFrame >= m_RefRateController.nTotalFrameCount)
+                {
+                    GetComponent<StudyModelUIPanel>().StudyOver(m_StudyController.GetAppraiseResult());
+                    StartOrStopStudy();
+                }
             }
         }
     }
@@ -82,7 +97,7 @@ public class StudyModeManager : MonoBehaviour
             return;
         }
         m_strFileName = strFileName;
-        var tempHeadData = FileReader.GetHeadFromFile(m_strRefFileName);
+        var tempHeadData = FileReader.GetHeadFromFile(m_strFileName);
         m_RateController = new VideoRateCtrl(tempHeadData.nTotalFrameCount, 1000 / tempHeadData.nFPS);
     }
 
@@ -125,8 +140,9 @@ public class StudyModeManager : MonoBehaviour
 
     private void OnDestroy()
     {
-        Destroy(m_HumenModelRef);
-        Destroy(m_HumenModel);
+        Destroy(m_HumenModelRef.transform.parent.gameObject);
+        Destroy(m_HumenModel.transform.parent.gameObject);
         Destroy(m_ChartCanvas);
+        m_StudyController.Destory();
     }
 }

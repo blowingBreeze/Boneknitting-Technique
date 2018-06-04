@@ -99,7 +99,7 @@ public class StudyModelUIPanel : MonoBehaviour
     public void StudyOver(float score)
     {
         m_Resoult.SetActive(true);
-        m_Resoult.GetComponentInChildren<Text>().text = "学习结束\n得分："+string.Format("{0:D2}",score)+" 分";
+        m_Resoult.GetComponentInChildren<Text>().text = "学习结束\n得分："+string.Format("{0:F2}",score)+" 分";
     }
 
     public void SetFileName(string strFileName)

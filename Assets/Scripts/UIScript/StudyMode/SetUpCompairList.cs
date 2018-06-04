@@ -50,10 +50,12 @@ public class SetUpCompairList : MonoBehaviour
 
     private void AddListItembByFileName(string astrFileName)
     {
+        var templist = astrFileName.Split('\\');
+        var tempFileName = templist[templist.Length - 1].Split('.')[0];
         var tempHeadData = FileReader.GetHeadFromFile(astrFileName);
         var tempListItem = Instantiate(m_ListItemPrefab, m_Content.transform);
         tempListItem.GetComponentsInChildren<Image>()[1].overrideSprite= ToolFunction.CreateSpriteFromImage(ToolFunction.GetDefaultPortraitPathByName( tempHeadData.strPortrait,".jpg"));
-        tempListItem.GetComponentInChildren<Text>().text = tempHeadData.strDoctorName + "\n" + tempHeadData.strGenerateTime;
+        tempListItem.GetComponentInChildren<Text>().text = tempHeadData.strDoctorName + "\n" + tempFileName;
         tempListItem.GetComponent<ClickCompairListItem>().SetFilePath(astrFileName);
     }
 }

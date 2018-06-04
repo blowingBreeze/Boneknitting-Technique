@@ -29,4 +29,9 @@ public class PlayController
     {
         m_TrailController.SwitchTrailCurve(trailType, IsOn);
     }
+
+    public void Destory()
+    {
+        m_TrailController.resetState();
+    }
 }

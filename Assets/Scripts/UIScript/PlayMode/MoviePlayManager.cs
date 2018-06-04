@@ -45,6 +45,10 @@ public class MoviePlayManager : MonoBehaviour
             m_PlayModeChartController.UpdateLineChart(ChartType.CHART_TORSION, m_VIdeoRateController.nCurrentFrame, TrailCurveDrawCtrl.Instance().lastTorsion(TrailType.EG_S1));
 
             m_VIdeoRateController.nCurrentFrame +=m_VIdeoRateController.nAccelerate;
+            if(m_VIdeoRateController.nCurrentFrame>=m_VIdeoRateController.nTotalFrameCount)
+            {
+                GetComponent<PlayRateControl>().OnStartOrStopClick();
+            }
         }       
     }
 
@@ -134,5 +138,6 @@ public class MoviePlayManager : MonoBehaviour
     {
         Destroy(m_HumenModel);
         Destroy(m_ChartCanvas);
+        m_PlayController.Destory();
     }
 }
