@@ -177,8 +177,8 @@ public class TrailCurveAppraiseCtrl
         }
         else
         {
-            left_color_list.Add((float)(new Vec3(AppraiseData.bodyCtrlData.HandLeftPos - refData.bodyCtrlData.HandLeftPos) - deta_left).norm());
-            right_color_list.Add((float)(new Vec3(AppraiseData.bodyCtrlData.HandRightPos - refData.bodyCtrlData.HandRightPos) - deta_right).norm());
+            left_color_list.Add(Math.Abs((float)(new Vec3(AppraiseData.bodyCtrlData.HandLeftPos - refData.bodyCtrlData.HandLeftPos) - deta_left).norm()));
+            right_color_list.Add(Math.Abs((float)(new Vec3(AppraiseData.bodyCtrlData.HandRightPos - refData.bodyCtrlData.HandRightPos) - deta_right).norm()));
         }
         cur_frame++;
     }
@@ -191,7 +191,7 @@ public class TrailCurveAppraiseCtrl
         {
             deta += left_color_list[i] + right_color_list[i];
         }
-        deta /= 20;
+        //deta /= 20;
         return (100.0f - deta) > 0.0f ? (100.0f - deta) : 0.0f;
     }
 
@@ -239,7 +239,7 @@ public class TrailCurveAppraiseCtrl
 
         int row = 0;
         int col = 0;
-        while (row < traj1.size() && col < traj2.size())
+        while (row < traj1.size() - 1 && col < traj2.size() - 1)
         {
             if (distance_martix[row + 1, col] <= distance_martix[row + 1, col + 1] && distance_martix[row + 1, col] <= distance_martix[row, col + 1])
             {
@@ -258,8 +258,25 @@ public class TrailCurveAppraiseCtrl
                 col += 1;
             }
         }
-        
-        float ave_distance = distance_martix[row,col]/path.Count;
+
+        if (row == traj1.size() - 1)
+        {
+            while (col < traj2.size() - 1)
+            {
+                path.Add(distance_martix[row, col + 1]);
+                col++;
+            }
+        }
+        else if (col == traj2.size() - 1)
+        {
+            while (row < traj1.size() - 1)
+            {
+                path.Add(distance_martix[row + 1, col]);
+                row++;
+            }
+        }
+
+        float ave_distance = distance_martix[row, col] / path.Count;
 
         float variance = 0.0f;
         for (int i = 0; i < path.Count; ++i)

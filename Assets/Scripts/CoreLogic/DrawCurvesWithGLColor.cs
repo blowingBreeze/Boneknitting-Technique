@@ -95,7 +95,7 @@ public class DrawCurvesWithGLColor : MonoBehaviour
         for (int j = start_index; j < end_index; ++j)
         {
             temp = traj.vec[j].position;
-            GL.Color(new Color(color_list[j] * 2, 1 - color_list[j] * 2, 0, 1.0F));
+            GL.Color(new Color(color_list[j] * 1.5f, 1 - color_list[j] * 1.5f, 0, 1.0F));
             GL.Vertex3(temp.x, temp.y, temp.z);
         }
         GL.End();
