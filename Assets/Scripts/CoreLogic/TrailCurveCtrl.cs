@@ -177,8 +177,8 @@ public class TrailCurveAppraiseCtrl
         }
         else
         {
-            left_color_list.Add((float)(new Vec3(AppraiseData.bodyCtrlData.HandLeftPos - refData.bodyCtrlData.HandLeftPos) - deta_left).norm());
-            right_color_list.Add((float)(new Vec3(AppraiseData.bodyCtrlData.HandRightPos - refData.bodyCtrlData.HandRightPos) - deta_right).norm());
+            left_color_list.Add(Math.Abs((float)(new Vec3(AppraiseData.bodyCtrlData.HandLeftPos - refData.bodyCtrlData.HandLeftPos) - deta_left).norm()));
+            right_color_list.Add(Math.Abs((float)(new Vec3(AppraiseData.bodyCtrlData.HandRightPos - refData.bodyCtrlData.HandRightPos) - deta_right).norm()));
         }
         cur_frame++;
     }
@@ -191,15 +191,25 @@ public class TrailCurveAppraiseCtrl
         {
             deta += left_color_list[i] + right_color_list[i];
         }
-        deta /= 20;
-        return (100.0f - deta) > 0.0f ? (100.0f - deta) : 0.0f;
+        //deta /= 20;
+
+        float DTW_score_left = compareTrailCurveWithDTW(TrailCurveDrawCtrl.Instance().curMotion.getTraj(0), TrailCurveDrawCtrl.Instance().studyMotion.getTraj(0));
+        float DTW_score_right = compareTrailCurveWithDTW(TrailCurveDrawCtrl.Instance().curMotion.getTraj(1), TrailCurveDrawCtrl.Instance().studyMotion.getTraj(1));
+
+        if ((DTW_score_left + DTW_score_right) / 2 > 0.0f)
+        {
+            return (DTW_score_left + DTW_score_right) / 2;
+        }
+        else{
+            return (100.0f - deta) > 0.0f ? (100.0f - deta) : 0.0f;
+        }
     }
 
     //DTW方式查看两条曲线的拟合度
     public static float compareTrailCurveWithDTW(Trajectory traj1, Trajectory traj2)
     {
         if (traj1.size() < 2 || traj2.size() < 2 || traj1.size() * traj2.size() > 200000)
-            return 0.0f;
+            return -1.0f;
 
         float[,] distance_martix = new float[traj1.size(), traj2.size()];
         for (int i = 0; i < traj1.size(); ++i)
@@ -239,7 +249,7 @@ public class TrailCurveAppraiseCtrl
 
         int row = 0;
         int col = 0;
-        while (row < traj1.size() && col < traj2.size())
+        while (row < traj1.size() - 1 && col < traj2.size() - 1)
         {
             if (distance_martix[row + 1, col] <= distance_martix[row + 1, col + 1] && distance_martix[row + 1, col] <= distance_martix[row, col + 1])
             {
@@ -258,8 +268,25 @@ public class TrailCurveAppraiseCtrl
                 col += 1;
             }
         }
-        
-        float ave_distance = distance_martix[row,col]/path.Count;
+
+        if (row == traj1.size() - 1)
+        {
+            while (col < traj2.size() - 1)
+            {
+                path.Add(distance_martix[row, col + 1]);
+                col++;
+            }
+        }
+        else if (col == traj2.size() - 1)
+        {
+            while (row < traj1.size() - 1)
+            {
+                path.Add(distance_martix[row + 1, col]);
+                row++;
+            }
+        }
+
+        float ave_distance = distance_martix[row, col] / path.Count;
 
         float variance = 0.0f;
         for (int i = 0; i < path.Count; ++i)
