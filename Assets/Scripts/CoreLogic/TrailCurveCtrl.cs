@@ -192,14 +192,24 @@ public class TrailCurveAppraiseCtrl
             deta += left_color_list[i] + right_color_list[i];
         }
         //deta /= 20;
-        return (100.0f - deta) > 0.0f ? (100.0f - deta) : 0.0f;
+
+        float DTW_score_left = compareTrailCurveWithDTW(TrailCurveDrawCtrl.Instance().curMotion.getTraj(0), TrailCurveDrawCtrl.Instance().studyMotion.getTraj(0));
+        float DTW_score_right = compareTrailCurveWithDTW(TrailCurveDrawCtrl.Instance().curMotion.getTraj(1), TrailCurveDrawCtrl.Instance().studyMotion.getTraj(1));
+
+        if ((DTW_score_left + DTW_score_right) / 2 > 0.0f)
+        {
+            return (DTW_score_left + DTW_score_right) / 2;
+        }
+        else{
+            return (100.0f - deta) > 0.0f ? (100.0f - deta) : 0.0f;
+        }
     }
 
     //DTW方式查看两条曲线的拟合度
     public static float compareTrailCurveWithDTW(Trajectory traj1, Trajectory traj2)
     {
         if (traj1.size() < 2 || traj2.size() < 2 || traj1.size() * traj2.size() > 200000)
-            return 0.0f;
+            return -1.0f;
 
         float[,] distance_martix = new float[traj1.size(), traj2.size()];
         for (int i = 0; i < traj1.size(); ++i)
