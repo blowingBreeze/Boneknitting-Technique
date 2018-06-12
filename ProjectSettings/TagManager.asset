@@ -6,6 +6,15 @@ TagManager:
   tags:
   - Hand
   - StartCanvas
+  - StudyCanvas
+  - CompairMovieList
+  - RightHand
+  - DrawWithGL
+  - LeftHand
+  - LineRenderer1
+  - LineRenderer2
+  - StartDeleteWarningText
+  - DrawCurve
   layers:
   - Default
   - TransparentFX
@@ -15,7 +24,7 @@ TagManager:
   - UI
   - 
   - 
-  - 
+  - Charts
   - 
   - 
   - 

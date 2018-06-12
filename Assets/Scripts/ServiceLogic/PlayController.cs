@@ -4,46 +4,34 @@ using UnityEngine;
 
 public class PlayController
 {
-    private string strFileName;
-    private VideoRateCtrl m_VideoRateController;
-    //private ModelCtrl m_ModelController;
-    //private DataCtrl m_DataController ,即输入源控制
-    private TrailCurveCtrl m_TrailController;
+    private ModelCtrl m_ModelController;
+    private TrailCurveDrawCtrl m_TrailController;
 
-    public PlayController()
+    public PlayController(GameObject model)
     {
-        Init();
+        Init(model);
     }
 
-    private bool Init()
+    private bool Init(GameObject model)
     {
-        m_VideoRateController = new VideoRateCtrl();
-        m_TrailController = new TrailCurveCtrl();
+        m_ModelController = model.GetComponent<ModelCtrl>();
+        m_TrailController = TrailCurveDrawCtrl.Instance();
         return true;
     }
-    
-    public void SetFileName(string astrFileName)
+
+    public void Update(ModelCtrlData modelCtrlData)
     {
-        strFileName = astrFileName;
-    }
-
-    public void Update()
-    {
-
-    }
-
-    public void SetAccelerate(float fRatio)
-    {
-
-    }
-
-    public void SetCurrentTime(float fRatio)
-    {
-
+        m_ModelController.MoveModel(modelCtrlData);
+        m_TrailController.RecvTrailData(modelCtrlData);
     }
 
     public void SwitchTrail(TrailType trailType,bool IsOn)
     {
         m_TrailController.SwitchTrailCurve(trailType, IsOn);
+    }
+
+    public void Destory()
+    {
+        m_TrailController.resetState();
     }
 }
