@@ -72,9 +72,14 @@ public class StudyModelUIPanel : MonoBehaviour
 
         if (bIsOK)
         {
+            if (!m_studyManager.Prepare())
+            {
+                m_WarnText.text = "请检查设备连接情况";
+                return;
+            }
             m_StudyUIPanel.SetActive(false);
             m_StudyPanel.SetActive(true);
-            m_studyManager.Prepare();
+
         }
     }
 

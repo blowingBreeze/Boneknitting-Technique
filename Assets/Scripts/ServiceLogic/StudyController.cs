@@ -57,7 +57,6 @@ internal class StudyControllerFileFile : StudyController
     public override void Destory()
     {
         m_PlayControllerRef.Destory();
-
     }
 }
 
@@ -99,8 +98,7 @@ internal class StudyControllerFileRecord :StudyController
 
     public override bool Ready()
     {
-        m_DeviceController.InitDevice();
-        return true;
+         return m_DeviceController.InitDevice();
     }
 
     public override void Destory()

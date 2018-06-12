@@ -104,7 +104,7 @@ public class StudyModeManager : MonoBehaviour
         m_RateController = new VideoRateCtrl(1000000000, 1000 / 30);
     }
 
-    public void Prepare()
+    public bool Prepare()
     {
         if (bIsRecord)
         {
@@ -115,7 +115,7 @@ public class StudyModeManager : MonoBehaviour
         {
             m_StudyController = new StudyControllerFileFile(m_HumenModelRef, m_HumenModel, m_strRefFileName, m_strFileName);
         }
-        m_StudyController.Ready();
+        return m_StudyController.Ready();
     }
 
     public void StartOrStopStudy()
