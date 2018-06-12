@@ -7,7 +7,7 @@ using FDTGloveUltraCSharpWrapper;
 public class DTGloveManager : MonoBehaviour {
     
     public static DTGloveManager instance;
-    public static CfdGlove glove=new CfdGlove();
+    public CfdGlove glove=new CfdGlove();
     public static bool caliFileLoaded;
     //public static float[] DTvalues = new float[20];
     

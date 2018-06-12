@@ -10,7 +10,7 @@ public class RecodModePanel : MonoBehaviour
     public GameObject m_BtnStopRecord;
     public GameObject m_SaveControlPanel;
     public GameObject m_StartCanvas;
-    public Text m_WarningText;
+    public GameObject m_WarningText;
     public Text m_TimeCount;
 
     private GameObject m_ChartCanvas;
@@ -41,14 +41,14 @@ public class RecodModePanel : MonoBehaviour
     {
         if (m_RecordManager.InitDevice())
         {
-            m_WarningText.enabled = false;
+            m_WarningText.SetActive(false);
             m_BtnBeginRecord.SetActive(true);
             m_RecordManager.StartCalibrate();
             Destroy(m_BtnCalibrate);
         }
         else
         {
-            m_WarningText.enabled = true;
+            m_WarningText.SetActive ( true);
         }
     }
 

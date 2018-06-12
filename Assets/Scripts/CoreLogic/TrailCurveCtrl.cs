@@ -13,7 +13,7 @@ public class TrailCurveDrawCtrl
     //public List<HandMotion> motionList = new List<HandMotion>();
     public int curve_length = 50;
     private bool is_first = true;
-    private bool is_linerenderer = false;
+    private bool is_linerenderer = true ;
     //轨迹数量
     private int trajs_num;
 
@@ -46,6 +46,9 @@ public class TrailCurveDrawCtrl
         GameObject.FindGameObjectWithTag("DrawCurve").GetComponent<DrawCurvesWithLineRenderer>().enabled = false;
         curMotion.clearTrailData();
         studyMotion.clearTrailData();
+        TrailCurveAppraiseCtrl.left_color_list.Clear();
+        TrailCurveAppraiseCtrl.right_color_list.Clear();
+        is_first = true;
     }
     //设置需要绘制曲线的长度
     public void setCurveLength(int length)
@@ -200,7 +203,8 @@ public class TrailCurveAppraiseCtrl
         {
             return (DTW_score_left + DTW_score_right) / 2;
         }
-        else{
+        else
+        {
             return (100.0f - deta) > 0.0f ? (100.0f - deta) : 0.0f;
         }
     }
@@ -208,7 +212,7 @@ public class TrailCurveAppraiseCtrl
     //DTW方式查看两条曲线的拟合度
     public static float compareTrailCurveWithDTW(Trajectory traj1, Trajectory traj2)
     {
-        if (traj1.size() < 2 || traj2.size() < 2 || traj1.size() * traj2.size() > 200000)
+        if (traj1.size() < 2 || traj2.size() < 2 || traj1.size() * traj2.size() > 400000)
             return -1.0f;
 
         float[,] distance_martix = new float[traj1.size(), traj2.size()];
@@ -294,7 +298,7 @@ public class TrailCurveAppraiseCtrl
             variance += (float)Math.Pow(path[i] - ave_distance, 2);
         }
 
-        float score = 100 - (float)Math.Sqrt(variance / path.Count) / 100;
+        float score = 100 - (float)Math.Sqrt(variance / path.Count);
         return score > 0 ? score : 0;
     }
 }

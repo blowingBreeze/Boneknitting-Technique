@@ -209,7 +209,7 @@ public class VideoRateCtrl
         m_nTotalFrameCount = nTotalFrameCount;
         m_nCurrentFrame = nCurrentFrame;
         m_fIntervalTime = fIntervalTime;
-        m_nAccelerate = 1;
+        m_nAccelerate = 1.0001f;
         return true;
     }
 }

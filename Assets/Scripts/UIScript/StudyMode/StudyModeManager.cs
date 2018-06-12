@@ -56,9 +56,6 @@ public class StudyModeManager : MonoBehaviour
             m_StudyModeChartController.UpdateLineChart(ChartType.CHART_CURVATURE, m_RateController.nCurrentFrame, TrailCurveDrawCtrl.Instance().lastCurvature(TrailType.EG_S1, true));
             m_StudyModeChartController.UpdateLineChart(ChartType.CHART_TORSION, m_RateController.nCurrentFrame, TrailCurveDrawCtrl.Instance().lastTorsion(TrailType.EG_S1, true));
 
-
-
-            Debug.Log(bIsRecord);
             if (!bIsRecord)
             { 
                 if (m_RefRateController.nCurrentFrame >= m_RefRateController.nTotalFrameCount||
@@ -104,7 +101,7 @@ public class StudyModeManager : MonoBehaviour
     public void SetRecordAsTrue()
     {
         bIsRecord = true;
-        m_RateController = new VideoRateCtrl(0, 1000 / 30);
+        m_RateController = new VideoRateCtrl(1000000000, 1000 / 30);
     }
 
     public void Prepare()

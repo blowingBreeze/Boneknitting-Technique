@@ -86,6 +86,15 @@ public class DrawCurvesWithLineRenderer : MonoBehaviour
 
         //drawGhost();
     }
+
+    void OnDisable()
+    {
+        for(int i = 0; i< 2; ++i)
+        {
+            lineRenderer[i].positionCount = 0;
+        }
+
+     }
     /*
     void drawGhost()
     {

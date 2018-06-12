@@ -2220,7 +2220,7 @@ MonoBehaviour:
   m_SaveControlPanel: {fileID: 1556637781057438}
   m_StartCanvas: {fileID: 1800309151799650, guid: 7c18a226fae4f9e4aba37c093cfce909,
     type: 2}
-  m_WarningText: {fileID: 114370279808969024}
+  m_WarningText: {fileID: 1203109337191954}
   m_TimeCount: {fileID: 114538426247350846}
 --- !u!114 &114993392081300878
 MonoBehaviour:

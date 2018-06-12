@@ -123,7 +123,8 @@ public class RecordManager:MonoBehaviour
 
     private void OnDestroy()
     {
-        Destroy(m_HumenModel);
+        Destroy(m_HumenModel.transform.parent.gameObject);
         Destroy(m_ChartCanvas);
+        m_RecordController.GetPlayController().Destory();
     }
 }

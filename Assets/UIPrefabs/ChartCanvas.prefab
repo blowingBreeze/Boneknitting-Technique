@@ -1382,8 +1382,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1601171107647338}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 2}
-  m_LocalScale: {x: 4.6, y: 2.6, z: 1}
+  m_LocalPosition: {x: -1.14, y: 0.7, z: 2}
+  m_LocalScale: {x: 2.6, y: 4.6, z: 1}
   m_Children: []
   m_Father: {fileID: 4877683321659976}
   m_RootOrder: 4
@@ -1434,7 +1434,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1667735937365322}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.15, y: 0.15, z: 1}
+  m_LocalPosition: {x: -2.15, y: -1.15, z: 1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4302620493464490}
@@ -3448,7 +3448,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1773735258497710}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4a69e28953015e44db8b65e96a9e10cd, type: 3}
   m_Name: 
@@ -3466,13 +3466,17 @@ MonoBehaviour:
   BottemBorder: 0
   m_nAxisXLenth: 2
   m_nAxisYLenth: 1
+  m_fMaxX: 0
+  m_fMinX: 0
+  m_fMaxY: 0
+  m_fMinY: 0
 --- !u!114 &114168378358020824
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1805028613585670}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4a69e28953015e44db8b65e96a9e10cd, type: 3}
   m_Name: 
@@ -3490,6 +3494,10 @@ MonoBehaviour:
   BottemBorder: 0
   m_nAxisXLenth: 2
   m_nAxisYLenth: 1
+  m_fMaxX: 0
+  m_fMinX: 0
+  m_fMaxY: 0
+  m_fMinY: 0
 --- !u!114 &114301922466741052
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3508,12 +3516,16 @@ MonoBehaviour:
   AxieYMax: {fileID: 102168336691862724}
   AxieYMin: {fileID: 102373315230616598}
   ShowData: {fileID: 102271241750037282}
-  LeftBorder: 0.5
-  RightBorder: 1
-  UpBorder: 1
-  BottemBorder: 0.5
+  LeftBorder: 0
+  RightBorder: 0.5
+  UpBorder: 0.5
+  BottemBorder: 0
   m_nAxisXLenth: 2
   m_nAxisYLenth: 1
+  m_fMaxX: 0
+  m_fMinX: 0
+  m_fMaxY: 0
+  m_fMinY: 0
 --- !u!114 &114565706810517370
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3532,19 +3544,23 @@ MonoBehaviour:
   AxieYMax: {fileID: 102168336691862724}
   AxieYMin: {fileID: 102373315230616598}
   ShowData: {fileID: 102335701512000196}
-  LeftBorder: 0.5
-  RightBorder: 1
-  UpBorder: 1
-  BottemBorder: 0.5
+  LeftBorder: 0
+  RightBorder: 0.5
+  UpBorder: 0.5
+  BottemBorder: 0
   m_nAxisXLenth: 2
   m_nAxisYLenth: 1
+  m_fMaxX: 0
+  m_fMinX: 0
+  m_fMaxY: 0
+  m_fMinY: 0
 --- !u!114 &114612139478076792
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1681118612939812}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4a69e28953015e44db8b65e96a9e10cd, type: 3}
   m_Name: 
@@ -3562,13 +3578,17 @@ MonoBehaviour:
   BottemBorder: 0
   m_nAxisXLenth: 2
   m_nAxisYLenth: 1
+  m_fMaxX: 0
+  m_fMinX: 0
+  m_fMaxY: 0
+  m_fMinY: 0
 --- !u!114 &114621123707327604
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1828575993677262}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4a69e28953015e44db8b65e96a9e10cd, type: 3}
   m_Name: 
@@ -3586,6 +3606,10 @@ MonoBehaviour:
   BottemBorder: 0
   m_nAxisXLenth: 2
   m_nAxisYLenth: 1
+  m_fMaxX: 0
+  m_fMinX: 0
+  m_fMaxY: 0
+  m_fMinY: 0
 --- !u!114 &114628215452302600
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3610,6 +3634,10 @@ MonoBehaviour:
   BottemBorder: 0.5
   m_nAxisXLenth: 2
   m_nAxisYLenth: 1
+  m_fMaxX: 0
+  m_fMinX: 0
+  m_fMaxY: 0
+  m_fMinY: 0
 --- !u!114 &114729134465491928
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3634,6 +3662,10 @@ MonoBehaviour:
   BottemBorder: 0.5
   m_nAxisXLenth: 2
   m_nAxisYLenth: 1
+  m_fMaxX: 0
+  m_fMinX: 0
+  m_fMaxY: 0
+  m_fMinY: 0
 --- !u!114 &114737197868980018
 MonoBehaviour:
   m_ObjectHideFlags: 1

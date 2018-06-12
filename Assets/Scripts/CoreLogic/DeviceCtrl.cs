@@ -40,8 +40,18 @@ public class DeviceCtrl
         }
 
 
-        return true;
+        if (!KinectManager.IsKinectInitialized()) 
+        {
+            Debug.Log("Kinect 未初始化");
+            return false;
+        }
+        if (!DTGloveManager.instance.glove.IsOpen())
+        {
+            Debug.Log("5DT 未初始化");
+            return false;
+        }
 
+        return true;
     }
 
     //断开设备连接

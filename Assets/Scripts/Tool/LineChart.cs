@@ -24,13 +24,13 @@ public class LineChart : MonoBehaviour
     public int m_nAxisXLenth = 2;
     public int m_nAxisYLenth = 1;
 
-    float m_fMaxX;
-    float m_fMinX;
+    public float m_fMaxX;
+    public float m_fMinX;
     int m_nMaxXIndex;
     int m_nMinXIndex;
 
-    float m_fMaxY;
-    float m_fMinY;
+    public float m_fMaxY;
+    public float m_fMinY;
     int m_nMaxYIndex;
     int m_nMinYIndex;
 
@@ -107,6 +107,7 @@ public class LineChart : MonoBehaviour
 
     private Vector3[] AddPoint(float x, float y, float z = 0f)
     {
+
         int tDrawPointCount = 0;
         Vector3[] DrawPoint;
 

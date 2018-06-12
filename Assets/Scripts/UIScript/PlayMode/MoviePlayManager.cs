@@ -41,15 +41,15 @@ public class MoviePlayManager : MonoBehaviour
             m_PlayController.Update(modelCtrlData);
             m_PlayModeChartController.UpdateLineChart(ChartType.CHART_SPEED, m_VIdeoRateController.nCurrentFrame, TrailCurveDrawCtrl.Instance().lastSpeed(TrailType.EG_S1));
             m_PlayModeChartController.UpdateLineChart(ChartType.CHART_ACCELERATE, m_VIdeoRateController.nCurrentFrame, TrailCurveDrawCtrl.Instance().lastAcceleration(TrailType.EG_S1));
-            m_PlayModeChartController.UpdateLineChart(ChartType.CHART_CURVATURE, m_VIdeoRateController.nCurrentFrame, TrailCurveDrawCtrl.Instance().lastCurvature(TrailType.EG_S1));
-            m_PlayModeChartController.UpdateLineChart(ChartType.CHART_TORSION, m_VIdeoRateController.nCurrentFrame, TrailCurveDrawCtrl.Instance().lastTorsion(TrailType.EG_S1));
+            //m_PlayModeChartController.UpdateLineChart(ChartType.CHART_CURVATURE, m_VIdeoRateController.nCurrentFrame, TrailCurveDrawCtrl.Instance().lastCurvature(TrailType.EG_S1));
+            //m_PlayModeChartController.UpdateLineChart(ChartType.CHART_TORSION, m_VIdeoRateController.nCurrentFrame, TrailCurveDrawCtrl.Instance().lastTorsion(TrailType.EG_S1));
 
-            m_VIdeoRateController.nCurrentFrame +=m_VIdeoRateController.nAccelerate;
-            if(m_VIdeoRateController.nCurrentFrame>=m_VIdeoRateController.nTotalFrameCount)
+            m_VIdeoRateController.nCurrentFrame += m_VIdeoRateController.nAccelerate;
+            if (m_VIdeoRateController.nCurrentFrame >= m_VIdeoRateController.nTotalFrameCount)
             {
                 GetComponent<PlayRateControl>().OnStartOrStopClick();
             }
-        }       
+        }
     }
 
     public void SetFileName(string strFileName)
@@ -57,7 +57,7 @@ public class MoviePlayManager : MonoBehaviour
         m_strFileName = strFileName;
         m_FileReader = new FileReader(strFileName);
         var tempDataHead = FileReader.GetHeadFromFile(strFileName);
-        m_VIdeoRateController = new VideoRateCtrl(tempDataHead.nTotalFrameCount, 1000f/tempDataHead.nFPS);
+        m_VIdeoRateController = new VideoRateCtrl(tempDataHead.nTotalFrameCount, 1000f / tempDataHead.nFPS);
     }
 
     public void StartOrStop()
@@ -85,9 +85,9 @@ public class MoviePlayManager : MonoBehaviour
         return m_VIdeoRateController.nAccelerate;
     }
 
-    public void SetCurrentFrame(float  fRate)
+    public void SetCurrentFrame(float fRate)
     {
-        m_VIdeoRateController.nCurrentFrame =(int) (m_VIdeoRateController.nTotalFrameCount * fRate);
+        m_VIdeoRateController.nCurrentFrame = (int)(m_VIdeoRateController.nTotalFrameCount * fRate);
     }
 
     public float GetCurrentTime()
