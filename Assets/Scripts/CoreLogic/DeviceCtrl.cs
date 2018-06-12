@@ -40,6 +40,12 @@ public class DeviceCtrl
         //}
 
 
+        if (!KinectManager.IsKinectInitialized()) 
+        {
+            Debug.Log("Kinect 未初始化");
+            return false;
+        }
+
         return true;
 
     }
