@@ -103,6 +103,7 @@ internal class StudyControllerFileRecord :StudyController
 
     public override void Destory()
     {
+        m_DeviceController.DisconnectDevice();
         m_PlayControllerRef.Destory();
     }
 }

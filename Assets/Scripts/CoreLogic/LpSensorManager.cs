@@ -5,6 +5,9 @@ using System.Net;
 using System.Net.Sockets;
 using System.Diagnostics;
 using UnityEngine;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 class LpSensorManager
 {
@@ -18,6 +21,7 @@ class LpSensorManager
     private BodyCtrlData ref_body_data;
     private WristCtrlData ref_wrist_data;
     private Process client;
+    private bool bIsKilled;
 
     public LpSensorManager(ref BodyCtrlData body_data, ref WristCtrlData wrist_data, int p, string b_a, int deta_time)
     {
@@ -36,11 +40,12 @@ class LpSensorManager
         client.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
         client.StartInfo.Arguments = string.Format("{0} {1} {2}", port, blue_addr, deta_time);
         client.EnableRaisingEvents = true;
+
+        bIsKilled = false;
     }
     public bool Init()
     {
         client.Start();
-
         IPAddress ip = IPAddress.Parse(IpStr);
         IPEndPoint ip_end_point = new IPEndPoint(ip, port);
         //创建服务器Socket对象，并设置相关属性  
@@ -50,8 +55,24 @@ class LpSensorManager
         //设置最长的连接请求队列长度  
         UnityEngine.Debug.Log("启动监听成功");
 
+#if UNITY_EDITOR
+        EditorApplication.playModeStateChanged += KillWhenExit;
+#endif
         return true;
     }
+
+#if UNITY_EDITOR
+    private void KillWhenExit(PlayModeStateChange obj)
+    {
+        switch (obj)
+        {
+            case PlayModeStateChange.ExitingPlayMode:
+                DisconnectDevice();
+                break;
+        }
+    }
+#endif
+
     public void receiveData()
     {
         //接受数据
@@ -71,7 +92,12 @@ class LpSensorManager
     }
     public void DisconnectDevice()
     {
-        client.Kill();
+        if (!bIsKilled)
+        {
+            serverSocket.Close();
+            client.Kill();
+            bIsKilled = true;
+        }
     }
 }
 

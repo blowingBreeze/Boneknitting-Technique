@@ -140,6 +140,17 @@ public class StudyModeManager : MonoBehaviour
         Destroy(m_HumenModelRef.transform.parent.gameObject);
         Destroy(m_HumenModel.transform.parent.gameObject);
         Destroy(m_ChartCanvas);
-        m_StudyController.Destory();
+        if (m_StudyController != null)
+        {
+            m_StudyController.Destory();
+        }
+    }
+
+    private void OnApplicationQuit()
+    {
+        if (m_StudyController != null)
+        {
+            m_StudyController.Destory();
+        }
     }
 }

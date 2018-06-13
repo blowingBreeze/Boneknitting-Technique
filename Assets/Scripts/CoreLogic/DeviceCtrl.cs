@@ -57,9 +57,15 @@ public class DeviceCtrl
     //断开设备连接
     public void DisconnectDevice()
     {
-        gloveManager.DisconnectDevice();
-        lpThread.Abort();
-        lpSensorManager.DisconnectDevice();
+        if (gloveManager != null)
+        {
+            gloveManager.DisconnectDevice();
+        }
+        if (lpSensorManager != null)
+        {
+            lpThread.Abort();
+            lpSensorManager.DisconnectDevice();
+        }
     }
 
     /// <summary>
@@ -68,8 +74,7 @@ public class DeviceCtrl
     /// <returns></returns>
     public ModelCtrlData AcquireData()
     {
-
-        //cur_ModelCtrlData.bodyCtrlData = kinectManager.getBodyCtrlData();
+        cur_ModelCtrlData.bodyCtrlData = kinectManager.getBodyCtrlData();
         gloveManager.AcquireHandData(ref cur_ModelCtrlData.handCtrlData);
         GameObject.FindGameObjectWithTag("RightHand").transform.rotation = test_data.jointRotation[12];
         cur_ModelCtrlData.bodyCtrlData.HandRightPos = GameObject.FindGameObjectWithTag("RightHand").transform.position;

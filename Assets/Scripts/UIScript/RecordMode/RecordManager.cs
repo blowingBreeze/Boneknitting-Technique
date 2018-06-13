@@ -127,4 +127,12 @@ public class RecordManager:MonoBehaviour
         Destroy(m_ChartCanvas);
         m_RecordController.GetPlayController().Destory();
     }
+
+    /// <summary>
+    /// 在2018版的Unity中可以通过监听Application.quitting事件来实现监听程序退出
+    /// </summary>
+    private void OnApplicationQuit()
+    {
+        DisconnnectDevice();
+    }
 }
