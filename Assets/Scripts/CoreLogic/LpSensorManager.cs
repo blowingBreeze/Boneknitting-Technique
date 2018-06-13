@@ -29,7 +29,6 @@ class LpSensorManager
         ref_body_data = body_data;
         ref_wrist_data = wrist_data;
         client = new Process();
-
         client.StartInfo.FileName = string.Format(Application.streamingAssetsPath+@"\LpSensor\LpSensorTest.exe");
         client.StartInfo.UseShellExecute = false;
         client.StartInfo.CreateNoWindow = true;
@@ -71,6 +70,7 @@ class LpSensorManager
     }
     public void DisconnectDevice()
     {
+        serverSocket.Close();
         client.Kill();
     }
 }
